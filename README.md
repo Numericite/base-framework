@@ -2,7 +2,8 @@
 
 ## Launch project
 
-This github repository is composed of 2 app : strapi for backend & a nextjs application for frontend
+This github repository is composed of 2 apps : strapi for backend & a nextjs application for frontend.
+The project is using postgresql as database and docker-compose is used for developpement.
 
 ### Database
 

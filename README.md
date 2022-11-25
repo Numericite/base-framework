@@ -1,4 +1,4 @@
-# Numéricité base-framework
+# Numéricité ressourcerie PFRH Normandie
 
 ## Launch project
 

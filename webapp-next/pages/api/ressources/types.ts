@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { GeneralListQueryParams, Pagination } from "../types";
+import { GeneralListQueryParams, Pagination, ZStrapiFile } from "../types";
 import { ressourceVideoSourceEnum } from "../../../utils/globals/enums";
+import { ZTheme } from "../themes/types";
 
 // -----------------------------
 // ----- STRAPI DATA TYPES -----
@@ -9,6 +10,27 @@ import { ressourceVideoSourceEnum } from "../../../utils/globals/enums";
 const ZRessourceLink = z.object({
   link: z.string(),
   kind: z.literal("link"),
+});
+
+const ZRessourceFile = z.object({
+  files: z.array(ZStrapiFile),
+  kind: z.literal("file"),
+});
+
+const ZRessourceQuiz = z.object({
+  save_results: z.boolean(),
+  questions: z.array(
+    z.object({
+      name: z.string(),
+      responses: z.array(
+        z.object({
+          name: z.string(),
+          isRightAnswer: z.boolean(),
+        })
+      ),
+    })
+  ),
+  kind: z.literal("quiz"),
 });
 
 const ZRessourceVideo = z.object({
@@ -24,11 +46,14 @@ const ZRessourceBase = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   publishedAt: z.string(),
+  theme: ZTheme,
 });
 
 export const ZRessource = z.discriminatedUnion("kind", [
   ZRessourceBase.extend(ZRessourceLink.shape),
   ZRessourceBase.extend(ZRessourceVideo.shape),
+  ZRessourceBase.extend(ZRessourceQuiz.shape),
+  ZRessourceBase.extend(ZRessourceFile.shape),
 ]);
 export type TRessource = z.infer<typeof ZRessource>;
 

@@ -15,7 +15,7 @@ const childRessourceRequest = (ressource) =>
       filters: {
         ressource: { id: ressource.id },
       },
-      populate: "ressource",
+      populate: { ressource: { populate: { theme: true } } },
     });
 
 const childRessourceConsolidate = (childRessource) => {

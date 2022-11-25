@@ -10,6 +10,10 @@ const Home = () => {
           console.log(`simple link  : ${r.link}`);
         } else if (r.kind === "video") {
           console.log(`video on ${r.source} : ${r.link}`);
+        } else if (r.kind === "file") {
+          console.log(`file with url ${r.files.map((_) => _.url).join(" | ")}`);
+        } else if (r.kind === "quiz") {
+          console.log(`quiz with questions ${r.questions}`);
         }
       });
     });

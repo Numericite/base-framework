@@ -18,8 +18,6 @@ import {
 import {
   RessourceRoutesDataResponses,
   RessourceGetRoutes,
-  RessourcePostRoutes,
-  RessourcePutRoutes,
   RessourceDeleteRoutes,
   RessourceRoutesGetParams,
   RessourceRoutesDeleteParams,
@@ -47,12 +45,8 @@ export type MyGetRoutes =
   | UserGetRoutes
   | RessourceGetRoutes
   | ThemeGetRoutes;
-export type MyPostRoutes =
-  | AuthPostRoutes
-  | UserPostRoutes
-  | RessourcePostRoutes
-  | ThemePostRoutes;
-export type MyPutRoutes = UserPutRoutes | RessourcePutRoutes | ThemePutRoutes;
+export type MyPostRoutes = AuthPostRoutes | UserPostRoutes | ThemePostRoutes;
+export type MyPutRoutes = UserPutRoutes | ThemePutRoutes;
 export type MyDeleteRoutes =
   | UserDeleteRoutes
   | RessourceDeleteRoutes

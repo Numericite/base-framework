@@ -100,8 +100,8 @@ export type TRessourceFindParams = z.infer<typeof ZRessourceFindParams>;
 export type RessourceGetRoutes =
   | "/api/ressources/list"
   | "/api/ressources/find";
-export type RessourcePostRoutes = "/api/ressources/create";
-export type RessourcePutRoutes = "/api/ressources/update";
+// export type RessourcePostRoutes = "/api/ressources/create";
+// export type RessourcePutRoutes = "/api/ressources/update";
 export type RessourceDeleteRoutes = "/api/ressources/delete";
 
 //REQUESTS

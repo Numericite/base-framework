@@ -15,17 +15,32 @@ import {
   UserRoutesPutParams,
   UserRoutesDeleteParams,
 } from "../../pages/api/users/types";
+import {
+  RessourceRoutesDataResponses,
+  RessourceGetRoutes,
+  RessourcePostRoutes,
+  RessourcePutRoutes,
+  RessourceDeleteRoutes,
+  RessourceRoutesGetParams,
+  RessourceRoutesDeleteParams,
+} from "../../pages/api/ressources/types";
 
 export type DataResponses<T> =
   | AuthRoutesDataResponses<T>
-  | UserRoutesDataResponses<T>;
+  | UserRoutesDataResponses<T>
+  | RessourceRoutesDataResponses<T>;
 
-export type MyGetRoutes = AuthGetRoutes | UserGetRoutes;
-export type MyPostRoutes = AuthPostRoutes | UserPostRoutes;
-export type MyPutRoutes = UserPutRoutes;
-export type MyDeleteRoutes = UserDeleteRoutes;
+export type MyGetRoutes = AuthGetRoutes | UserGetRoutes | RessourceGetRoutes;
+export type MyPostRoutes =
+  | AuthPostRoutes
+  | UserPostRoutes
+  | RessourcePostRoutes;
+export type MyPutRoutes = UserPutRoutes | RessourcePutRoutes;
+export type MyDeleteRoutes = UserDeleteRoutes | RessourceDeleteRoutes;
 
-export interface GetRouteParams extends UserRoutesGetParams {}
+export interface GetRouteParams
+  extends UserRoutesGetParams,
+    RessourceRoutesGetParams {}
 
 export interface PostRouteParams
   extends AuthRoutesPostParams,
@@ -33,4 +48,6 @@ export interface PostRouteParams
 
 export interface PutRouteParams extends UserRoutesPutParams {}
 
-export interface DeleteRouteParams extends UserRoutesDeleteParams {}
+export interface DeleteRouteParams
+  extends UserRoutesDeleteParams,
+    RessourceRoutesDeleteParams {}

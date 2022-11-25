@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ressource_quizs",
+  "info": {
+    "singularName": "ressource-quiz",
+    "pluralName": "ressource-quizs",
+    "displayName": "RessourceQuiz"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "save_result": {
+      "type": "boolean",
+      "default": false
+    },
+    "ressource": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ressource.ressource"
+    }
+  }
+}

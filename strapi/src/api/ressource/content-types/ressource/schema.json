@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ressources",
+  "info": {
+    "singularName": "ressource",
+    "pluralName": "ressources",
+    "displayName": "Ressource",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "kind": {
+      "type": "enumeration",
+      "enum": [
+        "link",
+        "video",
+        "file",
+        "quiz"
+      ],
+      "required": true
+    },
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "theme": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::theme.theme"
+    }
+  }
+}

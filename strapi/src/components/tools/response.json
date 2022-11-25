@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_tools_responses",
+  "info": {
+    "displayName": "response",
+    "icon": "book-reader"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "isRightAnswer": {
+      "type": "boolean",
+      "required": false
+    }
+  }
+}

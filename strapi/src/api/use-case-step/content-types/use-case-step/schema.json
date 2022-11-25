@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "use_case_steps",
+  "info": {
+    "singularName": "use-case-step",
+    "pluralName": "use-case-steps",
+    "displayName": "UseCaseStep"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "position": {
+      "type": "integer",
+      "unique": false,
+      "required": true,
+      "default": 0
+    },
+    "use_case": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::use-case.use-case"
+    },
+    "ressource": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ressource.ressource"
+    }
+  }
+}

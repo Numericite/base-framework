@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ressource_videos",
+  "info": {
+    "singularName": "ressource-video",
+    "pluralName": "ressource-videos",
+    "displayName": "RessourceVideo"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "link": {
+      "type": "string",
+      "required": true
+    },
+    "source": {
+      "type": "enumeration",
+      "enum": [
+        "youtube",
+        "vimeo"
+      ],
+      "required": true
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false,
+      "required": false
+    },
+    "ressource": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ressource.ressource"
+    }
+  }
+}

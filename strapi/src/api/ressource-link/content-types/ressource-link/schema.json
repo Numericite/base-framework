@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ressource_links",
+  "info": {
+    "singularName": "ressource-link",
+    "pluralName": "ressource-links",
+    "displayName": "RessourceLink"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "link": {
+      "type": "string"
+    },
+    "ressource": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ressource.ressource"
+    }
+  }
+}

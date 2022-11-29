@@ -1,4 +1,5 @@
 import ButtonTheme from "./components-theme/button-theme";
+import TagTheme from "./components-theme/tag-theme";
 
 const theme_extend = {
   styles: {},
@@ -11,6 +12,7 @@ const theme_extend = {
 
   components: {
     Button: ButtonTheme,
+    Tag: TagTheme,
   },
 };
 

@@ -10,6 +10,7 @@ const InputTheme = defineStyleConfig({
         alignItems: "center",
         fontWeight: "bold",
         borderRadius: "lg",
+        backgroundColor: "#E9F1FF",
         _placeholder: {
           fontSize: "md",
           fontWeight: "light",
@@ -23,6 +24,7 @@ const InputTheme = defineStyleConfig({
         py: 4,
         alignItems: "center",
         fontWeight: "bold",
+        backgroundColor: "#E9F1FF",
         borderRadius: "lg",
         _placeholder: {
           fontSize: "md",

@@ -8,7 +8,7 @@ const TabsTheme = defineStyleConfig({
         py: 1,
       },
       tab: {
-        fontSize: "sm",
+        fontSize: "xs",
         px: 4,
         py: 3,
       },

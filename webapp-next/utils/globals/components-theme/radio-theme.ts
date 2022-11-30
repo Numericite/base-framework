@@ -20,9 +20,9 @@ const RadioTheme = defineStyleConfig({
       },
     },
     label: {
-      fontSize: "xs",
       color: "black",
       fontWeight: "400",
+      fontSize: "xs",
       _checked: {
         fontSize: "xs",
         color: "black",

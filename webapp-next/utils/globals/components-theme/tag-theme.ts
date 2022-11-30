@@ -31,6 +31,13 @@ const TagTheme = defineStyleConfig({
         fontWeight: "600",
       },
     },
+    colored: {
+      container: {
+        color: "white",
+        border: "1px solid  #FFFFFF",
+        fontWeight: "600",
+      },
+    },
   },
 });
 

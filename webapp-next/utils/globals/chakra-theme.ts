@@ -12,6 +12,7 @@ const theme_extend = {
     secondary: "#E1006C",
     black: "#1B1D1F",
     neutral: "#FAFCFF",
+    body: "#6B829B",
     lightBlue: "#A2DDF1",
     lightPink: "#FF7E95",
   },
@@ -23,7 +24,9 @@ const theme_extend = {
     xl: "4.5rem",
     "2xl": "5.5rem",
   },
-
+  p: {
+    xs: "0.875rem",
+  },
   components: {
     Button: ButtonTheme,
     Radio: RadioTheme,

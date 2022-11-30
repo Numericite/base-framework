@@ -8,6 +8,13 @@ const CardTheme = defineStyleConfig({
         shadow: "none",
       },
     },
+    article: {
+      container: {
+        bg: "white",
+        shadow: "none",
+        border: "1px solid #E9F1FF",
+      },
+    },
   },
 });
 

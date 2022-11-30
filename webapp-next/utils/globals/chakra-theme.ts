@@ -1,4 +1,5 @@
 import ButtonTheme from "./components-theme/button-theme";
+import RadioTheme from "./components-theme/radio-theme";
 import TagTheme from "./components-theme/tag-theme";
 import { TabsTheme } from "./components-theme/tabs-theme";
 import InputTheme from "./components-theme/input-theme";
@@ -16,6 +17,7 @@ const theme_extend = {
 
   components: {
     Button: ButtonTheme,
+    Radio: RadioTheme,
     Tag: TagTheme,
     Tabs: TabsTheme,
     Input: InputTheme,

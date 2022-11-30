@@ -1,4 +1,5 @@
 import ButtonTheme from "./components-theme/button-theme";
+import InputTheme from "./components-theme/input-theme";
 
 const theme_extend = {
   styles: {},
@@ -11,6 +12,7 @@ const theme_extend = {
 
   components: {
     Button: ButtonTheme,
+    Input: InputTheme,
   },
 };
 

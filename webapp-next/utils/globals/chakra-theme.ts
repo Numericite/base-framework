@@ -1,4 +1,5 @@
 import ButtonTheme from "./components-theme/button-theme";
+import { TabsTheme } from "./components-theme/tabs-theme";
 import InputTheme from "./components-theme/input-theme";
 
 const theme_extend = {
@@ -8,10 +9,13 @@ const theme_extend = {
     secondary: "#E1006C",
     black: "#1B1D1F",
     neutral: "#FAFCFF",
+    lightBlue: "#A2DDF1",
+    lightPink: "#FF7E95",
   },
 
   components: {
     Button: ButtonTheme,
+    Tabs: TabsTheme,
     Input: InputTheme,
   },
 };

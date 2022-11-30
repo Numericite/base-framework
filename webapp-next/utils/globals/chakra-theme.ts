@@ -1,4 +1,5 @@
 import ButtonTheme from "./components-theme/button-theme";
+import RadioTheme from "./components-theme/radio-theme";
 
 const theme_extend = {
   styles: {},
@@ -11,6 +12,7 @@ const theme_extend = {
 
   components: {
     Button: ButtonTheme,
+    Radio: RadioTheme,
   },
 };
 

@@ -3,6 +3,7 @@ import { Box, Button, Container, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { fetchApi } from "../utils/api/fetch-api";
 import Navbar from "../components/ui/navbar";
+import HomeHeader from "../components/ui/headers/home";
 
 const Home = () => {
   const fetchRessources = () => {
@@ -27,7 +28,7 @@ const Home = () => {
 
   return (
     <Box>
-      <Heading>Hello world</Heading>
+      <HomeHeader />
     </Box>
   );
 };

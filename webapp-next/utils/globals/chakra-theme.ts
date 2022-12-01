@@ -6,13 +6,23 @@ import InputTheme from "./components-theme/input-theme";
 
 const theme_extend = {
   styles: {},
+  fonts: {
+    heading: `Poppins`,
+    body: `Poppins`,
+  },
   colors: {
     primary: "#2F6CFF",
     secondary: "#E1006C",
     black: "#1B1D1F",
     neutral: "#FAFCFF",
+    neutralDark: "#6B829B",
     lightBlue: "#A2DDF1",
     lightPink: "#FF7E95",
+  },
+  fontSizes: {
+    "1.5xl": "1.375rem",
+    "5.5xl": "3.5rem",
+    "7.5xl": "5.5rem",
   },
   sizes: {
     container: {

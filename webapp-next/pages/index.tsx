@@ -1,4 +1,5 @@
-import { Container, Heading } from "@chakra-ui/react";
+import { ArrowRightIcon } from "@chakra-ui/icons";
+import { Button, Container, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { fetchApi } from "../utils/api/fetch-api";
 
@@ -28,6 +29,9 @@ const Home = () => {
       <Heading textAlign="center" w="full" pt={10}>
         Numéricité base webapp
       </Heading>
+      <Button variant={"neutral"} size="md" w={100}>
+        Test <ArrowRightIcon />
+      </Button>
     </Container>
   );
 };

@@ -48,7 +48,7 @@ const ArticleCard: React.FC<ArticleCardProps> = (props) => {
           <Heading fontSize={["lg", "md"]} noOfLines={1}>
             {article.name}
           </Heading>
-          <Text fontSize={["md", "sm"]} color="body">
+          <Text fontSize={["md", "sm"]} color="neutralDark">
             {article.description}
           </Text>
         </CardBody>

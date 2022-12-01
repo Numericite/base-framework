@@ -55,7 +55,7 @@ const RessourceCard: React.FC<RessourceProps> = (props) => {
           <Heading pb={3.5} fontSize={["lg", "md"]}>
             {ressource.name}
           </Heading>
-          <Text fontSize={["md", "sm"]} color="body">
+          <Text fontSize={["md", "sm"]} color="neutralDark">
             {ressource.description}
           </Text>
         </CardBody>

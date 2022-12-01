@@ -32,7 +32,7 @@ const ThemeCard: React.FC<ThemeCardProps> = (props) => {
         <Heading fontSize={["lg", "md"]} noOfLines={1}>
           {theme.name}
         </Heading>
-        <Text fontSize={["md", "sm"]} color="body">
+        <Text fontSize={["md", "sm"]} color="neutralDark">
           {theme.description}
         </Text>
       </CardBody>

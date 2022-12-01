@@ -10,6 +10,7 @@ import { useLocalStorage } from "react-use";
 import AppContext from "../context/state";
 import { ModalProvider } from "../utils/hooks/useModals";
 import "@fontsource/poppins";
+import Fonts from "../components/ui/fonts";
 
 const NEXT_PUBLIC_JWT_STORAGE_KEY: string = process.env
   .NEXT_PUBLIC_JWT_STORAGE_KEY as string;
@@ -45,6 +46,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AppContext.Provider value={contextValue}>
       <ChakraProvider theme={theme}>
+        <Fonts />
         <ModalProvider>{getLayout(<Component {...pageProps} />)}</ModalProvider>
       </ChakraProvider>
     </AppContext.Provider>

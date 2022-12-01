@@ -2,11 +2,15 @@ import { Box, Container, Flex, Heading, HStack, Link } from "@chakra-ui/react";
 import { useMediaQuery } from "usehooks-ts";
 import { useRouter } from "next/router";
 import MobileDrawer from "../mobile-drawer";
+import { useEffect, useState } from "react";
+import { useMediaQueryAdapter } from "../../../utils/hooks/useMediaQuery";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
 
-  const isLargerThan768 = useMediaQuery("(min-width: 768px)");
+  const isLargerThan768 = useMediaQueryAdapter("(min-width: 768px)");
+
+  if (isLargerThan768 === null) return <></>;
 
   const links = [
     { label: "Accueil", href: "/" },

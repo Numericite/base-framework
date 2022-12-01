@@ -1,7 +1,8 @@
 import { ArrowRightIcon } from "@chakra-ui/icons";
-import { Button, Container, Heading } from "@chakra-ui/react";
+import { Box, Button, Container, Heading } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { fetchApi } from "../utils/api/fetch-api";
+import Navbar from "../components/ui/navbar";
 
 const Home = () => {
   const fetchRessources = () => {
@@ -25,14 +26,9 @@ const Home = () => {
   }, []);
 
   return (
-    <Container>
-      <Heading textAlign="center" w="full" pt={10}>
-        Numéricité base webapp
-      </Heading>
-      <Button variant={"neutral"} size="md" w={100}>
-        Test <ArrowRightIcon />
-      </Button>
-    </Container>
+    <Box>
+      <Heading>Hello world</Heading>
+    </Box>
   );
 };
 

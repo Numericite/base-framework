@@ -3,7 +3,7 @@ import { defineStyleConfig } from "@chakra-ui/react";
 const ButtonTheme = defineStyleConfig({
   sizes: {
     sm: {
-      fontSize: "sm",
+      fontSize: "xs",
       w: "fit-content",
       px: 4,
       py: 3,
@@ -14,7 +14,7 @@ const ButtonTheme = defineStyleConfig({
     },
     md: {
       w: "fit-content",
-      fontSize: "md",
+      fontSize: "sm",
       px: 6,
       py: 4,
       borderRadius: "3xl",

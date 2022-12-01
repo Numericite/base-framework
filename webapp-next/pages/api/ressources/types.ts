@@ -48,6 +48,7 @@ const ZRessourceBase = z.object({
   updatedAt: z.string(),
   publishedAt: z.string(),
   theme: ZTheme,
+  image: z.optional(ZStrapiFile),
 });
 
 export const ZRessource = z.discriminatedUnion("kind", [

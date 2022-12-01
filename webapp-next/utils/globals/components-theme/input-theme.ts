@@ -4,7 +4,7 @@ const InputTheme = defineStyleConfig({
   sizes: {
     sm: {
       field: {
-        fontSize: "sm",
+        fontSize: "xs",
         w: "fit-content",
         py: 3,
         alignItems: "center",
@@ -20,7 +20,7 @@ const InputTheme = defineStyleConfig({
     md: {
       field: {
         w: "fit-content",
-        fontSize: "md",
+        fontSize: "sm",
         py: 4,
         alignItems: "center",
         fontWeight: "bold",

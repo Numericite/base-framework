@@ -3,6 +3,7 @@ import RadioTheme from "./components-theme/radio-theme";
 import TagTheme from "./components-theme/tag-theme";
 import { TabsTheme } from "./components-theme/tabs-theme";
 import InputTheme from "./components-theme/input-theme";
+import CardTheme from "./components-theme/card-theme";
 
 const theme_extend = {
   styles: {},
@@ -36,6 +37,7 @@ const theme_extend = {
     Tag: TagTheme,
     Tabs: TabsTheme,
     Input: InputTheme,
+    Card: CardTheme,
   },
 };
 

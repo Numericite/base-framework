@@ -3,8 +3,9 @@ import { defineStyleConfig } from "@chakra-ui/react";
 const TagTheme = defineStyleConfig({
   sizes: {
     sm: {
-      fontSize: "sm",
+      fontSize: "xs",
       w: "fit-content",
+      maxH: "fit-content",
       px: 4,
       py: 3,
       borderRadius: "md",
@@ -13,7 +14,8 @@ const TagTheme = defineStyleConfig({
     },
     md: {
       w: "fit-content",
-      fontSize: "md",
+      maxH: "fit-content",
+      fontSize: "sm",
       px: 6,
       py: 4,
       borderRadius: "md",
@@ -38,6 +40,10 @@ const TagTheme = defineStyleConfig({
         fontWeight: "600",
       },
     },
+  },
+  defaultProps: {
+    size: "md",
+    variant: "neutral",
   },
 });
 

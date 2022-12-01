@@ -12,5 +12,11 @@ export function middleware(req: NextRequest) {
 
   //PRIVATE PAGES LOGIC
 
+  if (req.nextUrl.pathname.startsWith("/upload")) {
+    return NextResponse.rewrite(
+      new URL(req.nextUrl.pathname, NEXT_PUBLIC_STRAPI_URL)
+    );
+  }
+
   return NextResponse.next();
 }

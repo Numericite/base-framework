@@ -7,11 +7,9 @@ import {
   CardHeader,
   Heading,
   Image,
-  Link,
   Tag,
   Text,
 } from "@chakra-ui/react";
-import useImageURL from "../../../utils/hooks/useImageURL";
 
 interface ArticleCardProps {
   article: any;
@@ -19,7 +17,6 @@ interface ArticleCardProps {
 
 const ArticleCard: React.FC<ArticleCardProps> = (props) => {
   const { article } = props;
-  const url = useImageURL(article.image?.url as string);
   return (
     <Box
       w="full"
@@ -32,16 +29,20 @@ const ArticleCard: React.FC<ArticleCardProps> = (props) => {
     >
       <Card variant="article" w="full" h="full" borderRadius={"xl"}>
         <CardHeader p="3.5" m={0} w="full">
-          <Image
-            src={url}
-            position="relative"
-            alt=""
-            borderRadius={"xl"}
-            fallbackSrc="https://via.placeholder.com/300"
-          />
-          <Tag position={"absolute"} top="3" right="3" variant="neutral">
-            LE TAAAAG
-          </Tag>
+          {"image" in article && article.image.url && (
+            <Image
+              src={article.image.url}
+              position="relative"
+              alt={article.image.name}
+              borderRadius={"xl"}
+              m={0}
+            />
+          )}
+          {article.theme && (
+            <Tag position={"absolute"} top="3" right="3" variant="neutral">
+              {article.theme}
+            </Tag>
+          )}
         </CardHeader>
         <CardBody px={6}>
           <Heading fontSize={["lg", "md"]} noOfLines={1}>

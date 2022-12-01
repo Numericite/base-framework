@@ -7,7 +7,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { TTheme } from "../../../pages/api/themes/types";
-import useImageURL from "../../../utils/hooks/useImageURL";
 
 interface ThemeCardProps {
   theme: TTheme;
@@ -15,17 +14,17 @@ interface ThemeCardProps {
 
 const ThemeCard: React.FC<ThemeCardProps> = (props) => {
   const { theme } = props;
-  const imageURL = useImageURL(theme.image?.url as string);
 
   return (
     <Card variant="flat" w="full">
-      {"image" in theme && (
+      {"image" in theme && theme.image?.url && (
         <CardHeader p={0} m={0} w="full">
           <Image
-            src={imageURL}
+            src={theme.image.url}
             borderRadius="md"
             backgroundSize={"cover"}
             alt={theme.name}
+            m={0}
           />
         </CardHeader>
       )}
@@ -33,7 +32,9 @@ const ThemeCard: React.FC<ThemeCardProps> = (props) => {
         <Heading fontSize={["lg", "md"]} noOfLines={1}>
           {theme.name}
         </Heading>
-        <Text fontSize={["md", "sm"]}>{theme.description}</Text>
+        <Text fontSize={["md", "sm"]} color="body">
+          {theme.description}
+        </Text>
       </CardBody>
     </Card>
   );

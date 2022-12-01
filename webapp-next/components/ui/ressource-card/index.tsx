@@ -1,7 +1,6 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -13,7 +12,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { TRessource } from "../../../pages/api/ressources/types";
-import useImageURL from "../../../utils/hooks/useImageURL";
 import IconPlaceHolder from "../icon-placeholder";
 
 interface RessourceProps {
@@ -22,7 +20,6 @@ interface RessourceProps {
 
 const RessourceCard: React.FC<RessourceProps> = (props) => {
   const { ressource } = props;
-  const url = useImageURL(ressource.image?.url as string);
   return (
     <Box
       w="full"
@@ -43,12 +40,18 @@ const RessourceCard: React.FC<RessourceProps> = (props) => {
             "linear(to-tr, rgba(47, 108, 255, 0.05),rgba(151, 248, 177, 0.05))",
         }}
       >
-        <CardHeader p="3.5" m={0} w="full">
-          {url && (
-            <Image src={url} position="relative" alt="" borderRadius={"xl"} />
+        <CardHeader p={3.5} m={0} w="full">
+          {"image" in ressource && ressource.image?.url && (
+            <Image
+              src={ressource.image.url}
+              position="relative"
+              alt=""
+              borderRadius={"xl"}
+              m={0}
+            />
           )}
         </CardHeader>
-        <CardBody px={6}>
+        <CardBody py={0} px={6}>
           <Heading pb={3.5} fontSize={["lg", "md"]}>
             {ressource.name}
           </Heading>

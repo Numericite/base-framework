@@ -66,7 +66,7 @@ const RessourceCard: React.FC<RessourceProps> = (props) => {
                 {ressource.theme.name}
               </Tag>
             )}
-            <IconPlaceHolder color="lightPink" icon={<ArrowBackIcon />} />
+            <IconPlaceHolder kind={ressource.kind} />
           </Flex>
         </CardFooter>
       </Card>

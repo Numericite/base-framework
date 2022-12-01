@@ -10,6 +10,7 @@ const ButtonTheme = defineStyleConfig({
       borderRadius: "3xl",
       justifyContent: "space-between",
       alignItems: "center",
+      height: "auto",
     },
     md: {
       w: "fit-content",
@@ -19,6 +20,7 @@ const ButtonTheme = defineStyleConfig({
       borderRadius: "3xl",
       justifyContent: "space-between",
       alignItems: "center",
+      height: "auto",
     },
   },
   variants: {
@@ -26,7 +28,7 @@ const ButtonTheme = defineStyleConfig({
       bg: "primary",
       color: "white",
       _hover: {
-        bg: "secondary",
+        bg: "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)",
         transition: "all 0.2s ease-in-out",
       },
     },

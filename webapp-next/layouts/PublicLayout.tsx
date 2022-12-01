@@ -7,9 +7,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
     <Box minH="100vh">
       <Navbar />
-      <Container maxW="container.2lg" pt={10}>
-        {children}
-      </Container>
+      {children}
     </Box>
   );
 }

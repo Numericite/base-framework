@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^2.3.5",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@fontsource/poppins": "^4.5.10",
     "@types/draft-js": "^0.11.9",
     "@types/draftjs-to-html": "^0.8.1",
     "@types/html-to-draftjs": "^1.4.0",

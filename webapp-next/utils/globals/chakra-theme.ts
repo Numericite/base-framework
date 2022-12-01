@@ -14,6 +14,11 @@ const theme_extend = {
     lightBlue: "#A2DDF1",
     lightPink: "#FF7E95",
   },
+  sizes: {
+    container: {
+      "2lg": "1124px",
+    },
+  },
 
   components: {
     Button: ButtonTheme,

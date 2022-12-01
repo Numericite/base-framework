@@ -25,14 +25,7 @@ const MobileDrawer = (props: DrawerProps) => {
 
   return (
     <Flex>
-      <Button
-        position="absolute"
-        size="sm"
-        left="10"
-        top="10"
-        ref={btnRef}
-        onClick={onOpen}
-      >
+      <Button size="sm" ref={btnRef} onClick={onOpen}>
         <HamburgerIcon />
       </Button>
       <Drawer

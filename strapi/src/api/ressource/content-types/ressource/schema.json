@@ -26,21 +26,26 @@
         "link",
         "video",
         "file",
-        "quiz"
+        "quiz",
+        "text"
       ],
       "required": true
     },
     "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "theme": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::theme.theme"
+    },
+    "content": {
+      "type": "richtext"
     }
   }
 }

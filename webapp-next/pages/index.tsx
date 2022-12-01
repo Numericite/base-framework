@@ -28,14 +28,6 @@ const Home = () => {
     fetchRessources();
   }, []);
 
-  const displayThemeCards = themes.map((theme, index) => {
-    return <ThemeCard theme={theme} key={index} />;
-  });
-
-  const displayRessourcesCards = ressources.map((ressource, index) => {
-    return <RessourceCard ressource={ressource} key={index} />;
-  });
-
   return (
 
     <Box>

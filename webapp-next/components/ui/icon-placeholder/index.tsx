@@ -41,12 +41,10 @@ const IconPlaceHolder: React.FC<IconPlaceHolderProps> = (props) => {
   return (
     <Box
       bg={elementToRender?.color}
-      w="fit-content"
-      justifyContent={"center"}
-      alignItems="center"
-      justifyItems={"center"}
+      w={"fit-content"}
+      h={"fit-content"}
       display={"flex"}
-      p={2}
+      p={1}
       borderRadius="md"
     >
       {elementToRender?.icon}

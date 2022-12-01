@@ -19,7 +19,7 @@ const HomeHeader = () => {
           flexWrap="wrap"
         >
           <Box w={["100%", "100%", "100%", "45%"]}>
-            <Heading as="h1" fontSize="5.5xl">
+            <Heading as="h1" fontSize={["4xl", "4xl", "4xl", "5.5xl"]}>
               Ressourcerie{" "}
               <Text
                 as="span"
@@ -33,7 +33,11 @@ const HomeHeader = () => {
                 management
               </Text>
             </Heading>
-            <Text fontSize="1.5xl" mt={6} color="neutralDark">
+            <Text
+              fontSize={["xl", "xl", "xl", "1.5xl"]}
+              mt={6}
+              color="neutralDark"
+            >
               Lörem ipsum vovis nivönon ködöst.
               <br /> Odegt anoll, om dekinde hihet. Eurologi anonåns.
             </Text>

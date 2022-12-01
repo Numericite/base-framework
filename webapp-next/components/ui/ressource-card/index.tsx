@@ -35,23 +35,25 @@ const RessourceCard: React.FC<RessourceProps> = (props) => {
         w="full"
         h="full"
         borderRadius={"xl"}
+        p={3}
         _hover={{
           bgGradient:
             "linear(to-tr, rgba(47, 108, 255, 0.05),rgba(151, 248, 177, 0.05))",
         }}
       >
-        <CardHeader p={3.5} m={0} w="full">
+        <CardHeader py={3.5} m={0} w="full">
           {"image" in ressource && ressource.image?.url && (
             <Image
               src={ressource.image.url}
               position="relative"
               alt=""
+              p={0}
               borderRadius={"xl"}
               m={0}
             />
           )}
         </CardHeader>
-        <CardBody py={0} px={6}>
+        <CardBody py={0}>
           <Heading pb={3.5} fontSize={["lg", "md"]}>
             {ressource.name}
           </Heading>

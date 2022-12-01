@@ -44,7 +44,9 @@ const IconPlaceHolder: React.FC<IconPlaceHolderProps> = (props) => {
       w={"fit-content"}
       h={"fit-content"}
       display={"flex"}
-      p={1}
+      alignItems={"center"}
+      justifyContent={"center"}
+      p={2}
       borderRadius="md"
     >
       {elementToRender?.icon}

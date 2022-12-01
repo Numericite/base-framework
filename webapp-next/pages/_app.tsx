@@ -9,6 +9,7 @@ import { TUser } from "./api/users/types";
 import { useLocalStorage } from "react-use";
 import AppContext from "../context/state";
 import { ModalProvider } from "../utils/hooks/useModals";
+import "@fontsource/poppins";
 
 const NEXT_PUBLIC_JWT_STORAGE_KEY: string = process.env
   .NEXT_PUBLIC_JWT_STORAGE_KEY as string;

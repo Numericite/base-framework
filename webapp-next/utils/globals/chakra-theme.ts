@@ -3,7 +3,11 @@ import RadioTheme from "./components-theme/radio-theme";
 import TagTheme from "./components-theme/tag-theme";
 import { TabsTheme } from "./components-theme/tabs-theme";
 import InputTheme from "./components-theme/input-theme";
+<<<<<<< HEAD
 import CardTheme from "./components-theme/card-theme";
+=======
+import SelectTheme from "./components-theme/select-theme";
+>>>>>>> fb0df3f (feat: init header on ressource page)
 
 const theme_extend = {
   styles: {},
@@ -37,7 +41,11 @@ const theme_extend = {
     Tag: TagTheme,
     Tabs: TabsTheme,
     Input: InputTheme,
+<<<<<<< HEAD
     Card: CardTheme,
+=======
+    Select: SelectTheme,
+>>>>>>> fb0df3f (feat: init header on ressource page)
   },
 };
 

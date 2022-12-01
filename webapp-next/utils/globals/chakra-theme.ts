@@ -27,6 +27,13 @@ const theme_extend = {
   p: {
     xs: "0.875rem",
   },
+
+  sizes: {
+    container: {
+      "2lg": "1124px",
+    },
+  },
+
   components: {
     Button: ButtonTheme,
     Radio: RadioTheme,

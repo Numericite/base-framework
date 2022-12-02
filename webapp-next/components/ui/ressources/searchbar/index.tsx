@@ -53,10 +53,15 @@ const SearchBar: React.FC = () => {
       <VStack alignItems="flex-start">
         <InputLabel label="Saisie" />
         <InputGroup>
-          <InputLeftElement pointerEvents="none">
+          <InputLeftElement
+            pointerEvents="none"
+            display="flex"
+            alignItems="center"
+            w={12}
+          >
             <SearchIcon color="primary" />
           </InputLeftElement>
-          <Input size="md" placeholder="Rechercher une ressource" w="100%" />
+          <Input size="md" placeholder="Rechercher une ressource" pl={10} />
         </InputGroup>
       </VStack>
       {displaySelect}

@@ -18,6 +18,7 @@ const theme_extend = {
     black: "#1B1D1F",
     neutral: "#FAFCFF",
     neutralDark: "#6B829B",
+    neutralLight: "#627992",
     lightBlue: "#A2DDF1",
     lightPink: "#FF7E95",
   },
@@ -28,6 +29,7 @@ const theme_extend = {
   },
   sizes: {
     space: {
+      4.5: "1.125rem",
       11: "2.75rem",
     },
     container: {

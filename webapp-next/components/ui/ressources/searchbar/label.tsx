@@ -7,7 +7,7 @@ interface LabelProps {
 const InputLabel: React.FC<LabelProps> = (props) => {
   const { label } = props;
   return (
-    <Text color="#204064" fontWeight={"600"} fontSize="sm">
+    <Text color="neutralLight" fontWeight={"600"} fontSize="sm">
       {label}
     </Text>
   );

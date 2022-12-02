@@ -20,8 +20,11 @@ const InputTheme = defineStyleConfig({
     md: {
       field: {
         w: "fit-content",
+        height: "60px",
         fontSize: "sm",
-        py: 4,
+        py: "1.125rem",
+        pr: 5,
+        pl: 5,
         alignItems: "center",
         fontWeight: "bold",
         backgroundColor: "#E9F1FF",

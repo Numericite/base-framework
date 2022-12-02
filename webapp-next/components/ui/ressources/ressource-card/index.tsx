@@ -11,8 +11,8 @@ import {
   Tag,
   Text,
 } from "@chakra-ui/react";
-import { TRessource } from "../../../pages/api/ressources/types";
-import IconPlaceHolder from "../icon-placeholder";
+import { TRessource } from "../../../../pages/api/ressources/types";
+import IconPlaceHolder from "../../icon-placeholder";
 
 interface RessourceProps {
   ressource: TRessource;
@@ -29,6 +29,7 @@ const RessourceCard: React.FC<RessourceProps> = (props) => {
         transition: "linear-gradient 0.2s ease-in-out",
       }}
       p={"1px"}
+      boxShadow="0px 54px 67px -50px #F4F9FF"
     >
       <Card
         variant="article"

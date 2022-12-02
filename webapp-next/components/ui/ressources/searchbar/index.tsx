@@ -1,15 +1,12 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Flex,
   Input,
   InputGroup,
   InputLeftElement,
   Select,
   SimpleGrid,
-  Text,
   VStack,
 } from "@chakra-ui/react";
-import { MultiSelect } from "chakra-multiselect";
 import InputLabel from "./label";
 
 const SearchBar: React.FC = () => {
@@ -49,16 +46,17 @@ const SearchBar: React.FC = () => {
       px={9}
       border="1px solid #E9F1FF"
       borderRadius="xl"
-      columns={4}
+      columns={[1, 2, 4]}
       spacing={9}
+      bg="white"
     >
-      <VStack justify={"flex-start"} alignItems="flex-start">
+      <VStack alignItems="flex-start">
         <InputLabel label="Saisie" />
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="primary" />
           </InputLeftElement>
-          <Input size="md" placeholder="Rechercher une ressource" />
+          <Input size="md" placeholder="Rechercher une ressource" w="100%" />
         </InputGroup>
       </VStack>
       {displaySelect}

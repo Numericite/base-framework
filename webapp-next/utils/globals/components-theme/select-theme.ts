@@ -5,6 +5,7 @@ const SelectTheme = defineStyleConfig({
     field: {
       border: "1.5px solid",
       borderColor: "#E9F1FF",
+      color: "neutralDark",
       _placeholder: {
         color: "neutralDark",
       },

@@ -1,36 +1,51 @@
-
-import { ArrowRightIcon } from "@chakra-ui/icons";
-import { Box, Button, Container, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Box } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { fetchApi } from "../utils/api/fetch-api";
-import Navbar from "../components/ui/navbar";
 import HomeHeader from "../components/ui/headers/home";
+import UseCasesContainer from "../components/ui/homepage/usecases";
+import { TTheme } from "./api/themes/types";
+import { TRessource } from "./api/ressources/types";
+import GridCardDisplayer from "../components/ui/homepage/grid-card-displayer";
+import ThemeCard from "../components/ui/thematique-card";
+import RessourceCard from "../components/ui/ressource-card";
 
 const Home = () => {
-  // const [themes, setThemes] = useState<TTheme[]>([]);
-  // const [ressources, setRessources] = useState<TRessource[]>([]);
+  const [themes, setThemes] = useState<TTheme[]>([]);
+  const [ressources, setRessources] = useState<TRessource[]>([]);
 
-  // const fetchRessources = () => {
-  //   fetchApi.get("/api/ressources/list").then((response) => {
-  //     console.log(response);
-  //     setRessources(response.data);
-  //   });
-  // };
+  const fetchRessources = () => {
+    fetchApi.get("/api/ressources/list").then((response) => {
+      setRessources(response.data);
+    });
+  };
 
-  // const fetchThematiques = () => {
-  //   fetchApi.get("/api/themes/list").then((response) => {
-  //     setThemes(response.data);
-  //   });
-  // };
+  const fetchThematiques = () => {
+    fetchApi.get("/api/themes/list").then((response) => {
+      setThemes(response.data);
+    });
+  };
 
-  // useEffect(() => {
-  //   fetchThematiques();
-  //   fetchRessources();
-  // }, []);
+  useEffect(() => {
+    fetchThematiques();
+    fetchRessources();
+  }, []);
 
   return (
     <Box>
       <HomeHeader />
+      <UseCasesContainer />
+      <GridCardDisplayer
+        title="Thématiques"
+        items={themes}
+        renderCard={(theme: TTheme) => <ThemeCard theme={theme} />}
+      />
+      <GridCardDisplayer
+        title="Dernières ressources"
+        items={ressources}
+        renderCard={(ressource: TRessource) => (
+          <RessourceCard ressource={ressource} />
+        )}
+      />
     </Box>
   );
 };

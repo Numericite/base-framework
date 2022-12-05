@@ -51,6 +51,8 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
       }
     );
 
+    console.log("PAAASSSSE LAAAAAAA");
+
     return { data: finalRessources, meta };
   },
 }));

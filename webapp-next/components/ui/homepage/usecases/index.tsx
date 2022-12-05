@@ -1,8 +1,9 @@
 import {
   Box,
   Container,
-  Flex,
+  Divider,
   Heading,
+  Image,
   Tab,
   TabList,
   TabPanel,
@@ -10,9 +11,17 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import UseCaseCard from "../../usecase-card";
+import UseCaseSlider from "./slider";
+
+interface UseCaseProps {
+  usecases: any[]; //A changer en TUseCases[]
+}
 
 const UseCasesContainer = () => {
+  const [tabIndex, setTabIndex] = useState<number>(0);
+
   const fakeUsecases = [
     {
       key: "Rupture 1.0",
@@ -67,18 +76,21 @@ const UseCasesContainer = () => {
   const renderTabPanels = fakeUsecases.map((usecase) => {
     return (
       <TabPanel
-        borderRadius={"xl"}
-        shadow={"0px 54px 67px -50px #F4F9FF"}
+        bg="white"
+        minH="100%"
+        borderRadius="xl"
+        px={"4rem"}
+        py={0}
+        justifyContent="space-between"
+        boxShadow={"0px 54px 67px -50px #F4F9FF"}
+        display="flex"
         key={usecase.key}
       >
-        <Flex
-          bg="white"
-          px="4rem"
-          borderRadius="xl"
-          boxShadow={"0px 54px 67px -50px #F4F9FF4"}
-        >
-          <UseCaseCard usecase={usecase} />
-        </Flex>
+        <UseCaseCard usecase={usecase} />
+        <UseCaseSlider tabIndex={tabIndex} setTabIndex={setTabIndex} />
+        <Box w="50%">
+          <Image />
+        </Box>
       </TabPanel>
     );
   });
@@ -102,8 +114,10 @@ const UseCasesContainer = () => {
           align="center"
           w="full"
           fontWeight={"bold"}
+          index={tabIndex}
+          onChange={(index) => setTabIndex(index)}
         >
-          <TabList>{renderTabs}</TabList>
+          <TabList mb={"2.75rem"}>{renderTabs}</TabList>
           <TabPanels>{renderTabPanels}</TabPanels>
         </Tabs>
       </Container>

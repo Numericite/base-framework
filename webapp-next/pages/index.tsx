@@ -8,10 +8,12 @@ import { TRessource } from "./api/ressources/types";
 import GridCardDisplayer from "../components/ui/homepage/grid-card-displayer";
 import ThemeCard from "../components/ui/thematique-card";
 import RessourceCard from "../components/ui/ressource-card";
+import { TUseCase } from "./api/usecases/types";
 
 const Home = () => {
   const [themes, setThemes] = useState<TTheme[]>([]);
   const [ressources, setRessources] = useState<TRessource[]>([]);
+  const [useCases, setUseCases] = useState<TUseCase[]>([]);
 
   const fetchRessources = () => {
     fetchApi.get("/api/ressources/list").then((response) => {
@@ -25,9 +27,19 @@ const Home = () => {
     });
   };
 
+  const fetchUseCases = () => {
+    fetchApi.get("/api/usecases/list").then((response) => {
+      console.log(response);
+      setUseCases(response.data);
+    });
+  };
+
+  console.log(useCases);
+
   useEffect(() => {
     fetchThematiques();
     fetchRessources();
+    fetchUseCases();
   }, []);
 
   return (
@@ -37,6 +49,7 @@ const Home = () => {
       <GridCardDisplayer
         title="Thématiques"
         items={themes}
+        bgColor="#FAFCFF"
         renderCard={(theme: TTheme) => <ThemeCard theme={theme} />}
       />
       <GridCardDisplayer

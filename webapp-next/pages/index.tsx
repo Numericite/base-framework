@@ -43,7 +43,6 @@ const Home = () => {
   return (
     <Box>
       <HomeHeader />
-
       <UseCasesContainer usecases={useCases} />
       <GridCardDisplayer
         title="Thématiques"

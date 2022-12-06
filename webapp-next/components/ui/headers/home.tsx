@@ -8,6 +8,7 @@ import {
   Image,
   Button,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 const HomeHeader = () => {
   return (
@@ -42,12 +43,16 @@ const HomeHeader = () => {
               <br /> Odegt anoll, om dekinde hihet. Eurologi anonåns.
             </Text>
             <Flex justifyContent="left" alignItems="center" mt={10}>
-              <Button>
-                Rechercher <ArrowForwardIcon ml={2} />
-              </Button>
-              <Button variant="neutral" ml={4}>
-                À propos <ArrowForwardIcon ml={2} />
-              </Button>
+              <NextLink href={"/"}>
+                <Button>
+                  Rechercher <ArrowForwardIcon ml={2} />
+                </Button>
+              </NextLink>
+              <NextLink href="/about">
+                <Button variant="neutral" ml={4}>
+                  À propos <ArrowForwardIcon ml={2} />
+                </Button>
+              </NextLink>
             </Flex>
           </Box>
           <Box

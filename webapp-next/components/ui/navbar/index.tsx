@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import MobileDrawer from "../mobile-drawer";
 import { useEffect, useState } from "react";
 import { useMediaQueryAdapter } from "../../../utils/hooks/useMediaQuery";
+import NextLink from "next/link";
 
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -22,15 +23,15 @@ const Navbar: React.FC = () => {
 
   const displayLinks = links.map((link, index) => {
     return (
-      <Link
-        key={index}
-        href={link.href}
-        color={router.pathname === link.href ? "primary" : ""}
-        fontWeight={router.pathname === link.href ? "bold" : "inherit"}
-        _hover={{ color: "primary" }}
-      >
-        {link.label}
-      </Link>
+      <NextLink key={index} href={link.href}>
+        <Link
+          color={router.pathname === link.href ? "primary" : ""}
+          fontWeight={router.pathname === link.href ? "bold" : "inherit"}
+          _hover={{ color: "primary" }}
+        >
+          {link.label}
+        </Link>
+      </NextLink>
     );
   });
 
@@ -43,15 +44,19 @@ const Navbar: React.FC = () => {
       <Container maxW="container.2lg">
         <Flex justifyContent={"space-between"} alignItems={"center"} w="full">
           <HStack>
-            <Heading fontSize="2xl"> Ressourcerie</Heading>
-            <Heading
-              fontSize="2xl"
-              bgGradient="linear(to-t, #2F80ED, #97F8B1)"
-              bgClip="text"
-            >
-              {" "}
-              PFRH
-            </Heading>
+            <NextLink href="/">
+              <Flex cursor="pointer" userSelect="none">
+                <Heading fontSize="2xl"> Ressourcerie</Heading>
+                <Heading
+                  fontSize="2xl"
+                  bgGradient="linear(to-t, #2F80ED, #97F8B1)"
+                  bgClip="text"
+                  ml={1.5}
+                >
+                  PFRH
+                </Heading>
+              </Flex>
+            </NextLink>
           </HStack>
           <HStack justifyContent={"space-between"} gap={10}>
             {isLargerThan768 ? displayLinks : displayDrawer()}

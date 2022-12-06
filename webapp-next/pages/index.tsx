@@ -1,7 +1,5 @@
-
-import { ArrowRightIcon } from "@chakra-ui/icons";
-import { Box, Button, Container, Heading } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Box } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { fetchApi } from "../utils/api/fetch-api";
 import HomeHeader from "../components/ui/headers/home";
 import UseCasesContainer from "../components/ui/homepage/usecases";
@@ -9,7 +7,7 @@ import { TTheme } from "./api/themes/types";
 import { TRessource } from "./api/ressources/types";
 import GridCardDisplayer from "../components/ui/homepage/grid-card-displayer";
 import ThemeCard from "../components/ui/thematique-card";
-import RessourceCard from "../components/ui/ressource-card";
+import RessourceCard from "../components/ui/ressources/ressource-card";
 import { TUseCase } from "./api/usecases/types";
 import Infos from "../components/ui/infos";
 
@@ -62,7 +60,6 @@ const Home = () => {
       />
 
       <Infos />
-
     </Box>
   );
 };

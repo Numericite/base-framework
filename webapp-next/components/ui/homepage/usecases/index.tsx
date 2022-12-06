@@ -17,7 +17,7 @@ import UseCaseCard from "../../usecase-card";
 import UseCaseSlider from "./slider";
 
 interface UseCaseProps {
-  usecases: TUseCase[]; //A changer en TUseCases[]
+  usecases: TUseCase[];
 }
 
 const UseCasesContainer: React.FC<UseCaseProps> = (props) => {

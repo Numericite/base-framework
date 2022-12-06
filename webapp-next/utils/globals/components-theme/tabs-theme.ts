@@ -30,8 +30,6 @@ const TabsTheme = defineStyleConfig({
           shadow: "sm",
           borderRadius: "md",
           fontWeight: "500",
-          bgGradient: "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)",
-          bgClip: "text",
         },
         color: "neutralDark",
       },

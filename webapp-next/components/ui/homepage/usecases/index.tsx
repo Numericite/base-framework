@@ -24,17 +24,18 @@ const UseCasesContainer: React.FC<UseCaseProps> = (props) => {
   const { usecases } = props;
   const [tabIndex, setTabIndex] = useState<number>(0);
 
-  const renderTabs = usecases.map((usecase) => {
+  const renderTabs = usecases.map((usecase, index) => {
     return (
       <Tab key={usecase.id}>
         <Text
           fontWeight={"bold"}
           fontSize={"sm"}
-          // _selected={{
-          //   bgGradient:
-          //     "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%) !important",
-          //   bgClip: "text",
-          // }}
+          bgGradient={
+            tabIndex === index
+              ? "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)"
+              : "neutral"
+          }
+          bgClip={tabIndex === index ? "text" : "none"}
         >
           {usecase.name}
         </Text>

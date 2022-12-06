@@ -1,6 +1,5 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
-import { TRessource } from "../../../pages/api/ressources/types";
 import { TUseCase } from "../../../pages/api/usecases/types";
 import IconPlaceHolder from "../icon-placeholder";
 

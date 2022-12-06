@@ -37,6 +37,9 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
     return { data: childRessourceConsolidate(childRessource.results[0]) };
   },
   async find(ctx) {
+    return strapi.controller("api::ressource.ressource").customFind(ctx);
+  },
+  async customFind(ctx) {
     const { data, meta } = await super.find(ctx);
 
     const childRessourcesPromises = data.map((ressource) =>
@@ -50,8 +53,6 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
         );
       }
     );
-
-    console.log("PAAASSSSE LAAAAAAA");
 
     return { data: finalRessources, meta };
   },

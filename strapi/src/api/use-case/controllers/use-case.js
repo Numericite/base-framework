@@ -43,7 +43,7 @@ module.exports = createCoreController("api::use-case.use-case", () => ({
     const ressourcesPromises = finalUseCases.map((useCase) => {
       return strapi
         .controller("api::ressource.ressource")
-        .find({
+        .customFind({
           filters: {
             id: { $in: useCase.steps.map((step) => step.ressource.id) },
           },
@@ -55,7 +55,7 @@ module.exports = createCoreController("api::use-case.use-case", () => ({
         .then((ressources) => {
           return {
             useCase,
-            ressources: ressources.results,
+            ressources: ressources.data,
           };
         });
     });
@@ -75,8 +75,6 @@ module.exports = createCoreController("api::use-case.use-case", () => ({
         };
       });
     });
-
-    console.log("FINAL", finalUseCases[0].steps);
 
     return { data: finalUseCases, meta };
   },

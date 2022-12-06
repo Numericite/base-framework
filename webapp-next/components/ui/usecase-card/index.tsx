@@ -1,10 +1,11 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import { TRessource } from "../../../pages/api/ressources/types";
+import { TUseCase } from "../../../pages/api/usecases/types";
 import IconPlaceHolder from "../icon-placeholder";
 
 interface UseCaseProps {
-  usecase: any;
+  usecase: TUseCase;
 }
 
 const UseCaseCard: React.FC<UseCaseProps> = (props) => {
@@ -26,8 +27,8 @@ const UseCaseCard: React.FC<UseCaseProps> = (props) => {
         {usecase.description}
       </Text>
       <Box display="flex" flexDirection="row" w="fit-content" gap="3">
-        {usecase.ressources.map((ressource: TRessource, index: number) => {
-          return <IconPlaceHolder key={index} kind={ressource.kind} />;
+        {usecase.steps.map((step, index) => {
+          return <IconPlaceHolder key={index} kind={step.ressource.kind} />;
         })}
       </Box>
       <Button variant="neutral" mt="2.75rem">

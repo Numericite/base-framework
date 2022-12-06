@@ -29,12 +29,9 @@ const Home = () => {
 
   const fetchUseCases = () => {
     fetchApi.get("/api/usecases/list").then((response) => {
-      console.log(response);
-      setUseCases(response.data);
+      setUseCases(response.data.slice(0, 3));
     });
   };
-
-  console.log(useCases);
 
   useEffect(() => {
     fetchThematiques();
@@ -45,7 +42,7 @@ const Home = () => {
   return (
     <Box>
       <HomeHeader />
-      <UseCasesContainer />
+      <UseCasesContainer usecases={useCases} />
       <GridCardDisplayer
         title="Thématiques"
         items={themes}

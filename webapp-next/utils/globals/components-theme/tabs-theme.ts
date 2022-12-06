@@ -21,6 +21,7 @@ const TabsTheme = defineStyleConfig({
         p: 1.5,
         alignItems: "center",
         w: "fit-content",
+        borderRadius: "xl",
       },
       tab: {
         minW: "max-content",

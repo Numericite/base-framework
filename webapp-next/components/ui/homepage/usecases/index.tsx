@@ -12,68 +12,37 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { TUseCase } from "../../../../pages/api/usecases/types";
 import UseCaseCard from "../../usecase-card";
 import UseCaseSlider from "./slider";
 
 interface UseCaseProps {
-  usecases: any[]; //A changer en TUseCases[]
+  usecases: TUseCase[]; //A changer en TUseCases[]
 }
 
-const UseCasesContainer = () => {
+const UseCasesContainer: React.FC<UseCaseProps> = (props) => {
+  const { usecases } = props;
   const [tabIndex, setTabIndex] = useState<number>(0);
 
-  const fakeUsecases = [
-    {
-      key: "Rupture 1.0",
-      name: "La rupture conventionnelle",
-      description: "Qu'est ce que l'entreprise peut y gagner ?",
-      ressources: [
-        {
-          name: "Ressource 1",
-          kind: "file",
-        },
-        {
-          name: "Ressource 2",
-          kind: "video",
-        },
-        {
-          name: "Ressource 3",
-          kind: "link",
-        },
-      ],
-    },
-    {
-      key: "Augmentation 2.0",
-      name: "L'augmentation des employés en CDI",
-      description: "Comment on fait pour augmenter des employés en CDI ?",
-      ressources: [
-        {
-          name: "Ressource 1",
-          kind: "file",
-        },
-        {
-          name: "Ressource 2",
-          kind: "video",
-        },
-        {
-          name: "Ressource 3",
-          kind: "link",
-        },
-      ],
-    },
-  ];
-
-  const renderTabs = fakeUsecases.map((usecase) => {
+  const renderTabs = usecases.map((usecase) => {
     return (
-      <Tab key={usecase.key}>
-        <Text fontWeight={"bold"} fontSize={"sm"}>
+      <Tab key={usecase.id}>
+        <Text
+          fontWeight={"bold"}
+          fontSize={"sm"}
+          // _selected={{
+          //   bgGradient:
+          //     "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%) !important",
+          //   bgClip: "text",
+          // }}
+        >
           {usecase.name}
         </Text>
       </Tab>
     );
   });
 
-  const renderTabPanels = fakeUsecases.map((usecase) => {
+  const renderTabPanels = usecases.map((usecase) => {
     return (
       <TabPanel
         bg="white"
@@ -84,12 +53,12 @@ const UseCasesContainer = () => {
         justifyContent="space-between"
         boxShadow={"0px 54px 67px -50px #F4F9FF"}
         display="flex"
-        key={usecase.key}
+        key={usecase.id}
       >
         <UseCaseCard usecase={usecase} />
         <UseCaseSlider tabIndex={tabIndex} setTabIndex={setTabIndex} />
         <Box w="50%">
-          <Image />
+          <Image src="./element_usecase.png" />
         </Box>
       </TabPanel>
     );

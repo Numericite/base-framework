@@ -32,7 +32,7 @@ interface Field {
 
 const Contributions: React.FC = () => {
   const [themes, setThemes] = useState<TTheme[]>([]);
-  const [ressources, setRessources] = useState([]);
+  const [ressources, setRessources] = useState<TRessource[]>([]);
 
   const fetchThemes = () => {
     return fetchApi

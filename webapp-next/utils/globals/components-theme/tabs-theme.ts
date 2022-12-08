@@ -20,19 +20,24 @@ const TabsTheme = defineStyleConfig({
         bg: "#FAFCFF",
         p: 1.5,
         alignItems: "center",
-        w: "100%",
+        w: "fit-content",
+        borderRadius: "xl",
       },
       tab: {
+        minW: "max-content",
         _selected: {
           bg: "#FFFFFF",
           shadow: "sm",
           borderRadius: "md",
           fontWeight: "500",
-          color: "black",
         },
-        color: "#6B829B",
+        color: "neutralDark",
       },
     },
+  },
+  defaultProps: {
+    size: "sm",
+    variant: "custom",
   },
 });
 

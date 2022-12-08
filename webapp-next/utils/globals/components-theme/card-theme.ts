@@ -4,7 +4,6 @@ const CardTheme = defineStyleConfig({
   variants: {
     flat: {
       container: {
-        bg: "white",
         shadow: "none",
       },
     },

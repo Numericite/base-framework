@@ -24,6 +24,7 @@ const theme_extend = {
   },
   fontSizes: {
     "1.5xl": "1.375rem",
+    "2.5xl": "1.75rem",
     "5.5xl": "3.5rem",
     "7.5xl": "5.5rem",
   },

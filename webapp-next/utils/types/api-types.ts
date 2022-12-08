@@ -33,27 +33,38 @@ import {
   ThemeRoutesPutParams,
   ThemeRoutesDeleteParams,
 } from "../../pages/api/themes/types";
+import {
+  UseCaseRoutesDataResponses,
+  UseCaseGetRoutes,
+  UseCaseDeleteRoutes,
+  UseCaseRoutesGetParams,
+  UseCaseRoutesDeleteParams,
+} from "../../pages/api/usecases/types";
 
 export type DataResponses<T> =
   | AuthRoutesDataResponses<T>
   | UserRoutesDataResponses<T>
   | ThemeRoutesDataResponses<T>
-  | RessourceRoutesDataResponses<T>;
+  | RessourceRoutesDataResponses<T>
+  | UseCaseRoutesDataResponses<T>;
 
 export type MyGetRoutes =
   | AuthGetRoutes
   | UserGetRoutes
   | RessourceGetRoutes
-  | ThemeGetRoutes;
+  | ThemeGetRoutes
+  | UseCaseGetRoutes;
 export type MyPostRoutes = AuthPostRoutes | UserPostRoutes | ThemePostRoutes;
 export type MyPutRoutes = UserPutRoutes | ThemePutRoutes;
 export type MyDeleteRoutes =
   | UserDeleteRoutes
   | RessourceDeleteRoutes
-  | ThemeDeleteRoutes;
+  | ThemeDeleteRoutes
+  | UseCaseDeleteRoutes;
 
 export interface GetRouteParams
   extends UserRoutesGetParams,
+    UseCaseRoutesGetParams,
     RessourceRoutesGetParams,
     ThemeRoutesGetParams {}
 
@@ -69,4 +80,5 @@ export interface PutRouteParams
 export interface DeleteRouteParams
   extends UserRoutesDeleteParams,
     RessourceRoutesDeleteParams,
+    UseCaseRoutesDeleteParams,
     ThemeRoutesDeleteParams {}

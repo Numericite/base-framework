@@ -5,6 +5,7 @@ import {
   Container,
   Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   GridItem,
   Input,
@@ -13,12 +14,13 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikErrors, FormikValues } from "formik";
 import { ChangeEvent, useEffect, useState } from "react";
 import ContributionHeader from "../../components/ui/headers/contribution";
 import { fetchApi } from "../../utils/api/fetch-api";
 import { TRessource } from "../api/ressources/types";
 import { TTheme } from "../api/themes/types";
+import * as Yup from "yup";
 
 interface Field {
   key: string;
@@ -116,21 +118,39 @@ const Contributions: React.FC = () => {
     },
   ];
 
+  const initialValues = fields.reduce((acc, field) => {
+    return { ...acc, [field.name]: "" };
+  }, {});
+
+  const validationSchema = Yup.object().shape({
+    firstname: Yup.string().required("Le prénom est obligatoire"),
+    lastname: Yup.string().required("Le nom est obligatoire"),
+    fonction: Yup.string().required("La fonction est obligatoire"),
+    theme: Yup.string().required("La thématique est obligatoire"),
+    ressource: Yup.string().required("Le type de ressource est obligatoire"),
+    productor: Yup.string().required("Le producteur est obligatoire"),
+  });
+
   const handleSubmit = (values: any) => {
     console.log(values);
   };
 
   const displayField = (
     field: Field,
-    values: any,
+    values: FormikValues,
     handleChange: (e: ChangeEvent<any>) => void,
-    handleBlur: any
+    handleBlur: any,
+    errors: FormikErrors<FormikValues>,
+    touched: any
   ) => {
     switch (field.kind) {
       case "select":
         return (
           <GridItem key={field.key} colSpan={1}>
-            <FormControl isRequired={field.required}>
+            <FormControl
+              isRequired={field.required}
+              isInvalid={touched[field.name] && errors[field.name]}
+            >
               <FormLabel color="#204064" fontWeight={"bold"}>
                 {field.label}
               </FormLabel>
@@ -150,6 +170,9 @@ const Contributions: React.FC = () => {
                   </option>
                 ))}
               </Select>
+              <FormErrorMessage>
+                {errors[field.name] as string}
+              </FormErrorMessage>
             </FormControl>
           </GridItem>
         );
@@ -157,7 +180,10 @@ const Contributions: React.FC = () => {
       case "textarea":
         return (
           <GridItem key={field.key} colSpan={[1, 1, 3]}>
-            <FormControl isRequired={field.required}>
+            <FormControl
+              isRequired={field.required}
+              isInvalid={touched[field.name] && errors[field.name]}
+            >
               <FormLabel color="#204064" fontWeight={"bold"}>
                 {field.label}
               </FormLabel>
@@ -171,6 +197,9 @@ const Contributions: React.FC = () => {
                 required={field.required}
                 onBlur={handleBlur}
               />
+              <FormErrorMessage>
+                {errors[field.name] as string}
+              </FormErrorMessage>
             </FormControl>
           </GridItem>
         );
@@ -178,7 +207,10 @@ const Contributions: React.FC = () => {
       case "text":
         return (
           <GridItem key={field.key} colSpan={1}>
-            <FormControl isRequired={field.required}>
+            <FormControl
+              isRequired={field.required}
+              isInvalid={touched[field.name] && errors[field.name]}
+            >
               <FormLabel color="#204064" fontWeight={"bold"}>
                 {field.label}
               </FormLabel>
@@ -193,6 +225,9 @@ const Contributions: React.FC = () => {
                 required={field.required}
                 onBlur={handleBlur}
               />
+              <FormErrorMessage>
+                {errors[field.name] as string}
+              </FormErrorMessage>
             </FormControl>
           </GridItem>
         );
@@ -206,19 +241,12 @@ const Contributions: React.FC = () => {
       <ContributionHeader />
       <Container minW="container.2lg">
         <Formik
-          initialValues={{
-            firstname: "",
-            lastname: "",
-            fonction: "",
-            theme: "",
-            ressource: "",
-            productor: "",
-            comment: "",
-          }}
+          initialValues={initialValues}
           fields={fields}
+          validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, handleChange, handleBlur }) => (
+          {({ values, errors, touched, handleChange, handleBlur }) => (
             <Form>
               <Flex
                 justifyContent="space-between"
@@ -231,9 +259,16 @@ const Contributions: React.FC = () => {
                   gap={10}
                   pt={"3.375rem"}
                 >
-                  {fields.map((field) =>
-                    displayField(field, values, handleChange, handleBlur)
-                  )}
+                  {fields.map((field) => {
+                    return displayField(
+                      field,
+                      values,
+                      handleChange,
+                      handleBlur,
+                      errors,
+                      touched
+                    );
+                  })}
                 </SimpleGrid>
                 <Button mt="2.75rem" mb="3.375rem" type="submit">
                   <Text mr={3}>Envoyer ma contribution</Text>

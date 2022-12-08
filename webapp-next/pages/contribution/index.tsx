@@ -6,16 +6,19 @@ import {
   Flex,
   FormControl,
   FormLabel,
-  Grid,
   GridItem,
   Input,
   Select,
+  SimpleGrid,
   Text,
   Textarea,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import ContributionHeader from "../../components/ui/headers/contribution";
+import { fetchApi } from "../../utils/api/fetch-api";
+import { TRessource } from "../api/ressources/types";
+import { TTheme } from "../api/themes/types";
 
 interface Field {
   key: string;
@@ -24,50 +27,33 @@ interface Field {
   label: string;
   placeholder: string;
   required: boolean;
-  options?: Option[];
-}
-
-interface Option {
-  key: string;
-  value: string;
-  label: string;
+  options?: TTheme[] | TRessource[];
 }
 
 const Contributions: React.FC = () => {
-  const themeOptions: Option[] = [
-    {
-      key: "1",
-      value: "1",
-      label: "Thématique 1",
-    },
-    {
-      key: "2",
-      value: "2",
-      label: "Thématique 2",
-    },
-    {
-      key: "3",
-      value: "3",
-      label: "Thématique 3",
-    },
-  ];
-  const ressourceOptions: Option[] = [
-    {
-      key: "1",
-      value: "1",
-      label: "Ressource 1",
-    },
-    {
-      key: "2",
-      value: "2",
-      label: "Ressource 2",
-    },
-    {
-      key: "3",
-      value: "3",
-      label: "Ressource 3",
-    },
-  ];
+  const [themes, setThemes] = useState<TTheme[]>([]);
+  const [ressources, setRessources] = useState([]);
+
+  const fetchThemes = () => {
+    return fetchApi
+      .get("/api/themes/list", { pagination: { page: 1, pageSize: 1000 } })
+      .then((response) => {
+        setThemes(response.data);
+      });
+  };
+
+  const fetchRessources = () => {
+    return fetchApi
+      .get("/api/ressources/list", { pagination: { page: 1, pageSize: 1000 } })
+      .then((response) => {
+        setRessources(response.data);
+      });
+  };
+
+  useEffect(() => {
+    fetchThemes();
+    fetchRessources();
+  }, []);
 
   const fields: Field[] = [
     {
@@ -101,7 +87,7 @@ const Contributions: React.FC = () => {
       label: "Thématique",
       placeholder: "La thématique",
       required: true,
-      options: themeOptions,
+      options: themes,
     },
     {
       key: "ressource",
@@ -110,7 +96,7 @@ const Contributions: React.FC = () => {
       label: "Type de ressource",
       placeholder: "Le type de ressource",
       required: true,
-      options: ressourceOptions,
+      options: ressources,
     },
     {
       key: "productor",
@@ -159,8 +145,8 @@ const Contributions: React.FC = () => {
                 onBlur={handleBlur}
               >
                 {field.options?.map((option: any) => (
-                  <option key={option.id} value={option.id}>
-                    {option.label}
+                  <option key={option.id} value={option.name}>
+                    {option.name}
                   </option>
                 ))}
               </Select>
@@ -170,7 +156,7 @@ const Contributions: React.FC = () => {
 
       case "textarea":
         return (
-          <GridItem key={field.key} colSpan={3}>
+          <GridItem key={field.key} colSpan={[1, 1, 3]}>
             <FormControl isRequired={field.required}>
               <FormLabel color="#204064" fontWeight={"bold"}>
                 {field.label}
@@ -216,7 +202,7 @@ const Contributions: React.FC = () => {
   };
 
   return (
-    <Box>
+    <Box w="full">
       <ContributionHeader />
       <Container minW="container.2lg">
         <Formik
@@ -239,8 +225,8 @@ const Contributions: React.FC = () => {
                 flexDir={"column"}
                 alignItems="center"
               >
-                <Grid
-                  templateColumns="repeat(3, 1fr)"
+                <SimpleGrid
+                  columns={[1, 2, 3]}
                   w="full"
                   gap={10}
                   pt={"3.375rem"}
@@ -248,7 +234,7 @@ const Contributions: React.FC = () => {
                   {fields.map((field) =>
                     displayField(field, values, handleChange, handleBlur)
                   )}
-                </Grid>
+                </SimpleGrid>
                 <Button mt="2.75rem" mb="3.375rem" type="submit">
                   <Text mr={3}>Envoyer ma contribution</Text>
                   <ArrowForwardIcon />

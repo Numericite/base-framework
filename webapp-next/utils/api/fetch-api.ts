@@ -10,6 +10,7 @@ import {
   PutRouteParams,
   DeleteRouteParams,
 } from "../types/api-types";
+import { removeUndefinedNestedFields } from "../globals/tools";
 
 const serializeParams = (obj: any, prefix?: string): string => {
   var str = [],
@@ -34,7 +35,9 @@ const getRequest: Overloading<GetRouteParams, MyGetRoutes> = async <
   route: K,
   params?: any
 ) => {
-  const urlParams = params ? "?" + serializeParams(params) : "";
+  const urlParams = params
+    ? "?" + serializeParams(removeUndefinedNestedFields(params))
+    : "";
   let r = await fetch(route + urlParams);
   if (r.ok) {
     const json = await r.json();

@@ -66,3 +66,13 @@ export const stringToColour = (str: string): string => {
   }
   return colour;
 };
+
+export const removeUndefinedNestedFields = (obj: any) => {
+  let newObj: any = {};
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === Object(obj[key]))
+      newObj[key] = removeUndefinedNestedFields(obj[key]);
+    else if (obj[key] !== undefined) newObj[key] = obj[key];
+  });
+  return newObj;
+};

@@ -1,4 +1,4 @@
-import { ArrowForwardIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -131,7 +131,7 @@ const Contributions: React.FC = () => {
     productor: Yup.string().required("Le producteur est obligatoire"),
   });
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: FormikValues) => {
     console.log(values);
   };
 

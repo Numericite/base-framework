@@ -1,3 +1,4 @@
+import { ArrowForwardIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -9,6 +10,7 @@ import {
   GridItem,
   Input,
   Select,
+  Text,
   Textarea,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
@@ -67,7 +69,7 @@ const Contributions: React.FC = () => {
     },
   ];
 
-  const fields = [
+  const fields: Field[] = [
     {
       key: "firstname",
       name: "firstname",
@@ -141,7 +143,7 @@ const Contributions: React.FC = () => {
     switch (field.kind) {
       case "select":
         return (
-          <GridItem key={field.key}>
+          <GridItem key={field.key} colSpan={1}>
             <FormControl isRequired={field.required}>
               <FormLabel color="#204064" fontWeight={"bold"}>
                 {field.label}
@@ -168,7 +170,7 @@ const Contributions: React.FC = () => {
 
       case "textarea":
         return (
-          <GridItem key={field.key}>
+          <GridItem key={field.key} colSpan={3}>
             <FormControl isRequired={field.required}>
               <FormLabel color="#204064" fontWeight={"bold"}>
                 {field.label}
@@ -189,7 +191,7 @@ const Contributions: React.FC = () => {
 
       case "text":
         return (
-          <GridItem key={field.key}>
+          <GridItem key={field.key} colSpan={1}>
             <FormControl isRequired={field.required}>
               <FormLabel color="#204064" fontWeight={"bold"}>
                 {field.label}
@@ -247,8 +249,9 @@ const Contributions: React.FC = () => {
                     displayField(field, values, handleChange, handleBlur)
                   )}
                 </Grid>
-                <Button mt="2.75rem" type="submit">
-                  Envoyer ma contribution
+                <Button mt="2.75rem" mb="3.375rem" type="submit">
+                  <Text mr={3}>Envoyer ma contribution</Text>
+                  <ArrowForwardIcon />
                 </Button>
               </Flex>
             </Form>

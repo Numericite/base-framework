@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "formik": "^2.2.9",
-    "react-markdown": "^8.0.4",
-    "yup": "^0.32.11"
-  }
-}

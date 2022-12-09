@@ -25,6 +25,7 @@ const RessourcePage: React.FC<Props> = ({
       <RessourceHeader
         title={ressource.name}
         description={ressource.description}
+        kind={ressource.kind}
       />
       <Container maxW="container.2lg" my="2.125rem">
         <Flex justifyItems={"space-between"} position="relative">

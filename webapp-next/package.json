@@ -35,7 +35,8 @@
     "react-use": "^17.4.0",
     "usehooks-ts": "2.2.1",
     "yup": "^0.32.11",
-    "zod": "^3.19.1"
+    "zod": "^3.19.1",
+    "react-markdown": "^8.0.4"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.2",

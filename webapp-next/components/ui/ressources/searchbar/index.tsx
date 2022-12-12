@@ -115,7 +115,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
         <InputLabel label="Thématique" />
         <Select
           w="full"
-          placeholder="Thématique"
+          placeholder="Toutes le thématiques"
           value={search.theme}
           onChange={(e) => {
             setSearch({
@@ -141,7 +141,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
         <InputLabel label="Type de ressource" />
         <Select
           w="full"
-          placeholder="Type de ressource"
+          placeholder="Tous les types"
           value={search.kind}
           onChange={(e) => {
             setSearch({

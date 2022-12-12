@@ -40,6 +40,16 @@ import {
   UseCaseRoutesGetParams,
   UseCaseRoutesDeleteParams,
 } from "../../pages/api/usecases/types";
+import {
+  FeedBackDeleteRoutes,
+  FeedBackGetRoutes,
+  FeedBackPostRoutes,
+  FeedBackPutRoutes,
+  FeedBackRoutesDeleteParams,
+  FeedBackRoutesGetParams,
+  FeedBackRoutesPostParams,
+  FeedBackRoutesPutParams,
+} from "../../pages/api/feedbacks/types";
 
 export type DataResponses<T> =
   | AuthRoutesDataResponses<T>
@@ -53,12 +63,18 @@ export type MyGetRoutes =
   | UserGetRoutes
   | RessourceGetRoutes
   | ThemeGetRoutes
+  | FeedBackGetRoutes
   | UseCaseGetRoutes;
-export type MyPostRoutes = AuthPostRoutes | UserPostRoutes | ThemePostRoutes;
-export type MyPutRoutes = UserPutRoutes | ThemePutRoutes;
+export type MyPostRoutes =
+  | AuthPostRoutes
+  | UserPostRoutes
+  | FeedBackPostRoutes
+  | ThemePostRoutes;
+export type MyPutRoutes = UserPutRoutes | FeedBackPutRoutes | ThemePutRoutes;
 export type MyDeleteRoutes =
   | UserDeleteRoutes
   | RessourceDeleteRoutes
+  | FeedBackDeleteRoutes
   | ThemeDeleteRoutes
   | UseCaseDeleteRoutes;
 
@@ -66,19 +82,23 @@ export interface GetRouteParams
   extends UserRoutesGetParams,
     UseCaseRoutesGetParams,
     RessourceRoutesGetParams,
+    FeedBackRoutesGetParams,
     ThemeRoutesGetParams {}
 
 export interface PostRouteParams
   extends AuthRoutesPostParams,
     UserRoutesPostParams,
+    FeedBackRoutesPostParams,
     ThemeRoutesPostParams {}
 
 export interface PutRouteParams
   extends UserRoutesPutParams,
+    FeedBackRoutesPutParams,
     ThemeRoutesPutParams {}
 
 export interface DeleteRouteParams
   extends UserRoutesDeleteParams,
     RessourceRoutesDeleteParams,
     UseCaseRoutesDeleteParams,
+    FeedBackRoutesDeleteParams,
     ThemeRoutesDeleteParams {}

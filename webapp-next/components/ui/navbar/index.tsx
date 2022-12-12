@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <Box border={"1px solid #E9F1FF"} py={9}>
+    <Box width={"100%"} border={"1px solid #E9F1FF"} py={9}>
       <Container maxW="container.2lg">
         <Flex justifyContent={"space-between"} alignItems={"center"} w="full">
           <HStack>

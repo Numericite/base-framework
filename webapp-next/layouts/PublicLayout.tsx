@@ -7,7 +7,7 @@ import Navbar from "../components/ui/navbar";
 export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <Box minH="100vh">
+      <Box minH="100vh" minW="100%">
         <Navbar />
         {children}
       </Box>

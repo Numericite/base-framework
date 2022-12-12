@@ -2,7 +2,6 @@ import {
   Box,
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbSeparator,
   Container,
   Flex,
   Heading,
@@ -35,8 +34,8 @@ const RessourceHeader: React.FC<Props> = (props) => {
   };
 
   return (
-    <Box bg="#FAFCFF" w="full">
-      <Container minW="container.2lg" py="2.75rem">
+    <Box bg="#FAFCFF" w="auto">
+      <Container maxW="container.2lg" py="2.75rem">
         <Box>
           <Breadcrumb>
             <BreadcrumbItem color="#6B829B" fontWeight={"bold"}>
@@ -50,7 +49,9 @@ const RessourceHeader: React.FC<Props> = (props) => {
         <Heading py="1.5rem">{title}</Heading>
         <Flex alignItems={"center"}>
           <Image src={displayImage()} alt={title} mr={"1.25rem"} />
-          <Text color="#6B829B">{description}</Text>
+          <Text color="#6B829B" overflowX={"hidden"}>
+            {description}
+          </Text>
         </Flex>
       </Container>
     </Box>

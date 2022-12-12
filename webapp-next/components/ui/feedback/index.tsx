@@ -1,6 +1,36 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Button, Flex, Heading, Textarea } from "@chakra-ui/react";
+import { useState } from "react";
+import { TFeedback } from "../../../pages/api/feedbacks/types";
+import { fetchApi } from "../../../utils/api/fetch-api";
 
-const Feedback = () => {
+interface FeedBackProps {
+  id: number;
+}
+
+const Feedback: React.FC<FeedBackProps> = (props) => {
+  const [displayComment, setDisplayComment] = useState<boolean>(false);
+  const [feedback, setFeedback] = useState<TFeedback>({
+    appreciation: 0,
+    description: "",
+    ressource: { id: props.id },
+  });
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleShowMore = (appreciation: number) => {
+    setDisplayComment(true);
+    setFeedback({ ...feedback, appreciation });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setFeedback({ ...feedback, description: e.target.value });
+  };
+
+  const handleSubmit = () => {
+    setLoading(true);
+    let tmpFeedback = { ...feedback, ressource: { id: props.id } };
+    fetchApi.post("/api/feedbacks/create", tmpFeedback);
+  };
+
   return (
     <Flex
       flexDir={"column"}
@@ -15,9 +45,32 @@ const Feedback = () => {
         Est ce que cette page vous a été utile ?
       </Heading>
       <Flex mt={"2.125rem"} justifyContent="space-between">
-        <Button mr={"0.875rem"}>Oui</Button>
-        <Button variant="neutral">Non</Button>
+        <Button onClick={() => handleShowMore(1)} mr={"0.875rem"}>
+          Oui
+        </Button>
+        <Button variant="neutral" onClick={() => handleShowMore(0)}>
+          Non
+        </Button>
       </Flex>
+      {displayComment && (
+        <Flex
+          w="50%"
+          flexDir={"column"}
+          justifyItems="center"
+          alignItems={"center"}
+        >
+          <Textarea
+            mt={"0.875rem"}
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            placeholder="Pouvez vous donner plus de précisions ?"
+          />
+          <Button mt={"0.875rem"} isDisabled={loading} onClick={handleSubmit}>
+            Envoyer
+          </Button>
+        </Flex>
+      )}
     </Flex>
   );
 };

@@ -45,6 +45,7 @@ import {
   FeedBackGetRoutes,
   FeedBackPostRoutes,
   FeedBackPutRoutes,
+  FeedBackRoutesDataResponses,
   FeedBackRoutesDeleteParams,
   FeedBackRoutesGetParams,
   FeedBackRoutesPostParams,
@@ -56,6 +57,7 @@ export type DataResponses<T> =
   | UserRoutesDataResponses<T>
   | ThemeRoutesDataResponses<T>
   | RessourceRoutesDataResponses<T>
+  | FeedBackRoutesDataResponses<T>
   | UseCaseRoutesDataResponses<T>;
 
 export type MyGetRoutes =

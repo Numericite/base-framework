@@ -69,7 +69,7 @@ export interface FeedBackRoutesDeleteParams {
 }
 
 //RESPONSES
-export type FeedBackRoutesDataResponses<T> = T extends "/api/themes/list"
+export type FeedBackRoutesDataResponses<T> = T extends "/api/feedbacks/list"
   ? { data: TFeedback[]; pagination: Pagination }
   : T extends "/api/feedbacks/find"
   ? TFeedback

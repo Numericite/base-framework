@@ -47,7 +47,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         </Flex>
       </Container>
       <Feedback id={ressource.id} />
-      {/* <RessourceSimilar similarRessources={similarRessources} /> */}
+      <RessourceSimilar similarRessources={similarRessources} />
     </Box>
   );
 };

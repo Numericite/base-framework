@@ -9,12 +9,19 @@ interface FeedBackProps {
 
 const Feedback: React.FC<FeedBackProps> = (props) => {
   const [displayComment, setDisplayComment] = useState<boolean>(false);
+  const [yesButtonCliked, setYesButtonCliked] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<TFeedback>({
     appreciation: 0,
     description: "",
     ressource: { id: props.id },
   });
   const [loading, setLoading] = useState<boolean>(false);
+
+  const handleSendPositiveFeedback = () => {
+    setDisplayComment(false);
+    setYesButtonCliked(true);
+    handleSubmit(1);
+  };
 
   const handleShowMore = (appreciation: number) => {
     setDisplayComment(true);
@@ -25,10 +32,19 @@ const Feedback: React.FC<FeedBackProps> = (props) => {
     setFeedback({ ...feedback, description: e.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (value?: number) => {
     setLoading(true);
-    let tmpFeedback = { ...feedback, ressource: { id: props.id } };
-    fetchApi.post("/api/feedbacks/create", tmpFeedback);
+    if (value) {
+      let tmpFeedback = {
+        ...feedback,
+        appreciation: value,
+        ressource: { id: props.id },
+      };
+      fetchApi.post("/api/feedbacks/create", tmpFeedback);
+    } else {
+      let tmpFeedback = { ...feedback, ressource: { id: props.id } };
+      fetchApi.post("/api/feedbacks/create", tmpFeedback);
+    }
   };
 
   return (
@@ -45,10 +61,19 @@ const Feedback: React.FC<FeedBackProps> = (props) => {
         Est ce que cette page vous a été utile ?
       </Heading>
       <Flex mt={"2.125rem"} justifyContent="space-between">
-        <Button onClick={() => handleShowMore(1)} mr={"0.875rem"}>
+        <Button
+          onClick={handleSendPositiveFeedback}
+          mr={"0.875rem"}
+          isActive={yesButtonCliked}
+          isDisabled={yesButtonCliked || loading}
+        >
           Oui
         </Button>
-        <Button variant="neutral" onClick={() => handleShowMore(0)}>
+        <Button
+          variant="neutral"
+          onClick={() => handleShowMore(0)}
+          isDisabled={yesButtonCliked || loading}
+        >
           Non
         </Button>
       </Flex>
@@ -66,7 +91,11 @@ const Feedback: React.FC<FeedBackProps> = (props) => {
             }}
             placeholder="Pouvez vous donner plus de précisions ?"
           />
-          <Button mt={"0.875rem"} isDisabled={loading} onClick={handleSubmit}>
+          <Button
+            mt={"0.875rem"}
+            isDisabled={loading}
+            onClick={() => handleSubmit()}
+          >
             Envoyer
           </Button>
         </Flex>

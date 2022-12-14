@@ -55,6 +55,7 @@ const Feedback: React.FC<FeedBackProps> = (props) => {
       alignItems={"center"}
       mx="auto"
       justifyContent={"center"}
+      px={["2.125rem", 0, 0]}
       py={"2.125rem"}
     >
       <Heading fontSize="1.5xl">

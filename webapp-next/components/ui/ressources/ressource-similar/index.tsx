@@ -17,7 +17,7 @@ const RessourceSimilar: React.FC<Props> = ({ similarRessources }) => {
 
   return (
     <Box bg="#FAFCFF" w="100%" py="5.25rem">
-      <Container minW="container.2lg">
+      <Container maxW="container.2lg">
         <Heading mb={"2.75rem"}>Ressources similaires</Heading>
         <ChakraCarousel gap={8}>{elements}</ChakraCarousel>
       </Container>

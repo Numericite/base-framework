@@ -1,5 +1,4 @@
 import React, {
-  useLayoutEffect,
   useCallback,
   useEffect,
   useState,
@@ -190,10 +189,7 @@ const Slider = (props: CurrentSliderProps) => {
   // @ts-ignore
   const [ref, { width }] = useBoundingRect(0);
 
-  useLayoutEffect(
-    () => initSliderWidth(Math.round(width)),
-    [width, initSliderWidth]
-  );
+  useEffect(() => initSliderWidth(Math.round(width)), [width, initSliderWidth]);
 
   const handleFocus = () => setTrackIsActive(true);
 

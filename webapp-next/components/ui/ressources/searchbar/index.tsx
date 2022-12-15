@@ -19,27 +19,28 @@ import { TTheme } from "../../../../pages/api/themes/types";
 import { TRessourceKindEnum } from "../../../../pages/api/ressources/types";
 import { useDebounce } from "usehooks-ts";
 import { NextRouter, useRouter } from "next/router";
-import { GetServerSideProps } from "next";
+import { removeNullAndUndefinedNestedFields } from "../../../../utils/globals/tools";
 
 type SearchBarProps = {
   onSearch: (_q?: string, theme?: number, kind?: TRessourceKindEnum) => void;
-  q?: string;
-  theme?: number;
-  kind?: TRessourceKindEnum;
+  searchParams: {
+    _q?: string;
+    theme?: number;
+    kind?: TRessourceKindEnum;
+  };
 };
 
-const SearchBar = ({ onSearch }: SearchBarProps) => {
-  const [q, setQ] = useState<string>("");
+const SearchBar = ({ searchParams, onSearch }: SearchBarProps) => {
+  const [q, setQ] = useState<string>((searchParams._q as string) || "");
   const debouncedQ = useDebounce<string>(q, 300);
 
   const router: NextRouter = useRouter();
 
-  const updateUrl = (q: string, theme: number, kind: string) => {
-    const query = { q, theme, kind };
+  const updateUrl = () => {
     router.replace(
       {
         pathname: "/ressources",
-        query,
+        query: removeNullAndUndefinedNestedFields(search),
       },
       undefined,
       { shallow: true }
@@ -51,7 +52,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
     _q?: string;
     theme?: number;
     kind?: TRessourceKindEnum;
-  }>({});
+  }>(searchParams);
 
   const fetchThemes = () => {
     return fetchApi
@@ -64,31 +65,19 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
   useEffect(() => {
     if (onSearch && search && !!themes.length) {
       onSearch(search._q, search.theme, search.kind);
-      updateUrl(debouncedQ, search.theme || 0, search.kind || "");
+      updateUrl();
     }
   }, [search]);
 
   useEffect(() => {
-    setSearch({ ...search, _q: debouncedQ });
-  }, [debouncedQ]);
+    console.log(searchParams);
+    if (searchParams)
+      onSearch(searchParams._q, searchParams.theme, searchParams.kind);
+  }, [searchParams]);
 
   useEffect(() => {
-    router.events.on("routeChangeComplete", () => {
-      if (router.query) {
-        const { q, theme, kind } = router.query;
-        if (q) {
-          console.log("q", q);
-          setQ(q as string);
-        }
-        if (theme) {
-          setSearch({ ...search, theme: parseInt(theme as string) });
-        }
-        if (kind) {
-          setSearch({ ...search, kind: kind as TRessourceKindEnum });
-        }
-      }
-    });
-  }, []);
+    setSearch({ ...search, _q: debouncedQ });
+  }, [debouncedQ]);
 
   useEffect(() => {
     fetchThemes();
@@ -201,15 +190,4 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { q, theme, kind } = context.query;
-
-  return {
-    props: {
-      q,
-      theme: theme ? parseInt(theme as string) : undefined,
-      kind,
-    },
-  };
-};
 export default SearchBar;

@@ -5,15 +5,24 @@ import {
   Heading,
   SimpleGrid,
   Skeleton,
-  Text,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import RessourceCard from "../../components/ui/ressources/ressource-card";
 import { fetchApi } from "../../utils/api/fetch-api";
 import { TRessource, TRessourceKindEnum } from "../api/ressources/types";
 import { GeneralListQueryParams } from "../api/types";
+import { GetServerSideProps } from "next";
 
-const Ressources: React.FC = () => {
+interface RessourcesProps {
+  searchParams: {
+    _q?: string;
+    theme?: number;
+    kind?: TRessourceKindEnum;
+  };
+}
+
+const Ressources: React.FC<RessourcesProps> = (props) => {
+  const { searchParams } = props;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [ressources, setRessources] = useState<TRessource[]>([]);
 
@@ -40,10 +49,6 @@ const Ressources: React.FC = () => {
       .finally(() => setIsLoading(false));
   };
 
-  useEffect(() => {
-    fetchRessources();
-  }, []);
-
   const displayRessources = ressources.map((ressource) => {
     return <RessourceCard key={ressource.id} ressource={ressource} />;
   });
@@ -58,6 +63,7 @@ const Ressources: React.FC = () => {
         <Container maxW="container.2lg" py={"2.75rem"} mb={"2.75rem"}>
           <Heading pb={6}>Ressources</Heading>
           <SearchBar
+            searchParams={searchParams}
             onSearch={(
               _q?: string,
               theme?: number,
@@ -75,6 +81,20 @@ const Ressources: React.FC = () => {
       </Container>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { _q, theme, kind } = ctx.query;
+
+  return {
+    props: {
+      searchParams: {
+        _q: (_q as string) || null,
+        theme: parseInt(theme as string) || null,
+        kind: (kind as TRessourceKindEnum) || null,
+      },
+    },
+  };
 };
 
 export default Ressources;

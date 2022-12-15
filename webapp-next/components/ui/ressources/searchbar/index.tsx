@@ -70,7 +70,6 @@ const SearchBar = ({ searchParams, onSearch }: SearchBarProps) => {
   }, [search]);
 
   useEffect(() => {
-    console.log(searchParams);
     if (searchParams)
       onSearch(searchParams._q, searchParams.theme, searchParams.kind);
   }, [searchParams]);
@@ -144,7 +143,7 @@ const SearchBar = ({ searchParams, onSearch }: SearchBarProps) => {
         <InputLabel label="Thématique" />
         <Select
           w="full"
-          placeholder="Toutes le thématiques"
+          placeholder="Toutes les thématiques"
           value={search.theme}
           onChange={(e) => {
             setSearch({

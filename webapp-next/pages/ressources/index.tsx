@@ -6,7 +6,7 @@ import {
   SimpleGrid,
   Skeleton,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import RessourceCard from "../../components/ui/ressources/ressource-card";
 import { fetchApi } from "../../utils/api/fetch-api";
 import { TRessource, TRessourceKindEnum } from "../api/ressources/types";

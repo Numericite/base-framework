@@ -33,7 +33,7 @@ const Footer = () => {
     },
     {
       name: "Mentions légales",
-      url: "/",
+      url: "/legals/mentions-legales",
     },
     {
       name: "Données personnelles",

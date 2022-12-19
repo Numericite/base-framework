@@ -3,7 +3,7 @@ import { Box, Container, Flex, Heading, Image, Text } from "@chakra-ui/react";
 const ContributionHeader = () => {
   return (
     <Box w="full" bg="neutral">
-      <Container minW="container.2lg" py={"2.75rem"}>
+      <Container maxW="container.2lg" py={"2.75rem"}>
         <Heading pb={"1.5rem"}>Contribution</Heading>
         <Flex alignItems={"center"}>
           <Image src="./contribution_header_icon.png" w="10.25rem" />

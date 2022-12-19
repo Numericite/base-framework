@@ -239,7 +239,7 @@ const Contributions: React.FC = () => {
   return (
     <Box w="full">
       <ContributionHeader />
-      <Container minW="container.2lg">
+      <Container maxW="container.2lg">
         <Formik
           initialValues={initialValues}
           fields={fields}

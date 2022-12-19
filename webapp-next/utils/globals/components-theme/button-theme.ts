@@ -31,6 +31,22 @@ const ButtonTheme = defineStyleConfig({
         bg: "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)",
         transition: "all 0.2s ease-in-out",
       },
+      _active: {
+        bg: "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)",
+        transition: "all 0.2s ease-in-out",
+        _hover: {
+          bg: "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)",
+          transition: "all 0.2s ease-in-out",
+        },
+      },
+      _disabled: {
+        bg: "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)",
+        transition: "all 0.2s ease-in-out",
+        _hover: {
+          bg: "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)",
+          transition: "all 0.2s ease-in-out",
+        },
+      },
     },
     neutral: {
       bg: "neutral",
@@ -39,6 +55,16 @@ const ButtonTheme = defineStyleConfig({
         bg: "black",
         color: "white",
         transition: "all 0.2s ease-in-out",
+      },
+      _disabled: {
+        bg: "black",
+        color: "white",
+        transition: "all 0.2s ease-in-out",
+        _hover: {
+          bg: "black",
+          color: "white",
+          transition: "all 0.2s ease-in-out",
+        },
       },
     },
   },

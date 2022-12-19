@@ -7,7 +7,7 @@ export const useMediaQueryAdapter = (mediaQuery: string): boolean | null => {
 
   useEffect(() => {
     setIsLargerThan768(tmpIsLargeThan768);
-  }, []);
+  }, [tmpIsLargeThan768]);
 
   return isLargerThan768;
 };

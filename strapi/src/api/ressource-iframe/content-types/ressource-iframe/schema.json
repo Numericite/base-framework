@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ressource_iframes",
+  "info": {
+    "singularName": "ressource-iframe",
+    "pluralName": "ressource-iframes",
+    "displayName": "RessourceIframe"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "iframe_url": {
+      "type": "string"
+    }
+  }
+}

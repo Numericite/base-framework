@@ -18,21 +18,41 @@ import { fetchApi } from "../../../../utils/api/fetch-api";
 import { TTheme } from "../../../../pages/api/themes/types";
 import { TRessourceKindEnum } from "../../../../pages/api/ressources/types";
 import { useDebounce } from "usehooks-ts";
+import { NextRouter, useRouter } from "next/router";
+import { removeNullAndUndefinedNestedFields } from "../../../../utils/globals/tools";
 
 type SearchBarProps = {
   onSearch: (_q?: string, theme?: number, kind?: TRessourceKindEnum) => void;
+  searchParams: {
+    _q?: string;
+    theme?: number;
+    kind?: TRessourceKindEnum;
+  };
 };
 
-const SearchBar = ({ onSearch }: SearchBarProps) => {
-  const [q, setQ] = useState<string>("");
+const SearchBar = ({ searchParams, onSearch }: SearchBarProps) => {
+  const [q, setQ] = useState<string>((searchParams._q as string) || "");
   const debouncedQ = useDebounce<string>(q, 300);
+
+  const router: NextRouter = useRouter();
+
+  const updateUrl = () => {
+    router.replace(
+      {
+        pathname: "/ressources",
+        query: removeNullAndUndefinedNestedFields(search),
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
 
   const [themes, setThemes] = useState<TTheme[]>([]);
   const [search, setSearch] = useState<{
     _q?: string;
     theme?: number;
     kind?: TRessourceKindEnum;
-  }>({});
+  }>(searchParams);
 
   const fetchThemes = () => {
     return fetchApi
@@ -43,9 +63,16 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
   };
 
   useEffect(() => {
-    if (onSearch && search && !!themes.length)
+    if (onSearch && search && !!themes.length) {
       onSearch(search._q, search.theme, search.kind);
+      updateUrl();
+    }
   }, [search]);
+
+  useEffect(() => {
+    if (searchParams)
+      onSearch(searchParams._q, searchParams.theme, searchParams.kind);
+  }, [searchParams]);
 
   useEffect(() => {
     setSearch({ ...search, _q: debouncedQ });
@@ -83,9 +110,9 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
       spacing={9}
       bg="white"
     >
-      <VStack alignItems="flex-start">
+      <VStack alignItems="flex-start" w="full">
         <InputLabel label="Saisie" />
-        <InputGroup>
+        <InputGroup w="full">
           <InputLeftElement
             pointerEvents="none"
             display="flex"
@@ -96,6 +123,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
           </InputLeftElement>
           <Input
             size="md"
+            w="full"
             placeholder="Rechercher une ressource"
             pl={10}
             value={q}
@@ -115,7 +143,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
         <InputLabel label="Thématique" />
         <Select
           w="full"
-          placeholder="Toutes le thématiques"
+          placeholder="Toutes les thématiques"
           value={search.theme}
           onChange={(e) => {
             setSearch({

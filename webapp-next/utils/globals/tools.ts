@@ -76,3 +76,24 @@ export const removeUndefinedNestedFields = (obj: any) => {
   });
   return newObj;
 };
+
+export const removeNullNestedFields = (obj: any) => {
+  let newObj: any = {};
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === Object(obj[key]))
+      newObj[key] = removeNullNestedFields(obj[key]);
+    else if (obj[key] !== null) newObj[key] = obj[key];
+  });
+  return newObj;
+};
+
+export const removeNullAndUndefinedNestedFields = (obj: any) => {
+  let newObj: any = {};
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === Object(obj[key]))
+      newObj[key] = removeNullAndUndefinedNestedFields(obj[key]);
+    else if (obj[key] !== null && obj[key] !== undefined)
+      newObj[key] = obj[key];
+  });
+  return newObj;
+};

@@ -9,6 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import HomeSearchBar from "../homepage/home-search-bar";
 
 const HomeHeader = () => {
   return (
@@ -43,9 +44,9 @@ const HomeHeader = () => {
               <br /> Odegt anoll, om dekinde hihet. Eurologi anonåns.
             </Text>
             <Flex justifyContent="left" alignItems="center" mt={10}>
-              <NextLink href={"/"}>
+              <NextLink href={"/ressources"}>
                 <Button>
-                  Rechercher <ArrowForwardIcon ml={2} />
+                  Ressources <ArrowForwardIcon ml={2} />
                 </Button>
               </NextLink>
               <NextLink href="/about">
@@ -74,6 +75,7 @@ const HomeHeader = () => {
             <Image src="/home_header_scene.png" alt="Header home scene" />
           </Box>
         </Flex>
+        <HomeSearchBar />
       </Container>
     </Box>
   );

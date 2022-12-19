@@ -17,9 +17,11 @@ const Home = () => {
   const [useCases, setUseCases] = useState<TUseCase[]>([]);
 
   const fetchRessources = () => {
-    fetchApi.get("/api/ressources/list").then((response) => {
-      setRessources(response.data);
-    });
+    fetchApi
+      .get("/api/ressources/list", { pagination: { page: 1, pageSize: 3 } })
+      .then((response) => {
+        setRessources(response.data);
+      });
   };
 
   const fetchThematiques = () => {

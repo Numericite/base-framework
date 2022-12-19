@@ -20,6 +20,7 @@ import {
   ressourceKindEnum,
 } from "../../../../utils/globals/enums";
 import InputLabel from "../../ressources/searchbar/label";
+import { removeNullAndUndefinedNestedFields } from "../../../../utils/globals/tools";
 
 interface SearchParams {
   _q?: string;
@@ -30,7 +31,7 @@ interface SearchParams {
 const HomeSearchBar = () => {
   const router = useRouter();
   const [searchParams, setSearchParams] = useState<SearchParams>({
-    _q: "",
+    _q: undefined,
     theme: undefined,
     kind: undefined,
   });
@@ -59,16 +60,10 @@ const HomeSearchBar = () => {
   }, []);
 
   const handleClick = () => {
-    if (searchParams._q !== "") {
-      router.push(
-        "/ressources?_q=" +
-          searchParams._q +
-          "&theme=" +
-          searchParams.theme +
-          "&kind=" +
-          searchParams.kind
-      );
-    }
+    router.push({
+      pathname: "/ressources",
+      query: removeNullAndUndefinedNestedFields(searchParams),
+    });
   };
 
   return (

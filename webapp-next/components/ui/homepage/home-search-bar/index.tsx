@@ -75,10 +75,11 @@ const HomeSearchBar = () => {
         border="1px solid #E9F1FF"
         borderRadius="xl"
         columns={[1, 2, 5]}
+				my={[10, 0]}
         spacing={7}
         bg="white"
       >
-        <GridItem colSpan={2}>
+        <GridItem colSpan={[0, 2]}>
           <VStack alignItems="flex-start" w="full">
             <InputLabel label="Saisie" />
             <InputGroup minW="100%">

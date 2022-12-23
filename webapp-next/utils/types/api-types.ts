@@ -21,6 +21,10 @@ import {
   RessourceDeleteRoutes,
   RessourceRoutesGetParams,
   RessourceRoutesDeleteParams,
+  RessourcePostRoutes,
+  RessourcePutRoutes,
+  RessourceRoutesPostParams,
+  RessourceRoutesPutParams,
 } from "../../pages/api/ressources/types";
 import {
   ThemeRoutesDataResponses,
@@ -71,8 +75,13 @@ export type MyPostRoutes =
   | AuthPostRoutes
   | UserPostRoutes
   | FeedBackPostRoutes
+  | RessourcePostRoutes
   | ThemePostRoutes;
-export type MyPutRoutes = UserPutRoutes | FeedBackPutRoutes | ThemePutRoutes;
+export type MyPutRoutes =
+  | UserPutRoutes
+  | FeedBackPutRoutes
+  | ThemePutRoutes
+  | RessourcePutRoutes;
 export type MyDeleteRoutes =
   | UserDeleteRoutes
   | RessourceDeleteRoutes
@@ -91,11 +100,13 @@ export interface PostRouteParams
   extends AuthRoutesPostParams,
     UserRoutesPostParams,
     FeedBackRoutesPostParams,
+    RessourceRoutesPostParams,
     ThemeRoutesPostParams {}
 
 export interface PutRouteParams
   extends UserRoutesPutParams,
     FeedBackRoutesPutParams,
+    RessourceRoutesPutParams,
     ThemeRoutesPutParams {}
 
 export interface DeleteRouteParams
@@ -103,4 +114,5 @@ export interface DeleteRouteParams
     RessourceRoutesDeleteParams,
     UseCaseRoutesDeleteParams,
     FeedBackRoutesDeleteParams,
+    RessourceRoutesDeleteParams,
     ThemeRoutesDeleteParams {}

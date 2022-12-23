@@ -1,0 +1,221 @@
+import {
+  Box,
+  Container,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Select,
+  Stack,
+  useToast,
+} from "@chakra-ui/react";
+import { Field, Form, Formik, FormikFormProps, FormikProps } from "formik";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+import BackButton from "../../../../../components/ui/back-button/back-button";
+import Loader from "../../../../../components/ui/loader";
+import { fetchApi } from "../../../../../utils/api/fetch-api";
+import {
+  TRessource,
+  TRessourceCreationPayload,
+  TRessourceUpdatePayload,
+} from "../../../../api/ressources/types";
+import * as yup from "yup";
+import { TTheme } from "../../../../api/themes/types";
+import {
+  displayKindReadable,
+  ressourceKindEnum,
+} from "../../../../../utils/globals/enums";
+import "react-quill/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+import KindRessourceDisplayer from "../../../../../components/bo/ressources/kind-input-create";
+
+interface RessourceKind {}
+
+const RessourceCreate = () => {
+  const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
+  const router = useRouter();
+  const toast = useToast();
+  const { id } = router.query;
+  const [ressource, setRessource] = useState<TRessource>();
+  const [themes, setThemes] = useState<TTheme[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [ressourceKind, setRessourceKind] = useState<{}>();
+
+  const fetchRessource = () => {
+    fetchApi
+      .get("/api/ressources/find", { id: parseInt(id as string) })
+      .then((response) => {
+        setRessource(response);
+      });
+  };
+
+  useEffect(() => {
+    if (id && id !== "new") {
+      fetchRessource();
+    }
+  }, [id]);
+
+  const fetchThemes = () => {
+    fetchApi
+      .get("/api/themes/list", { pagination: { page: 1, pageSize: 1000 } })
+      .then((response) => {
+        setThemes(response.data);
+      });
+  };
+
+  useEffect(() => {
+    fetchThemes();
+  }, []);
+
+  let initialValues: TRessourceCreationPayload | TRessourceUpdatePayload = {
+    name: ressource?.name || "",
+    kind: ressource?.kind || "file" || "link" || "video" || "audio",
+    description: ressource?.description || "",
+    content: ressource?.content || "",
+    theme: ressource?.theme || ({} as TTheme),
+  };
+
+  if (id !== "new") {
+    (initialValues as TRessourceUpdatePayload).id = ressource?.id || 0;
+  }
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required("Le nom est obligatoire"),
+  });
+
+  const validate = (
+    tmpRessource: TRessourceUpdatePayload | TRessourceCreationPayload
+  ) => {
+    setIsLoading(true);
+
+    if ("id" in tmpRessource) {
+      fetchApi
+        .put("/api/ressources/update", { ...tmpRessource })
+        .then(() => {
+          toast({
+            title: `${ressource?.name} modifié avec succès`,
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+          router.push("/dashboard/bo/ressources");
+        })
+        .catch(() => {
+          toast({
+            title: `Erreur lors de la modification de ${ressource?.name}`,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  };
+
+  if ((id !== "new" && !ressource) || isLoading) return <Loader />;
+
+  return (
+    <>
+      <Box mb={4}>
+        <BackButton />
+      </Box>
+      <Container maxW="container.sm">
+        <Heading>
+          {id === "new"
+            ? "Créer une ressource"
+            : `Modifier la ressource ${ressource?.name}`}
+        </Heading>
+        <Box mt={8}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={validate}
+          >
+            {(formik) => {
+              return (
+                <Form>
+                  <Stack spacing={8}>
+                    <FormControl>
+                      <FormLabel htmlFor="name">Nom</FormLabel>
+                      <Input
+                        id="name"
+                        w="full"
+                        name="name"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.name}
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel htmlFor="name">Description</FormLabel>
+                      <Input
+                        w="full"
+                        id="description"
+                        name="description"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.description}
+                      />
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel htmlFor="name">Thématique associée</FormLabel>
+                      <Select
+                        id="kind"
+                        name="theme"
+                        onChange={formik.handleChange}
+                        value={formik.values.theme.name}
+                      >
+                        {themes.map((theme) => (
+                          <option key={theme.id} value={theme.name}>
+                            {theme.name}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel htmlFor="name">Contenu</FormLabel>
+                      <Field name="content">
+                        {({ field }: any) => (
+                          <ReactQuill
+                            value={formik.values.content}
+                            onChange={field.onChange(field.name)}
+                          />
+                        )}
+                      </Field>
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel htmlFor="name">Type de ressource</FormLabel>
+                      <Select
+                        id="kind"
+                        name="kind"
+                        onChange={formik.handleChange}
+                        value={formik.values.kind}
+                      >
+                        {ressourceKindEnum.map((kind) => (
+                          <option key={kind} value={kind}>
+                            {displayKindReadable(kind)}
+                          </option>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <KindRessourceDisplayer
+                      kind={formik.values.kind}
+                      setRessourceKind={setRessourceKind}
+                    />
+                  </Stack>
+                </Form>
+              );
+            }}
+          </Formik>
+        </Box>
+      </Container>
+    </>
+  );
+};
+
+export default RessourceCreate;

@@ -58,6 +58,12 @@ const ZRessourceBase = z.object({
   image: z.optional(ZStrapiFile),
 });
 
+const createOmits = {
+  id: true,
+  createdOn: true,
+  lastUpdated: true,
+} as const;
+
 export const ZRessource = z.discriminatedUnion("kind", [
   ZRessourceBase.extend(ZRessourceLink.shape),
   ZRessourceBase.extend(ZRessourceVideo.shape),
@@ -72,18 +78,21 @@ export type TRessourceCreated = z.infer<typeof ZRessourceCreated>;
 // // -------------------------
 // // ----- POST PAYLOADS -----
 // // -------------------------
-// export const ZRessourceCreationPayload = ZRessource.omit({
-//   id: true,
-// });
-// export type TRessourceCreationPayload = z.infer<
-//   typeof ZRessourceCreationPayload
-// >;
+export const ZRessourceCreationPayload = z.discriminatedUnion("kind", [
+  ZRessourceBase.extend(ZRessourceLink.shape).omit(createOmits),
+  ZRessourceBase.extend(ZRessourceVideo.shape).omit(createOmits),
+  ZRessourceBase.extend(ZRessourceQuiz.shape).omit(createOmits),
+  ZRessourceBase.extend(ZRessourceFile.shape).omit(createOmits),
+]);
+export type TRessourceCreationPayload = z.infer<
+  typeof ZRessourceCreationPayload
+>;
 
 // // -------------------------
 // // ----- PUT PAYLOADS -----
 // // -------------------------
-// export const ZRessourceUpdatePayload = ZRessource;
-// export type TRessourceUpdatePayload = z.infer<typeof ZRessourceUpdatePayload>;
+export const ZRessourceUpdatePayload = ZRessource;
+export type TRessourceUpdatePayload = z.infer<typeof ZRessourceUpdatePayload>;
 
 // ---------------------------
 // ----- DELETE PAYLOADS -----
@@ -109,8 +118,8 @@ export type TRessourceFindParams = z.infer<typeof ZRessourceFindParams>;
 export type RessourceGetRoutes =
   | "/api/ressources/list"
   | "/api/ressources/find";
-// export type RessourcePostRoutes = "/api/ressources/create";
-// export type RessourcePutRoutes = "/api/ressources/update";
+export type RessourcePostRoutes = "/api/ressources/create";
+export type RessourcePutRoutes = "/api/ressources/update";
 export type RessourceDeleteRoutes = "/api/ressources/delete";
 
 //REQUESTS
@@ -118,12 +127,12 @@ export interface RessourceRoutesGetParams {
   "/api/ressources/list": GeneralListQueryParams | undefined;
   "/api/ressources/find": TRessourceFindParams;
 }
-// export interface RessourceRoutesPostParams {
-//   "/api/ressources/create": TRessourceCreationPayload;
-// }
-// export interface RessourceRoutesPutParams {
-//   "/api/ressources/update": TRessourceUpdatePayload;
-// }
+export interface RessourceRoutesPostParams {
+  "/api/ressources/create": TRessourceCreationPayload;
+}
+export interface RessourceRoutesPutParams {
+  "/api/ressources/update": TRessourceUpdatePayload;
+}
 export interface RessourceRoutesDeleteParams {
   "/api/ressources/delete": TRessourceDeletionPayload;
 }
@@ -133,10 +142,10 @@ export type RessourceRoutesDataResponses<T> = T extends "/api/ressources/list"
   ? { data: TRessource[]; pagination: Pagination }
   : T extends "/api/ressources/find"
   ? TRessource
-  : // : T extends "/api/ressources/create"
-  // ? TRessource
-  // : T extends "/api/ressources/update"
-  // ? TRessource
-  T extends "/api/ressources/delete"
+  : T extends "/api/ressources/create"
+  ? TRessource
+  : T extends "/api/ressources/update"
+  ? TRessource
+  : T extends "/api/ressources/delete"
   ? TRessource
   : never;

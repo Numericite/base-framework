@@ -11,6 +11,7 @@ import AppContext from "../context/state";
 import { ModalProvider } from "../utils/hooks/useModals";
 import "@fontsource/poppins";
 import Fonts from "../components/ui/fonts";
+import PrivateLayout from "../layouts/PrivateLayout";
 
 const NEXT_PUBLIC_JWT_STORAGE_KEY: string = process.env
   .NEXT_PUBLIC_JWT_STORAGE_KEY as string;
@@ -40,7 +41,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   };
 
   const getLayout = (children: ReactNode) => {
-    return <PublicLayout>{children}</PublicLayout>;
+    if (router.pathname.startsWith("/dashboard/bo")) {
+      return <PrivateLayout>{children}</PrivateLayout>;
+    } else {
+      return <PublicLayout>{children}</PublicLayout>;
+    }
   };
 
   return (

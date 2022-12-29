@@ -67,6 +67,16 @@ const ButtonTheme = defineStyleConfig({
         },
       },
     },
+    gray: {
+      minW: "fit-content",
+      bg: "#E9F1FF",
+      color: "#1B1D1F",
+      _hover: {
+        bg: "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)",
+        transition: "all 0.1s ease-in-out",
+        color: "white",
+      },
+    },
   },
   defaultProps: {
     size: "md",

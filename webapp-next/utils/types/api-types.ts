@@ -33,6 +33,27 @@ import {
   ThemeRoutesPutParams,
   ThemeRoutesDeleteParams,
 } from "../../pages/api/themes/types";
+
+import {
+  ChatBotUserRoutesDataResponses,
+  ChatBotUserGetRoutes,
+  ChatBotUserRoutesGetParams,
+} from "../../pages/api/chatbotusers/types";
+import {
+  ChatBotOccupationRoutesDataResponses,
+  ChatBotOccupationGetRoutes,
+  ChatBotOccupationRoutesGetParams,
+} from "../../pages/api/chatbotoccupations/types";
+import {
+  ChatBotInformationRoutesDataResponses,
+  ChatBotInformationGetRoutes,
+  ChatBotInformationRoutesGetParams,
+} from "../../pages/api/chatbotinformations/types";
+import {
+  ChatBotMoreInformationRoutesDataResponses,
+  ChatBotMoreInformationGetRoutes,
+  ChatBotMoreInformationRoutesGetParams,
+} from "../../pages/api/chatbotmoreinformations/types";
 import {
   UseCaseRoutesDataResponses,
   UseCaseGetRoutes,
@@ -58,6 +79,10 @@ export type DataResponses<T> =
   | ThemeRoutesDataResponses<T>
   | RessourceRoutesDataResponses<T>
   | FeedBackRoutesDataResponses<T>
+  | ChatBotUserRoutesDataResponses<T>
+  | ChatBotOccupationRoutesDataResponses<T>
+  | ChatBotInformationRoutesDataResponses<T>
+  | ChatBotMoreInformationRoutesDataResponses<T>
   | UseCaseRoutesDataResponses<T>;
 
 export type MyGetRoutes =
@@ -66,6 +91,10 @@ export type MyGetRoutes =
   | RessourceGetRoutes
   | ThemeGetRoutes
   | FeedBackGetRoutes
+  | ChatBotUserGetRoutes
+  | ChatBotOccupationGetRoutes
+  | ChatBotInformationGetRoutes
+  | ChatBotMoreInformationGetRoutes
   | UseCaseGetRoutes;
 export type MyPostRoutes =
   | AuthPostRoutes
@@ -85,6 +114,10 @@ export interface GetRouteParams
     UseCaseRoutesGetParams,
     RessourceRoutesGetParams,
     FeedBackRoutesGetParams,
+    ChatBotUserRoutesGetParams,
+    ChatBotOccupationRoutesGetParams,
+    ChatBotInformationRoutesGetParams,
+    ChatBotMoreInformationRoutesGetParams,
     ThemeRoutesGetParams {}
 
 export interface PostRouteParams

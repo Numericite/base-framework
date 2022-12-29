@@ -55,12 +55,24 @@ import {
   FeedBackRoutesPostParams,
   FeedBackRoutesPutParams,
 } from "../../pages/api/feedbacks/types";
+import {
+  ContributionDeleteRoutes,
+  ContributionGetRoutes,
+  ContributionPostRoutes,
+  ContributionPutRoutes,
+  ContributionRoutesDataResponses,
+  ContributionRoutesDeleteParams,
+  ContributionRoutesGetParams,
+  ContributionRoutesPostParams,
+  ContributionRoutesPutParams,
+} from "../../pages/api/contributions/types";
 
 export type DataResponses<T> =
   | AuthRoutesDataResponses<T>
   | UserRoutesDataResponses<T>
   | ThemeRoutesDataResponses<T>
   | RessourceRoutesDataResponses<T>
+  | ContributionRoutesDataResponses<T>
   | FeedBackRoutesDataResponses<T>
   | UseCaseRoutesDataResponses<T>;
 
@@ -68,6 +80,7 @@ export type MyGetRoutes =
   | AuthGetRoutes
   | UserGetRoutes
   | RessourceGetRoutes
+  | ContributionGetRoutes
   | ThemeGetRoutes
   | FeedBackGetRoutes
   | UseCaseGetRoutes;
@@ -75,11 +88,13 @@ export type MyPostRoutes =
   | AuthPostRoutes
   | UserPostRoutes
   | FeedBackPostRoutes
+  | ContributionPostRoutes
   | RessourcePostRoutes
   | ThemePostRoutes;
 export type MyPutRoutes =
   | UserPutRoutes
   | FeedBackPutRoutes
+  | ContributionPutRoutes
   | ThemePutRoutes
   | RessourcePutRoutes;
 export type MyDeleteRoutes =
@@ -87,12 +102,14 @@ export type MyDeleteRoutes =
   | RessourceDeleteRoutes
   | FeedBackDeleteRoutes
   | ThemeDeleteRoutes
+  | ContributionDeleteRoutes
   | UseCaseDeleteRoutes;
 
 export interface GetRouteParams
   extends UserRoutesGetParams,
     UseCaseRoutesGetParams,
     RessourceRoutesGetParams,
+    ContributionRoutesGetParams,
     FeedBackRoutesGetParams,
     ThemeRoutesGetParams {}
 
@@ -101,12 +118,14 @@ export interface PostRouteParams
     UserRoutesPostParams,
     FeedBackRoutesPostParams,
     RessourceRoutesPostParams,
+    ContributionRoutesPostParams,
     ThemeRoutesPostParams {}
 
 export interface PutRouteParams
   extends UserRoutesPutParams,
     FeedBackRoutesPutParams,
     RessourceRoutesPutParams,
+    ContributionRoutesPutParams,
     ThemeRoutesPutParams {}
 
 export interface DeleteRouteParams
@@ -114,5 +133,6 @@ export interface DeleteRouteParams
     RessourceRoutesDeleteParams,
     UseCaseRoutesDeleteParams,
     FeedBackRoutesDeleteParams,
+    ContributionRoutesDeleteParams,
     RessourceRoutesDeleteParams,
     ThemeRoutesDeleteParams {}

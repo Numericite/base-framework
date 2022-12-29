@@ -41,11 +41,23 @@ const RessourceCreate = () => {
   const [themes, setThemes] = useState<TTheme[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  let initialValues: TRessourceCreationPayload | TRessourceUpdatePayload = {
+    name: ressource?.name || "",
+    kind: ressource?.kind || "",
+    description: ressource?.description || "",
+    content: ressource?.content || "",
+    theme: ressource?.theme || (themes && (themes[0] as TTheme)),
+  };
+
   const fetchRessource = () => {
+    setIsLoading(true);
     fetchApi
       .get("/api/ressources/find", { id: parseInt(id as string) })
       .then((response) => {
         setRessource(response);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -60,22 +72,12 @@ const RessourceCreate = () => {
       .get("/api/themes/list", { pagination: { page: 1, pageSize: 1000 } })
       .then((response) => {
         setThemes(response.data);
-      })
-      .finally(() => setIsLoading(false));
+      });
   };
 
   useEffect(() => {
-    setIsLoading(true);
     fetchThemes();
   }, []);
-
-  let initialValues: TRessourceCreationPayload | TRessourceUpdatePayload = {
-    name: ressource?.name || "",
-    kind: ressource?.kind || "file" || "link" || "video" || "audio",
-    description: ressource?.description || "",
-    content: ressource?.content || "",
-    theme: ressource?.theme || (themes && (themes[0] as TTheme)),
-  };
 
   if (id !== "new") {
     (initialValues as TRessourceUpdatePayload).id = ressource?.id || 0;
@@ -165,8 +167,8 @@ const RessourceCreate = () => {
                     <FormControl>
                       <FormLabel htmlFor="name">Nom</FormLabel>
                       <Input
-                        id="name"
                         w="full"
+                        id="name"
                         name="name"
                         type="text"
                         onChange={formik.handleChange}

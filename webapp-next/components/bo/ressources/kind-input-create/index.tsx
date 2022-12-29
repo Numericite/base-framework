@@ -46,7 +46,7 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
                 id="link"
                 name="link"
                 type="text"
-                defaultValue={("source" in ressource && ressource.link) || ""}
+                value={("source" in ressource && ressource.link) || ""}
                 onChange={(e) => formik.setFieldValue("link", e.target.value)}
               />
             </FormControl>
@@ -63,7 +63,7 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
                   w="full"
                   id="source"
                   name="source"
-                  defaultValue={"youtube"}
+                  value={("source" in ressource && ressource.source) || ""}
                   onChange={(e) =>
                     formik.setFieldValue("source", e.target.value)
                   }

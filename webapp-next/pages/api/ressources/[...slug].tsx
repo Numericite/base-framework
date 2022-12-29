@@ -4,8 +4,12 @@ import { AxiosInstance } from "axios";
 import nextToStrapiHandler from "../../../utils/api/next-to-strapi-handler";
 import {
   TRessource,
+  TRessourceCreationPayload,
   TRessourceDeletionPayload,
+  TRessourceUpdatePayload,
+  ZRessourceCreationPayload,
   ZRessourceFindParams,
+  ZRessourceUpdatePayload,
 } from "./types";
 import { ZRessource, ZRessourceDeletionPayload } from "./types";
 import { z } from "zod";
@@ -82,6 +86,19 @@ const postMethods = async (
   axios: AxiosInstance
 ): Promise<StrapiResponseType<TRessource | string>> => {
   switch (route) {
+    case "create": {
+      const payload = JSON.parse(body);
+      const params: TRessourceCreationPayload =
+        ZRessourceCreationPayload.parse(payload);
+      console.log(params);
+      const { status, data } = await axios.post(`/ressources`, {
+        data: params,
+      });
+      return {
+        status,
+        data: ZRessource.parse(getRecursiveStrapiObject(data.data)),
+      };
+    }
     default:
       return {
         status: 404,
@@ -99,6 +116,19 @@ const putMethods = async (
   axios: AxiosInstance
 ): Promise<StrapiResponseType<TRessource | string>> => {
   switch (route) {
+    case "update": {
+      const payload = JSON.parse(body);
+      const params: TRessourceUpdatePayload =
+        ZRessourceUpdatePayload.parse(payload);
+      const { status, data } = await axios.put(
+        `/ressources/${params.id}`,
+        params
+      );
+      return {
+        status,
+        data: ZRessource.parse(getRecursiveStrapiObject(data.data)),
+      };
+    }
     default:
       return {
         status: 404,

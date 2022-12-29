@@ -18,13 +18,13 @@ import {
 import {
   RessourceRoutesDataResponses,
   RessourceGetRoutes,
-  RessourceDeleteRoutes,
-  RessourceRoutesGetParams,
-  RessourceRoutesDeleteParams,
   RessourcePostRoutes,
   RessourcePutRoutes,
+  RessourceDeleteRoutes,
+  RessourceRoutesGetParams,
   RessourceRoutesPostParams,
   RessourceRoutesPutParams,
+  RessourceRoutesDeleteParams,
 } from "../../pages/api/ressources/types";
 import {
   ThemeRoutesDataResponses,

@@ -51,9 +51,9 @@ const ZRessourceBase = z.object({
   name: z.string(),
   description: z.string(),
   content: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  publishedAt: z.string(),
+  createdAt: z.optional(z.string()),
+  updatedAt: z.optional(z.string()),
+  publishedAt: z.optional(z.string()),
   theme: ZTheme,
   image: z.optional(ZStrapiFile),
 });

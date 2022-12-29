@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Container,
   FormControl,
   FormLabel,
@@ -9,9 +10,9 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react";
-import { Field, Form, Formik, FormikFormProps, FormikProps } from "formik";
+import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import BackButton from "../../../../../components/ui/back-button/back-button";
 import Loader from "../../../../../components/ui/loader";
 import { fetchApi } from "../../../../../utils/api/fetch-api";
@@ -28,10 +29,7 @@ import {
 } from "../../../../../utils/globals/enums";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
-
 import KindRessourceDisplayer from "../../../../../components/bo/ressources/kind-input-create";
-
-interface RessourceKind {}
 
 const RessourceCreate = () => {
   const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
@@ -39,10 +37,9 @@ const RessourceCreate = () => {
   const router = useRouter();
   const toast = useToast();
   const { id } = router.query;
-  const [ressource, setRessource] = useState<TRessource>();
+  const [ressource, setRessource] = useState<TRessource>({} as TRessource);
   const [themes, setThemes] = useState<TTheme[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [ressourceKind, setRessourceKind] = useState<{}>();
 
   const fetchRessource = () => {
     fetchApi
@@ -63,10 +60,12 @@ const RessourceCreate = () => {
       .get("/api/themes/list", { pagination: { page: 1, pageSize: 1000 } })
       .then((response) => {
         setThemes(response.data);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchThemes();
   }, []);
 
@@ -75,7 +74,7 @@ const RessourceCreate = () => {
     kind: ressource?.kind || "file" || "link" || "video" || "audio",
     description: ressource?.description || "",
     content: ressource?.content || "",
-    theme: ressource?.theme || ({} as TTheme),
+    theme: ressource?.theme || (themes && (themes[0] as TTheme)),
   };
 
   if (id !== "new") {
@@ -106,6 +105,29 @@ const RessourceCreate = () => {
         .catch(() => {
           toast({
             title: `Erreur lors de la modification de ${ressource?.name}`,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    } else {
+      fetchApi
+        .post("/api/ressources/create", { ...tmpRessource })
+        .then(() => {
+          toast({
+            title: `${tmpRessource.name} créé avec succès`,
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+          });
+          router.push("/dashboard/bo/ressources");
+        })
+        .catch(() => {
+          toast({
+            title: `Erreur lors de la création de ${tmpRessource.name}`,
             status: "error",
             duration: 5000,
             isClosable: true,
@@ -167,8 +189,15 @@ const RessourceCreate = () => {
                       <Select
                         id="kind"
                         name="theme"
-                        onChange={formik.handleChange}
-                        value={formik.values.theme.name}
+                        onChange={(e) =>
+                          formik.setFieldValue(
+                            "theme",
+                            themes.find(
+                              (theme) => theme.name === e.target.value
+                            )
+                          )
+                        }
+                        value={formik.values.theme?.name}
                       >
                         {themes.map((theme) => (
                           <option key={theme.id} value={theme.name}>
@@ -182,6 +211,7 @@ const RessourceCreate = () => {
                       <Field name="content">
                         {({ field }: any) => (
                           <ReactQuill
+                            style={{ height: "10rem", marginBottom: "3.25rem" }}
                             value={formik.values.content}
                             onChange={field.onChange(field.name)}
                           />
@@ -205,9 +235,17 @@ const RessourceCreate = () => {
                     </FormControl>
                     <KindRessourceDisplayer
                       kind={formik.values.kind}
-                      setRessourceKind={setRessourceKind}
+                      ressource={ressource as TRessource}
+                      formik={formik}
                     />
                   </Stack>
+                  <Box mt={10} display="flex" justifyContent="center">
+                    <Button type="submit" variant="primary">
+                      {id === "new"
+                        ? "Valider la création"
+                        : "Valider la modification"}
+                    </Button>
+                  </Box>
                 </Form>
               );
             }}

@@ -1,4 +1,5 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, Tag } from "@chakra-ui/react";
+import _ from "lodash";
 import { useRouter } from "next/router";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import UITable from "../../../../components/ui/table";
@@ -16,6 +17,8 @@ const DashboardRessources = () => {
   const router = useRouter();
   const { confirm } = useModals();
 
+  const colors = ["red", "orange", "yellow", "green", "teal", "blue"];
+
   const columnDefs: ColumnDef<TRessource>[] = [
     {
       key: "name",
@@ -30,6 +33,23 @@ const DashboardRessources = () => {
       label: "Type",
       renderItem: (item: TRessource) => {
         return displayKindReadable(item.kind);
+      },
+    },
+    {
+      key: "theme",
+      label: "Thème",
+      renderItem: (item: TRessource) => {
+        return (
+          <Tag
+            size="sm"
+            w="full"
+            fontSize={{ base: "xs", sm: "xs" }}
+            variant="subtle"
+            colorScheme={_.sample(colors)}
+          >
+            {item.theme?.name}
+          </Tag>
+        );
       },
     },
   ];

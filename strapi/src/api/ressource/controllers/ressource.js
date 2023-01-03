@@ -21,34 +21,15 @@ const childRessourceRequest = (ressource) =>
       },
     });
 
-const childRessourceCreateRequest = (ressource) => {
-  console.log("PASSE LA ?");
-  switch (ressource.attributes.kind) {
-    case "link":
-      console.log(
-        strapi.service("api::ressource-link.ressource-link").create({
-          ressource: ressource.id,
-          link: ressource.attributes.link,
-        })
-      );
-      return strapi.service("api::ressource-link.ressource-link").create({
+const childRessourceCreateRequest = async (ressource) =>
+  strapi
+    .service(`api::ressource-${ressource.kind}.ressource-${ressource.kind}`)
+    .create({
+      data: {
+        ...ressource,
         ressource: ressource.id,
-        link: ressource.attributes.link,
-      });
-    case "file":
-      return strapi.service("api::ressource-file.ressource-file").create({
-        ressource: ressource.id,
-        files: ressource.attributes.files,
-      });
-    case "video":
-      return strapi.service("api::ressource-video.ressource-video").create({
-        ressource: ressource.id,
-        source: ressource.attributes.source,
-        link: ressource.attributes.link,
-        autoplay: ressource.attributes.autoplay,
-      });
-  }
-};
+      },
+    });
 
 const childRessourceConsolidate = (childRessource) => {
   if (childRessource) {
@@ -83,11 +64,17 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
       }
     );
 
-    return { data: finalRessources, meta };
+    return { data: finalRessources.filter((_) => !!_), meta };
   },
   async create(ctx) {
+    let fullRessource = ctx.request.body.data;
     const { data } = await super.create(ctx);
-    const childRessourcePromise = childRessourceCreateRequest(data);
-    return { data: childRessourceConsolidate(await childRessourcePromise) };
+    if (data) {
+      fullRessource.id = data.id;
+      const childRessourcePromise = await childRessourceCreateRequest(
+        fullRessource
+      );
+      return { data: { ...childRessourcePromise, ...data } };
+    }
   },
 }));

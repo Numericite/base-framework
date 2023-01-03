@@ -8,6 +8,7 @@ import {
   Input,
   Select,
   Stack,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
@@ -43,7 +44,7 @@ const RessourceCreate = () => {
 
   let initialValues: TRessourceCreationPayload | TRessourceUpdatePayload = {
     name: ressource?.name || "",
-    kind: ressource?.kind || "",
+    kind: ressource?.kind || "link" || "quiz" || "video" || "file",
     description: ressource?.description || "",
     content: ressource?.content || "",
     theme: ressource?.theme || (themes && (themes[0] as TTheme)),
@@ -141,7 +142,8 @@ const RessourceCreate = () => {
     }
   };
 
-  if ((id !== "new" && !ressource) || isLoading) return <Loader />;
+  if ((id !== "new" && !ressource) || themes.length === 0 || isLoading)
+    return <Loader />;
 
   return (
     <>
@@ -149,11 +151,20 @@ const RessourceCreate = () => {
         <BackButton />
       </Box>
       <Container maxW="container.sm">
-        <Heading>
-          {id === "new"
-            ? "Créer une ressource"
-            : `Modifier la ressource ${ressource?.name}`}
-        </Heading>
+        {id === "new" ? (
+          <Heading>Créer une ressource</Heading>
+        ) : (
+          <Heading>
+            Modifier la ressource{" "}
+            <Text
+              as="span"
+              bgGradient="linear(to-t, #2F80ED, #97F8B1)"
+              bgClip="text"
+            >
+              {ressource?.name}
+            </Text>
+          </Heading>
+        )}
         <Box mt={8}>
           <Formik
             initialValues={initialValues}

@@ -60,8 +60,6 @@ const ZRessourceBase = z.object({
 
 const createOmits = {
   id: true,
-  createdOn: true,
-  lastUpdated: true,
 } as const;
 
 export const ZRessource = z.discriminatedUnion("kind", [
@@ -84,6 +82,7 @@ export const ZRessourceCreationPayload = z.discriminatedUnion("kind", [
   ZRessourceBase.extend(ZRessourceQuiz.shape).omit(createOmits),
   ZRessourceBase.extend(ZRessourceFile.shape).omit(createOmits),
 ]);
+
 export type TRessourceCreationPayload = z.infer<
   typeof ZRessourceCreationPayload
 >;

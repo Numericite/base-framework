@@ -90,7 +90,6 @@ const postMethods = async (
       const payload = JSON.parse(body);
       const params: TRessourceCreationPayload =
         ZRessourceCreationPayload.parse(payload);
-      console.log(params);
       const { status, data } = await axios.post(`/ressources`, {
         data: params,
       });

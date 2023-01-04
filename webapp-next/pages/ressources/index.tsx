@@ -12,6 +12,7 @@ import { fetchApi } from "../../utils/api/fetch-api";
 import { TRessource, TRessourceKindEnum } from "../api/ressources/types";
 import { GeneralListQueryParams } from "../api/types";
 import { GetServerSideProps } from "next";
+import ChatBot from "../../components/ui/chatbot";
 
 interface RessourcesProps {
   searchParams: {
@@ -62,6 +63,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
       <Box bg={"neutral"}>
         <Container maxW="container.2lg" py={"2.75rem"} mb={"2.75rem"}>
           <Heading pb={6}>Ressources</Heading>
+          <ChatBot notif={true} showDialogue={true}/>
           <SearchBar
             searchParams={searchParams}
             onSearch={(

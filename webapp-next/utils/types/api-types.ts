@@ -35,25 +35,21 @@ import {
 } from "../../pages/api/themes/types";
 
 import {
-  ChatBotUserRoutesDataResponses,
-  ChatBotUserGetRoutes,
-  ChatBotUserRoutesGetParams,
-} from "../../pages/api/chatbotusers/types";
+  PersonaeRoutesDataResponses,
+  PersonaeGetRoutes,
+  PersonaeRoutesGetParams,
+} from "../../pages/api/personaes/types";
 import {
-  ChatBotOccupationRoutesDataResponses,
-  ChatBotOccupationGetRoutes,
-  ChatBotOccupationRoutesGetParams,
-} from "../../pages/api/chatbotoccupations/types";
+  PersonaeOccupationRoutesDataResponses,
+  PersonaeOccupationGetRoutes,
+  PersonaeOccupationRoutesGetParams,
+} from "../../pages/api/personaeoccupations/types";
+
 import {
-  ChatBotInformationRoutesDataResponses,
-  ChatBotInformationGetRoutes,
-  ChatBotInformationRoutesGetParams,
-} from "../../pages/api/chatbotinformations/types";
-import {
-  ChatBotMoreInformationRoutesDataResponses,
-  ChatBotMoreInformationGetRoutes,
-  ChatBotMoreInformationRoutesGetParams,
-} from "../../pages/api/chatbotmoreinformations/types";
+  SubThemeRoutesDataResponses,
+  SubThemeGetRoutes,
+  SubThemeRoutesGetParams,
+} from "../../pages/api/subthemes/types";
 import {
   UseCaseRoutesDataResponses,
   UseCaseGetRoutes,
@@ -79,10 +75,9 @@ export type DataResponses<T> =
   | ThemeRoutesDataResponses<T>
   | RessourceRoutesDataResponses<T>
   | FeedBackRoutesDataResponses<T>
-  | ChatBotUserRoutesDataResponses<T>
-  | ChatBotOccupationRoutesDataResponses<T>
-  | ChatBotInformationRoutesDataResponses<T>
-  | ChatBotMoreInformationRoutesDataResponses<T>
+  | PersonaeRoutesDataResponses<T>
+  | PersonaeOccupationRoutesDataResponses<T>
+  | SubThemeRoutesDataResponses<T>
   | UseCaseRoutesDataResponses<T>;
 
 export type MyGetRoutes =
@@ -91,10 +86,9 @@ export type MyGetRoutes =
   | RessourceGetRoutes
   | ThemeGetRoutes
   | FeedBackGetRoutes
-  | ChatBotUserGetRoutes
-  | ChatBotOccupationGetRoutes
-  | ChatBotInformationGetRoutes
-  | ChatBotMoreInformationGetRoutes
+  | PersonaeGetRoutes
+  | PersonaeOccupationGetRoutes
+  | SubThemeGetRoutes
   | UseCaseGetRoutes;
 export type MyPostRoutes =
   | AuthPostRoutes
@@ -114,10 +108,9 @@ export interface GetRouteParams
     UseCaseRoutesGetParams,
     RessourceRoutesGetParams,
     FeedBackRoutesGetParams,
-    ChatBotUserRoutesGetParams,
-    ChatBotOccupationRoutesGetParams,
-    ChatBotInformationRoutesGetParams,
-    ChatBotMoreInformationRoutesGetParams,
+    PersonaeRoutesGetParams,
+    PersonaeOccupationRoutesGetParams,
+    SubThemeRoutesGetParams,
     ThemeRoutesGetParams {}
 
 export interface PostRouteParams

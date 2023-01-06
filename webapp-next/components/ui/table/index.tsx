@@ -88,10 +88,10 @@ const UITable = <TItem,>(props: TableProps<TItem>) => {
         {props.onNewItem && !props.hideNewItem && (
           <Button
             variant="primary"
-            size="sm"
+            size="xs"
             borderRadius="3xl"
             onClick={props.onNewItem}
-            py={2}
+            p={4}
             mr={2}
           >
             <AddIcon mr={2} fontSize="xs" />{" "}

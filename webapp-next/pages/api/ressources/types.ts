@@ -55,7 +55,7 @@ const ZRessourceBase = z.object({
   updatedAt: z.optional(z.string()),
   publishedAt: z.optional(z.string()),
   theme: ZTheme,
-  image: z.optional(ZStrapiFile),
+  image: z.optional(ZStrapiFile.nullable()),
 });
 
 const createOmits = {
@@ -90,7 +90,13 @@ export type TRessourceCreationPayload = z.infer<
 // // -------------------------
 // // ----- PUT PAYLOADS -----
 // // -------------------------
-export const ZRessourceUpdatePayload = ZRessource;
+export const ZRessourceUpdatePayload = z.discriminatedUnion("kind", [
+  ZRessourceBase.extend(ZRessourceLink.shape),
+  ZRessourceBase.extend(ZRessourceVideo.shape),
+  ZRessourceBase.extend(ZRessourceQuiz.shape),
+  ZRessourceBase.extend(ZRessourceFile.shape),
+]);
+
 export type TRessourceUpdatePayload = z.infer<typeof ZRessourceUpdatePayload>;
 
 // ---------------------------

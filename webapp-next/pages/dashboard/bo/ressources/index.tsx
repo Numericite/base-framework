@@ -100,7 +100,9 @@ const DashboardRessources = () => {
 
   return (
     <Box minW="full">
-      <Heading mb={5}>Gestion des ressources : </Heading>
+      <Heading size="lg" mb={5}>
+        Gestion des ressources :{" "}
+      </Heading>
       <UITable
         retrieveData={retrieveData}
         columnDefs={columnDefs}

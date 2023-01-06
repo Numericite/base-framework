@@ -2,16 +2,13 @@ import {
   Box,
   Button,
   Container,
-  FormControl,
-  FormLabel,
+  Flex,
   Heading,
-  Input,
-  Select,
   Stack,
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import BackButton from "../../../../../components/ui/back-button/back-button";
@@ -24,31 +21,33 @@ import {
 } from "../../../../api/ressources/types";
 import * as yup from "yup";
 import { TTheme } from "../../../../api/themes/types";
-import {
-  displayKindReadable,
-  ressourceKindEnum,
-} from "../../../../../utils/globals/enums";
-import "react-quill/dist/quill.snow.css";
-import dynamic from "next/dynamic";
-import KindRessourceDisplayer from "../../../../../components/bo/ressources/kind-input-create";
+
+import RessourceFormStep from "../../../../../components/bo/ressources/ressource-form-step";
+import ButtonContainer from "../../../../../components/bo/ressources/ressource-button-container";
 
 const RessourceCreate = () => {
-  const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-
   const router = useRouter();
   const toast = useToast();
   const { id } = router.query;
-  const [ressource, setRessource] = useState<TRessource>({} as TRessource);
+  const [ressource, setRessource] = useState<TRessource>();
   const [themes, setThemes] = useState<TTheme[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [step, setStep] = useState<number>(1);
 
   let initialValues: TRessourceCreationPayload | TRessourceUpdatePayload = {
-    name: ressource?.name || "",
-    kind: ressource?.kind || "link" || "quiz" || "video" || "file",
-    description: ressource?.description || "",
-    content: ressource?.content || "",
-    theme: ressource?.theme || (themes && (themes[0] as TTheme)),
+    name: "",
+    kind: "link",
+    description: "",
+    content: "",
+    theme: themes && (themes[0] as TTheme),
+    link: "",
   };
+
+  if (ressource && ressource.id) {
+    initialValues = {
+      ...ressource,
+    };
+  }
 
   const fetchRessource = () => {
     setIsLoading(true);
@@ -80,12 +79,11 @@ const RessourceCreate = () => {
     fetchThemes();
   }, []);
 
-  if (id !== "new") {
-    (initialValues as TRessourceUpdatePayload).id = ressource?.id || 0;
-  }
-
   const validationSchema = yup.object().shape({
     name: yup.string().required("Le nom est obligatoire"),
+    description: yup.string().required("La description est obligatoire"),
+    theme: yup.object().required("Le thème est obligatoire"),
+    content: yup.string().required("Le contenu est obligatoire"),
   });
 
   const validate = (
@@ -150,7 +148,7 @@ const RessourceCreate = () => {
       <Box mb={4}>
         <BackButton />
       </Box>
-      <Container maxW="container.sm">
+      <Container maxW="container.md">
         {id === "new" ? (
           <Heading>Créer une ressource</Heading>
         ) : (
@@ -174,91 +172,19 @@ const RessourceCreate = () => {
             {(formik) => {
               return (
                 <Form>
-                  <Stack spacing={8}>
-                    <FormControl>
-                      <FormLabel htmlFor="name">Nom</FormLabel>
-                      <Input
-                        w="full"
-                        id="name"
-                        name="name"
-                        type="text"
-                        onChange={formik.handleChange}
-                        value={formik.values.name}
-                      />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel htmlFor="name">Description</FormLabel>
-                      <Input
-                        w="full"
-                        id="description"
-                        name="description"
-                        type="text"
-                        onChange={formik.handleChange}
-                        value={formik.values.description}
-                      />
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel htmlFor="name">Thématique associée</FormLabel>
-                      <Select
-                        id="kind"
-                        name="theme"
-                        onChange={(e) =>
-                          formik.setFieldValue(
-                            "theme",
-                            themes.find(
-                              (theme) => theme.name === e.target.value
-                            )
-                          )
-                        }
-                        value={formik.values.theme?.name}
-                      >
-                        {themes.map((theme) => (
-                          <option key={theme.id} value={theme.name}>
-                            {theme.name}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel htmlFor="name">Contenu</FormLabel>
-                      <Field name="content">
-                        {({ field }: any) => (
-                          <ReactQuill
-                            style={{ height: "10rem", marginBottom: "3.25rem" }}
-                            value={formik.values.content}
-                            onChange={field.onChange(field.name)}
-                          />
-                        )}
-                      </Field>
-                    </FormControl>
-                    <FormControl>
-                      <FormLabel htmlFor="name">Type de ressource</FormLabel>
-                      <Select
-                        id="kind"
-                        name="kind"
-                        onChange={formik.handleChange}
-                        value={formik.values.kind}
-                      >
-                        {ressourceKindEnum.map((kind) => (
-                          <option key={kind} value={kind}>
-                            {displayKindReadable(kind)}
-                          </option>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <KindRessourceDisplayer
-                      kind={formik.values.kind}
-                      ressource={ressource as TRessource}
+                  <Stack spacing={6}>
+                    <RessourceFormStep
+                      step={step}
                       formik={formik}
+                      themes={themes}
                     />
                   </Stack>
-                  <Box mt={10} display="flex" justifyContent="center">
-                    <Button type="submit" variant="primary">
-                      {id === "new"
-                        ? "Valider la création"
-                        : "Valider la modification"}
-                    </Button>
-                  </Box>
+                  <ButtonContainer
+                    formik={formik}
+                    step={step}
+                    setStep={setStep}
+                    id={id}
+                  />
                 </Form>
               );
             }}

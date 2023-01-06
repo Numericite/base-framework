@@ -29,24 +29,35 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
     switch (kind) {
       case "file":
         return (
-          <Input
-            // value={("files" in ressource && ressource.files[0].url) || ""}
-            type="file"
-            w="100%"
-            // onChange={(e) => handleFileChange(e)}
-          />
+          <FormControl
+            isRequired={true}
+            isInvalid={!!formik.errors.file && formik.touched.file}
+          >
+            <FormLabel htmlFor="link">Lien du fichier</FormLabel>
+            <Input
+              // value={("files" in ressource && ressource.files[0].url) || ""}
+              type="file"
+              w="100%"
+              onBlur={formik.handleBlur}
+              // onChange={(e) => handleFileChange(e)}
+            />
+          </FormControl>
         );
       case "video":
         return (
           <VStack>
-            <FormControl>
+            <FormControl
+              isRequired={true}
+              isInvalid={!!formik.errors.link && formik.touched.link}
+            >
               <FormLabel htmlFor="link">Lien de la vidéo</FormLabel>
               <Input
                 w="full"
                 id="link"
                 name="link"
                 type="text"
-                value={formik.values?.link || ""}
+                value={formik.values.link}
+                onBlur={formik.handleBlur}
                 onChange={(e) => formik.setFieldValue("link", e.target.value)}
               />
             </FormControl>
@@ -57,13 +68,17 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
               justifyContent="space-between"
               justifyItems={"center"}
             >
-              <FormControl>
+              <FormControl
+                isRequired={true}
+                isInvalid={!!formik.errors.source && formik.touched.source}
+              >
                 <FormLabel htmlFor="source">Source</FormLabel>
                 <Select
                   w="full"
                   id="source"
                   name="source"
-                  value={formik.values?.source || "youtube"}
+                  value={formik.values.source}
+                  onBlur={formik.handleBlur}
                   onChange={(e) =>
                     formik.setFieldValue("source", e.target.value)
                   }
@@ -72,13 +87,19 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
                   <option value="vimeo">Vimeo</option>
                 </Select>
               </FormControl>
-              <FormControl justifyItems={"center"} justifySelf="center">
+              <FormControl
+                justifyItems={"center"}
+                justifySelf="center"
+                isRequired={true}
+                isInvalid={!!formik.errors.autoplay && formik.touched.autoplay}
+              >
                 <FormLabel htmlFor="autoplay">Lecture automatique</FormLabel>
                 <Checkbox
                   id="autoplay"
                   name="autoplay"
                   mx="50%"
                   checked={formik.values.autoplay}
+                  onBlur={formik.handleBlur}
                   onChange={(e) =>
                     formik.setFieldValue("autoplay", e.target.checked)
                   }
@@ -89,7 +110,10 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
         );
       case "link":
         return (
-          <FormControl>
+          <FormControl
+            isRequired={true}
+            isInvalid={!!formik.errors.link && formik.touched.link}
+          >
             <FormLabel htmlFor="link">Lien</FormLabel>
             <Input
               w="full"
@@ -98,6 +122,7 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
               name="link"
               type="text"
               value={formik.values.link}
+              onBlur={formik.handleBlur}
               onChange={(e) => formik.setFieldValue("link", e.target.value)}
             />
           </FormControl>

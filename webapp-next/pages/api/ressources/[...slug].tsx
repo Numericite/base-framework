@@ -119,10 +119,10 @@ const putMethods = async (
       const payload = JSON.parse(body);
       const params: TRessourceUpdatePayload =
         ZRessourceUpdatePayload.parse(payload);
-      const { status, data } = await axios.put(
-        `/ressources/${params.id}`,
-        params
-      );
+      const { status, data } = await axios.put(`/ressources/${params.id}`, {
+        data: params,
+      });
+
       return {
         status,
         data: ZRessource.parse(getRecursiveStrapiObject(data.data)),

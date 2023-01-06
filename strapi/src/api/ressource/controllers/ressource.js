@@ -31,6 +31,36 @@ const childRessourceCreateRequest = async (ressource) =>
       },
     });
 
+const childRessourceUpdateRequest = async (ressource, formerKind) => {
+  const child = await strapi
+    .service(`api::ressource-${formerKind}.ressource-${formerKind}`)
+    .find({
+      filters: {
+        ressource: { id: ressource.id },
+      },
+      populate: "*",
+    });
+
+  if (ressource.kind !== formerKind) {
+    await strapi
+      .service(`api::ressource-${formerKind}.ressource-${formerKind}`)
+      .delete(child.results[0].id);
+    const newChildRessource = await childRessourceCreateRequest(ressource);
+    if (newChildRessource) {
+      return newChildRessource;
+    }
+  } else {
+    return strapi
+      .service(`api::ressource-${ressource.kind}.ressource-${ressource.kind}`)
+      .update(child.results[0].id, {
+        data: {
+          ...ressource,
+          ressource: { id: ressource.id },
+        },
+      });
+  }
+};
+
 const childRessourceConsolidate = (childRessource) => {
   if (childRessource) {
     let { ressource, ...child } = childRessource;
@@ -74,6 +104,22 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
       const childRessourcePromise = await childRessourceCreateRequest(
         fullRessource
       );
+      return { data: { ...childRessourcePromise, ...data } };
+    }
+  },
+  async update(ctx) {
+    let fullRessource = ctx.request.body.data;
+
+    const formerRessource = await super.findOne(ctx);
+    const formerKind = formerRessource.data.attributes.kind;
+
+    const { data } = await super.update(ctx);
+    if (data) {
+      const childRessourcePromise = await childRessourceUpdateRequest(
+        fullRessource,
+        formerKind
+      );
+
       return { data: { ...childRessourcePromise, ...data } };
     }
   },

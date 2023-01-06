@@ -85,7 +85,7 @@ const DashboardContributions = () => {
         ).then((value) => {
           if (value) {
             return fetchApi.delete("/api/contributions/delete", {
-              id: item.id,
+              id: item.id as number,
             });
           }
         });

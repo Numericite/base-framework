@@ -24,6 +24,7 @@ import { TTheme } from "../../../../api/themes/types";
 
 import RessourceFormStep from "../../../../../components/bo/ressources/ressource-form-step";
 import ButtonContainer from "../../../../../components/bo/ressources/ressource-button-container";
+import FormikListener from "../../../../../utils/globals/formik-listener";
 
 const RessourceCreate = () => {
   const router = useRouter();
@@ -172,6 +173,16 @@ const RessourceCreate = () => {
             {(formik) => {
               return (
                 <Form>
+                  <FormikListener
+                    values={formik.values}
+                    onValueChange={(key: string, value: any) => {
+                      if (key === "kind" && value === "video") {
+                        formik.setFieldValue("source", "youtube");
+                      }
+                      if (key === "kind" && value === "files") {
+                      }
+                    }}
+                  />
                   <Stack spacing={6}>
                     <RessourceFormStep
                       step={step}

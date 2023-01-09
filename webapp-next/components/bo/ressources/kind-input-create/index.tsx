@@ -8,16 +8,14 @@ import {
   Select,
   VStack,
 } from "@chakra-ui/react";
-import { TRessource } from "../../../../pages/api/ressources/types";
 
 interface KindRessourceDisplayerProps {
   kind: string;
-  ressource: TRessource;
   formik: any;
 }
 
 const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
-  const { kind, ressource, formik } = props;
+  const { kind, formik } = props;
 
   // const handleFileChange = (e: any) => {
   //   console.log("E", e.target.files[0]);
@@ -35,11 +33,13 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
           >
             <FormLabel htmlFor="link">Lien du fichier</FormLabel>
             <Input
-              // value={("files" in ressource && ressource.files[0].url) || ""}
               type="file"
+              id="files"
+              name="files"
+              value={formik.values.files}
               w="100%"
               onBlur={formik.handleBlur}
-              // onChange={(e) => handleFileChange(e)}
+              onChange={formik.handleChange}
             />
           </FormControl>
         );

@@ -21,15 +21,17 @@ const childRessourceRequest = (ressource) =>
       },
     });
 
-const childRessourceCreateRequest = async (ressource) =>
-  strapi
+const childRessourceCreateRequest = async (ressource) => {
+  let { id, created_at, updated_at, ...tmpRessource } = ressource;
+  return strapi
     .service(`api::ressource-${ressource.kind}.ressource-${ressource.kind}`)
     .create({
       data: {
-        ...ressource,
-        ressource: ressource.id,
+        ...tmpRessource,
+        ressource: id,
       },
     });
+};
 
 const childRessourceUpdateRequest = async (ressource, formerKind) => {
   const child = await strapi
@@ -42,12 +44,14 @@ const childRessourceUpdateRequest = async (ressource, formerKind) => {
     });
 
   if (ressource.kind !== formerKind) {
-    await strapi
+    const delete_res = await strapi
       .service(`api::ressource-${formerKind}.ressource-${formerKind}`)
       .delete(child.results[0].id);
-    const newChildRessource = await childRessourceCreateRequest(ressource);
-    if (newChildRessource) {
-      return newChildRessource;
+    if (delete_res.id) {
+      const newChildRessource = await childRessourceCreateRequest(ressource);
+      if (newChildRessource) {
+        return newChildRessource;
+      }
     }
   } else {
     return strapi

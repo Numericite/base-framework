@@ -8,7 +8,6 @@ import {
 import { Field, FormikProps } from "formik";
 import dynamic from "next/dynamic";
 import {
-  TRessource,
   TRessourceCreationPayload,
   TRessourceUpdatePayload,
 } from "../../../../pages/api/ressources/types";
@@ -154,11 +153,7 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
               ))}
             </Select>
           </FormControl>
-          <KindRessourceDisplayer
-            kind={formik.values.kind}
-            ressource={formik.values as TRessource}
-            formik={formik}
-          />
+          <KindRessourceDisplayer kind={formik.values.kind} formik={formik} />
         </>
       ),
     },

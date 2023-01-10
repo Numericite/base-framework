@@ -3,15 +3,10 @@ import { Dispatch, SetStateAction } from "react";
 export interface ChatBotProps {
   showToast: boolean;
   setShowToast: Dispatch<SetStateAction<boolean>>;
+  isEditing?: boolean;
   toast: boolean;
   stepQuestion?: number;
   setStepQuestion?: any;
-  responseParams?: {
-    personae: number;
-    occupation: number;
-    theme: number;
-    subTheme: number;
-  };
 }
 
 export interface ChatBotStepResponse {
@@ -22,6 +17,6 @@ export interface ChatBotStepResponse {
 
 export interface ChatBotStep {
   title: JSX.Element;
-  slug: "personae" | "occupation" | "theme" | "subTheme";
+  slug: "help" | "personae" | "occupation" | "theme" | "subTheme";
   responses?: ChatBotStepResponse[];
 }

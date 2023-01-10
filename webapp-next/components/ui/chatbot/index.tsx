@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { FiArrowLeftCircle } from "react-icons/fi";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TPersonae } from "../../../pages/api/personaes/types";
 import { TPersonaeOccupation } from "../../../pages/api/personaeoccupations/types";
 import { fetchApi } from "../../../utils/api/fetch-api";
@@ -27,19 +27,20 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
     setShowToast,
     stepQuestion,
     setStepQuestion,
-    responseParams,
+    isEditing,
   } = props;
 
   const [personaes, setPersonaes] = useState<TPersonae[]>();
   const [personaeOccupations, setPersonaeOccupations] =
     useState<TPersonaeOccupation[]>();
   const [themes, setThemes] = useState<TTheme[]>();
-
+  const bottomRef = useRef<HTMLDivElement>(null);
   const [selectedValue, setSelectedValue] = useState({
-    personae: responseParams ? responseParams.personae : 0,
-    occupation: responseParams ? responseParams.occupation : 0,
-    theme: responseParams ? responseParams.theme : 0,
-    subTheme: responseParams ? responseParams.subTheme : 0,
+    help: false,
+    personae: 0,
+    occupation: 0,
+    theme: 0,
+    subTheme: 0,
   });
   const [currentStep, setCurrentStep] = useState<ChatBotStep>();
   const [step, setStep] = useState(stepQuestion ? stepQuestion : 0);
@@ -68,6 +69,13 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
       .then((response) => {
         setThemes(response.data);
       });
+  };
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
   };
 
   const botRessources = [
@@ -143,7 +151,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
         });
       }
     }
-  }, [step, personaes, personaeOccupations, themes, showToast]);
+  }, [step, personaes, personaeOccupations, themes, showToast, selectedValue]);
 
   useEffect(() => {
     fetchPersonaes();
@@ -189,13 +197,21 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
   const displayQuestion = (tmpStep: ChatBotStep) => {
     const stepIndex = steps.findIndex((s) => s.slug === tmpStep.slug);
     return (
-      <Flex flexDir={"column"} key={tmpStep.slug}>
+      <Flex ref={bottomRef} flexDir={"column"} key={tmpStep.slug}>
         <Flex alignItems="center">
-          {toast && <Image src="/chatbot/Rob.png" alt="Rob" mr={4} />}
+          {toast && (
+            <Image
+              src="/chatbot/Rob.png"
+              alt="Rob"
+              mr={4}
+              display={["none", "none", "none", "flex"]}
+            />
+          )}
           <Box>
             {step > 0 && backButton()}
             <Flex flexDir="column" alignItems="flex-start">
               <Text
+                as={"div"}
                 color="#204064"
                 fontSize={
                   currentStep.slug === tmpStep.slug
@@ -220,9 +236,11 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                     }
                     mb={2}
                     onClick={() => {
+                      if (step <= steps.length - 1) setStep(step + 1);
+                      // setStep(stepIndex + 1);
                       selectedValue[tmpStep.slug] = response.value as never;
                       setSelectedValue(selectedValue);
-                      setStep(stepIndex + 1);
+                      scrollToBottom();
                     }}
                   >
                     {response.label}
@@ -305,11 +323,11 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
             boxShadow={toast ? "lg" : "none"}
             top={toast ? "auto" : "30%"}
             left={toast ? "auto" : "45%"}
-            right={toast ? "5%" : "auto"}
+            right={toast ? ["0", "0", "0", "5%"] : "auto"}
             bottom={toast ? "0" : "auto"}
-            width={toast ? toastStyle : homeStyle}
+            width={toast ? ["100%", "100%", "100%", toastStyle] : homeStyle}
             sx={scrollbarStyle}
-            maxW={toast ? "40%" : "70%"}
+            maxW={toast ? ["100%", "100%", "100%", "40%"] : "70%"}
             maxH={toast ? "80%" : "auto"}
             zIndex={990}
             border={"1px solid #E9F1FF"}
@@ -331,9 +349,8 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
               </Box>
             )}
             {toast && displayOldQuestions()}
-            {step < 5 ? (
-              displayQuestion(currentStep)
-            ) : (
+            {step < 5 && displayQuestion(currentStep)}
+            {step >= 5 && !isEditing && (
               <Box
                 fontSize={["xl", "xl", "xl", "1.5xl"]}
                 color="#204064"
@@ -409,6 +426,31 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                   </Flex>
                 </NextLink>
               </Box>
+            )}
+            {step >= 5 && isEditing && (
+              <Flex justifyContent="center" pt={3}>
+                <NextLink
+                  href={{
+                    pathname: "/ressources",
+                    query: {
+                      personae: selectedValue.personae,
+                      occupation: selectedValue.occupation,
+                      theme: selectedValue.theme,
+                      subTheme: selectedValue.subTheme,
+                    },
+                  }}
+                >
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      setShowToast(false);
+                    }}
+                  >
+                    Afficher les ressources
+                    <ArrowForwardIcon ml={2} />
+                  </Button>
+                </NextLink>
+              </Flex>
             )}
           </Box>
         </>

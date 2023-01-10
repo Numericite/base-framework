@@ -4,7 +4,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 
 interface BreadcrumbProps {
   path: object;
-  toggleState: (show: boolean) => void;
+  toggleState: (show: boolean, isEditing: boolean) => void;
 }
 
 const CustomBreadcrumb: React.FC<BreadcrumbProps> = (props) => {
@@ -22,15 +22,20 @@ const CustomBreadcrumb: React.FC<BreadcrumbProps> = (props) => {
       alignItems="center"
     >
       <Flex
+        flexDir={["column", "column", "column", "row"]}
         borderRadius={"xl"}
         bg="white"
         w="100%"
         flexWrap="wrap"
         justifyContent={"space-between"}
-        alignItems="center"
+        alignItems={["flex-start", "center", "center", "center"]}
         p={2}
       >
-        <Box w="80%" display="flex" alignItems="center">
+        <Box
+          w={["60%", "80%", "80%", "80%"]}
+          display="flex"
+          alignItems="center"
+        >
           <Image src="/chatbot/Rob.png" alt="Rob" mr={4} />
           <Breadcrumb
             w="80%"
@@ -40,7 +45,7 @@ const CustomBreadcrumb: React.FC<BreadcrumbProps> = (props) => {
             {Object.values(path).map((p, index) => (
               <BreadcrumbItem key={index}>
                 <BreadcrumbLink
-                  fontSize="20px"
+                  fontSize={["10px", "14px", "14px", "20px"]}
                   wordBreak="normal"
                   fontWeight="600"
                   color="#204064"
@@ -61,7 +66,7 @@ const CustomBreadcrumb: React.FC<BreadcrumbProps> = (props) => {
           alignItems="center"
           cursor="pointer"
           pr={4}
-          onClick={() => toggleState(true)}
+          onClick={() => toggleState(true, true)}
         >
           <EditIcon color="blue" mr={1} />
           <Text fontWeight={"600"} fontSize="14px" color="#204064">

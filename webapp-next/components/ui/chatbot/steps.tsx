@@ -81,7 +81,7 @@ export const steps: ChatBotStep[] = [
   {
     title: (
       <Text>
-        Je vois!
+        Je vois !
         <br />
         Et plus
         <Text

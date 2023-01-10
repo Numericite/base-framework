@@ -41,8 +41,10 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [ressources, setRessources] = useState<TRessource[]>([]);
   const [showToast, setShowToast] = useState(false);
-  const toggleState = (show: boolean) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const toggleState = (show: boolean, isEditing: boolean) => {
     setShowToast(show);
+    setIsEditing(isEditing);
   };
 
   const fetchResponses = () => {
@@ -103,7 +105,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
 
   useEffect(() => {
     fetchResponses();
-  }, []);
+  }, [path]);
 
   return (
     <>
@@ -128,15 +130,15 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
             toast={true}
             showToast={showToast}
             setShowToast={setShowToast}
-            stepQuestion={5}
-            responseParams={responseParams}
+            stepQuestion={1}
+            isEditing={isEditing}
           />
           <Box>
             {responseParams.personae ? (
               <CustomBreadcrumb
                 path={path}
-                toggleState={(show) => {
-                  toggleState(show);
+                toggleState={(show, isEditing) => {
+                  toggleState(show, isEditing);
                 }}
               />
             ) : (

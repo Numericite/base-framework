@@ -1,4 +1,4 @@
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -7,18 +7,28 @@ import {
   HStack,
   Image,
   Text,
+  VStack,
 } from "@chakra-ui/react";
+import NextLink from "next/link";
 import { FiArrowLeftCircle } from "react-icons/fi";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { TPersonae } from "../../../pages/api/personaes/types";
 import { TPersonaeOccupation } from "../../../pages/api/personaeoccupations/types";
 import { fetchApi } from "../../../utils/api/fetch-api";
 import { TTheme } from "../../../pages/api/themes/types";
 import { ChatBotProps, ChatBotStep, ChatBotStepResponse } from "./interfaces";
 import { steps } from "./steps";
+import { BsArrowRight } from "react-icons/bs";
 
 const ChatBot: React.FC<ChatBotProps> = (props) => {
-  let { notif, showDialogue, setStepQuestion } = props;
+  let {
+    toast,
+    showToast,
+    setShowToast,
+    stepQuestion,
+    setStepQuestion,
+    responseParams,
+  } = props;
 
   const [personaes, setPersonaes] = useState<TPersonae[]>();
   const [personaeOccupations, setPersonaeOccupations] =
@@ -26,15 +36,13 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
   const [themes, setThemes] = useState<TTheme[]>();
 
   const [selectedValue, setSelectedValue] = useState({
-    help: false,
-    personae: 0,
-    occupation: 0,
-    theme: 0,
-    subTheme: 0,
+    personae: responseParams ? responseParams.personae : 0,
+    occupation: responseParams ? responseParams.occupation : 0,
+    theme: responseParams ? responseParams.theme : 0,
+    subTheme: responseParams ? responseParams.subTheme : 0,
   });
   const [currentStep, setCurrentStep] = useState<ChatBotStep>();
-  const [step, setStep] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
+  const [step, setStep] = useState(stepQuestion ? stepQuestion : 0);
 
   const fetchPersonaes = () => {
     fetchApi
@@ -114,8 +122,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
   };
 
   useEffect(() => {
-    if (personaes && personaeOccupations && themes) {
-      console.log(step);
+    if (personaes && personaeOccupations && themes && showToast) {
       if (setStepQuestion) setStepQuestion(step);
 
       if (step > 0) {
@@ -136,7 +143,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
         });
       }
     }
-  }, [step, personaes, personaeOccupations, themes]);
+  }, [step, personaes, personaeOccupations, themes, showToast]);
 
   useEffect(() => {
     fetchPersonaes();
@@ -145,14 +152,14 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
   }, []);
 
   const homeStyle = step === 0 ? "40%" : step === 1 ? "60%" : "max-content";
-  const notifStyle = step === 0 ? "30%" : "40%";
+  const toastStyle = step === 0 ? "30%" : "40%";
   const scrollbarStyle = {
-    "::-webkit-scrollbar": { width: "4px", background: "#f1f1f1" },
-    "::-webkit-scrollbar-thumb": { background: "#2F6CFF" },
+    "::-webkit-scrollbar": { width: "4px" },
+    "::-webkit-scrollbar-thumb": { background: "#000" },
   };
 
   const backButton = () => {
-    if (!notif)
+    if (!toast)
       return (
         <Flex alignItems="center" mb={4}>
           <HStack
@@ -180,24 +187,26 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
     return <></>;
 
   const displayQuestion = (tmpStep: ChatBotStep) => {
+    const stepIndex = steps.findIndex((s) => s.slug === tmpStep.slug);
     return (
-      <Flex flexDir={"column"}>
+      <Flex flexDir={"column"} key={tmpStep.slug}>
         <Flex alignItems="center">
-          {notif && <Image src="/chatbot/Rob.png" alt="Rob" mr={4} />}
+          {toast && <Image src="/chatbot/Rob.png" alt="Rob" mr={4} />}
           <Box>
             {step > 0 && backButton()}
             <Flex flexDir="column" alignItems="flex-start">
-              <Box
+              <Text
+                color="#204064"
                 fontSize={
                   currentStep.slug === tmpStep.slug
                     ? ["xl", "xl", "xl", "20px"]
                     : ["xl", "xl", "xl", "16px"]
                 }
-                fontWeight={currentStep.slug === tmpStep.slug ? 600 : 500}
+                fontWeight={600}
                 opacity={currentStep.slug === tmpStep.slug ? 1 : 0.7}
               >
                 {tmpStep.title}
-              </Box>
+              </Text>
             </Flex>
             <Flex py={3.5} align="flex-start" flexWrap="wrap" gap={2}>
               {tmpStep.responses ? (
@@ -213,7 +222,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                     onClick={() => {
                       selectedValue[tmpStep.slug] = response.value as never;
                       setSelectedValue(selectedValue);
-                      setStep(step + 1);
+                      setStep(stepIndex + 1);
                     }}
                   >
                     {response.label}
@@ -225,7 +234,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                     variant="neutral"
                     mr={4}
                     onClick={() => {
-                      showDialogue = false;
+                      setShowToast(false);
                     }}
                   >
                     Non
@@ -234,7 +243,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                     bgGradient="linear(to-t, #2F80ED, #97F8B1)"
                     onClick={() => {
                       setStep(step + 1);
-                      setSelectedValue({ ...selectedValue, help: true });
+                      setSelectedValue(selectedValue);
                     }}
                   >
                     Oui <ArrowForwardIcon ml={2} />
@@ -242,9 +251,9 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                 </Flex>
               )}
             </Flex>
-            {notif && step > 1 && <Divider my={2} />}
           </Box>
         </Flex>
+        {toast && step > 1 && <Divider my={2} />}
       </Flex>
     );
   };
@@ -266,57 +275,143 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
 
   return (
     <>
-      {!notif ? (
-        <Box
-          ref={ref}
-          className="chatbot-questions-box"
-          background="white"
-          borderRadius="16px"
-          p={6}
-          pos="absolute"
-          top="30%"
-          left="45%"
-          width={homeStyle}
-          maxW="70%"
-          zIndex={999}
-          transition={"0.8s"}
-          style={{
-            opacity: showDialogue ? 1 : 0,
-          }}
-        >
+      {showToast && (
+        <>
+          {!toast && (
+            <Box
+              pos="absolute"
+              right="30%"
+              top="30%"
+              bg="white"
+              w="32px"
+              h="32px"
+              transition={"0.8s"}
+              zIndex={999}
+              style={{
+                transform: "translateY(-50%)",
+                rotate: "45deg",
+                opacity: showToast ? 1 : 0,
+              }}
+            />
+          )}
           <Box
-            fontSize={["xl", "xl", "xl", "1.5xl"]}
-            color="#204064"
-            fontWeight="bold"
+            className="chatbot-questions-box"
+            background="white"
+            borderRadius="16px"
+            p={6}
+            overflowY="auto"
+            overflowX="hidden"
+            pos={toast ? "fixed" : "absolute"}
+            boxShadow={toast ? "lg" : "none"}
+            top={toast ? "auto" : "30%"}
+            left={toast ? "auto" : "45%"}
+            right={toast ? "5%" : "auto"}
+            bottom={toast ? "0" : "auto"}
+            width={toast ? toastStyle : homeStyle}
+            sx={scrollbarStyle}
+            maxW={toast ? "40%" : "70%"}
+            maxH={toast ? "80%" : "auto"}
+            zIndex={990}
+            border={"1px solid #E9F1FF"}
+            transition={"0.8s"}
+            style={{
+              opacity: showToast ? 1 : 0,
+            }}
           >
-            {displayQuestion(currentStep)}
+            {toast && step > 0 && (
+              <Box
+                pos="sticky"
+                top={1}
+                float="right"
+                cursor="pointer"
+                zIndex={99}
+                onClick={() => setShowToast(false)}
+              >
+                <CloseIcon color="blue" cursor="pointer" />
+              </Box>
+            )}
+            {toast && displayOldQuestions()}
+            {step < 5 ? (
+              displayQuestion(currentStep)
+            ) : (
+              <Box
+                fontSize={["xl", "xl", "xl", "1.5xl"]}
+                color="#204064"
+                fontWeight="bold"
+              >
+                {backButton()}
+                <Text>
+                  Voici les{""}
+                  <Text
+                    ml={2}
+                    as="span"
+                    bgGradient={
+                      "linear-gradient(270deg, #97F8B1 0%, #2F6CFF 100%)"
+                    }
+                    bgClip={"text"}
+                  >
+                    ressources
+                  </Text>{" "}
+                  que je peux te proposer :
+                </Text>
+                <VStack spacing={5} mt={3.5} align="left">
+                  {botRessources.map((ressource, index) => (
+                    <Box key={index}>
+                      <Flex
+                        w="100%"
+                        justifyContent={"space-between"}
+                        px={"14px"}
+                        py={"16px"}
+                        border={"1px solid #E9F1FF"}
+                        borderRadius={16}
+                        alignItems="center"
+                        cursor="pointer"
+                      >
+                        <Text fontSize={"14px"} color="#1B1D1F">
+                          {ressource.name}
+                        </Text>
+                        <Image
+                          src={"/chatbot/" + ressource.icon}
+                          alt="icone ressource"
+                        />
+                      </Flex>
+                    </Box>
+                  ))}
+                </VStack>
+                <NextLink
+                  href={{
+                    pathname: "/ressources",
+                    query: {
+                      personae: selectedValue.personae,
+                      occupation: selectedValue.occupation,
+                      theme: selectedValue.theme,
+                      subTheme: selectedValue.subTheme,
+                    },
+                  }}
+                >
+                  <Flex
+                    align="center"
+                    width="fit-content"
+                    mt={4}
+                    cursor="pointer"
+                    _hover={{ textDecor: "underline" }}
+                  >
+                    <Text
+                      color="#204064"
+                      fontSize="12px"
+                      fontWeight="500"
+                      mr={2}
+                      display="flex"
+                    >
+                      Voir toutes les ressources
+                    </Text>
+                    <BsArrowRight color="blue" />
+                  </Flex>
+                </NextLink>
+              </Box>
+            )}
           </Box>
-        </Box>
-      ) : (
-        <Box
-          ref={ref}
-          className="chatbot-questions-box"
-          background="white"
-          borderRadius="16px"
-          p={6}
-          pos="fixed"
-          boxShadow="lg"
-          right="5%"
-          bottom="0px"
-          width={notifStyle}
-          maxW="40%"
-          maxH="80%"
-          sx={scrollbarStyle}
-          overflowY="scroll"
-          zIndex={999}
-          transition={"0.8s"}
-          style={{
-            opacity: showDialogue ? 1 : 0,
-          }}
-        >
-          {displayOldQuestions()}
-          {displayQuestion(currentStep)}
-        </Box>
+        </>
       )}
     </>
   );

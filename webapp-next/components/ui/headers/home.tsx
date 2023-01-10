@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   Button,
+  Fade,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import HomeSearchBar from "../homepage/home-search-bar";
@@ -15,7 +16,7 @@ import ChatBot from "../chatbot";
 
 const HomeHeader = () => {
   const [showDialogue, setShowDialogue] = useState(false);
-  const [stepQuestion, setStepQuestion] = useState(1);
+  const [stepQuestion, setStepQuestion] = useState(0);
 
   const robotSteps = [
     { step: 1, image: "cuteRobot_smile.png" },
@@ -74,12 +75,13 @@ const HomeHeader = () => {
           <Box
             onMouseEnter={() => setShowDialogue(true)}
             onMouseLeave={() => {
-              if (stepQuestion === 1) setShowDialogue(false);
+              if (stepQuestion === 0) setShowDialogue(false);
             }}
           >
             <ChatBot
-              notif={false}
-              showDialogue={showDialogue}
+              toast={false}
+              showToast={showDialogue}
+              setShowToast={setShowDialogue}
               setStepQuestion={setStepQuestion}
             />
           </Box>
@@ -89,27 +91,7 @@ const HomeHeader = () => {
             position="relative"
             className="chatbot"
           >
-            <Box
-              pos="absolute"
-              right="53%"
-              top="30%"
-              bg="white"
-              w="32px"
-              h="32px"
-              transition={"0.5s"}
-              zIndex={999}
-              style={{
-                transform: "translateY(-50%)",
-                rotate: "45deg",
-                opacity: showDialogue ? 1 : 0,
-              }}
-            />
-            <Box
-              onMouseEnter={() => setShowDialogue(true)}
-              onMouseLeave={() => {
-                if (stepQuestion === 1) setShowDialogue(false);
-              }}
-            >
+            <Box>
               <Box
                 position="absolute"
                 top="28%"
@@ -119,19 +101,23 @@ const HomeHeader = () => {
                 transition={"0.5s"}
               >
                 <Image
+                  onMouseEnter={() => setShowDialogue(true)}
+                  onMouseLeave={() => {
+                    if (stepQuestion === 0) setShowDialogue(false);
+                  }}
                   src="/chatbot/cuteRobot_cute.png"
                   alt="robot hi"
                   zIndex={99}
                   style={{
                     transform: "translateX(-50%)translateY(-50%)",
-                    opacity: showDialogue && stepQuestion === 1 ? 1 : 0,
+                    opacity: showDialogue && stepQuestion === 0 ? 1 : 0,
                   }}
                   transition={"0.5s"}
                   pos="absolute"
                 />
                 <Image
                   src="/chatbot/cuteRobot_smile.png"
-                  alt="robot hi"
+                  alt="robot smile"
                   style={{ transform: "translateX(-50%)translateY(-50%)" }}
                   transition={"0.5s"}
                   pos="absolute"

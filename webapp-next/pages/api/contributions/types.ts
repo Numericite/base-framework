@@ -11,7 +11,7 @@ export const ZContribution = z.object({
   job_title: z.string(),
   producer: z.string(),
   commentary: z.string(),
-  isAccepted: z.boolean(),
+  isAccepted: z.boolean().optional(),
   theme: z.object({
     id: z.number(),
     name: z.string(),

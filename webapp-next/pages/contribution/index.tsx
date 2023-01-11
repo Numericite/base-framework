@@ -13,6 +13,7 @@ import {
   SimpleGrid,
   Text,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { Form, Formik, FormikErrors, FormikValues } from "formik";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -21,6 +22,11 @@ import { fetchApi } from "../../utils/api/fetch-api";
 import { TRessource } from "../api/ressources/types";
 import { TTheme } from "../api/themes/types";
 import * as Yup from "yup";
+import {
+  ressourceKindEnum,
+  displayKindReadable,
+} from "../../utils/globals/enums";
+import { TContributionCreationPayload } from "../api/contributions/types";
 
 interface Field {
   key: string;
@@ -29,12 +35,14 @@ interface Field {
   label: string;
   placeholder: string;
   required: boolean;
-  options?: TTheme[] | TRessource[];
+  options?: TTheme[] | typeof ressourceKindEnum;
 }
 
 const Contributions: React.FC = () => {
   const [themes, setThemes] = useState<TTheme[]>([]);
-  const [ressources, setRessources] = useState<TRessource[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [AllDisabled, setAllDisabled] = useState<boolean>();
+  const toast = useToast();
 
   const fetchThemes = () => {
     return fetchApi
@@ -44,39 +52,31 @@ const Contributions: React.FC = () => {
       });
   };
 
-  const fetchRessources = () => {
-    return fetchApi
-      .get("/api/ressources/list", { pagination: { page: 1, pageSize: 1000 } })
-      .then((response) => {
-        setRessources(response.data);
-      });
-  };
-
   useEffect(() => {
+    setAllDisabled(false);
     fetchThemes();
-    fetchRessources();
   }, []);
 
   const fields: Field[] = [
     {
-      key: "firstname",
-      name: "firstname",
+      key: "first_name",
+      name: "first_name",
       kind: "text",
       label: "Prénom",
       placeholder: "Votre prénom",
       required: true,
     },
     {
-      key: "lastname",
-      name: "lastname",
+      key: "last_name",
+      name: "last_name",
       kind: "text",
       label: "Nom",
       placeholder: "Votre nom",
       required: true,
     },
     {
-      key: "fonction",
-      name: "fonction",
+      key: "job_title",
+      name: "job_title",
       kind: "text",
       label: "Fonction",
       placeholder: "Votre fonction",
@@ -92,25 +92,25 @@ const Contributions: React.FC = () => {
       options: themes,
     },
     {
-      key: "ressource",
-      name: "ressource",
+      key: "ressource_kind",
+      name: "ressource_kind",
       kind: "select",
       label: "Type de ressource",
       placeholder: "Le type de ressource",
       required: true,
-      options: ressources,
+      options: ressourceKindEnum,
     },
     {
-      key: "productor",
-      name: "productor",
+      key: "producer",
+      name: "producer",
       kind: "text",
       label: "Producteur",
       placeholder: "Le producteur",
       required: true,
     },
     {
-      key: "comment",
-      name: "comment",
+      key: "commentary",
+      name: "commentary",
       kind: "textarea",
       label: "Commentaire",
       placeholder: "Veuillez saisir un commentaire",
@@ -118,21 +118,54 @@ const Contributions: React.FC = () => {
     },
   ];
 
-  const initialValues = fields.reduce((acc, field) => {
-    return { ...acc, [field.name]: "" };
-  }, {});
+  const initialValues = {
+    first_name: "",
+    last_name: "",
+    job_title: "",
+    theme: themes[0],
+    ressource_kind: "",
+    producer: "",
+    commentary: "",
+  };
 
   const validationSchema = Yup.object().shape({
-    firstname: Yup.string().required("Le prénom est obligatoire"),
-    lastname: Yup.string().required("Le nom est obligatoire"),
-    fonction: Yup.string().required("La fonction est obligatoire"),
-    theme: Yup.string().required("La thématique est obligatoire"),
-    ressource: Yup.string().required("Le type de ressource est obligatoire"),
-    productor: Yup.string().required("Le producteur est obligatoire"),
+    first_name: Yup.string().required("Le prénom est obligatoire"),
+    last_name: Yup.string().required("Le nom est obligatoire"),
+    job_title: Yup.string().required("La fonction est obligatoire"),
+    theme: Yup.object().required("La thématique est obligatoire"),
+    ressource_kind: Yup.string().required(
+      "Le type de ressource est obligatoire"
+    ),
+    producer: Yup.string().required("Le producteur est obligatoire"),
   });
 
-  const handleSubmit = (values: FormikValues) => {
-    console.log(values);
+  const handleSubmit = (values: TContributionCreationPayload) => {
+    console.log("values", values);
+    values.isAccepted = false;
+    setIsLoading(true);
+    fetchApi
+      .post("/api/contributions/create", values)
+      .then(() => {
+        toast({
+          title: "Votre contribution a été soumise avec succès !",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+      })
+      .catch((error) => {
+        toast({
+          title: "Une erreur est survenue",
+          description: error.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setAllDisabled(true);
+      });
   };
 
   const displayField = (
@@ -140,6 +173,7 @@ const Contributions: React.FC = () => {
     values: FormikValues,
     handleChange: (e: ChangeEvent<any>) => void,
     handleBlur: any,
+    setFieldValue: any,
     errors: FormikErrors<FormikValues>,
     touched: any
   ) => {
@@ -148,6 +182,7 @@ const Contributions: React.FC = () => {
         return (
           <GridItem key={field.key} colSpan={1}>
             <FormControl
+              isDisabled={AllDisabled}
               isRequired={field.required}
               isInvalid={touched[field.name] && errors[field.name]}
             >
@@ -159,14 +194,24 @@ const Contributions: React.FC = () => {
                 w="full"
                 name={field.name}
                 placeholder={field.placeholder}
-                value={values[field.name]}
-                onChange={handleChange}
+                value={values[field.name]?.name}
+                onChange={
+                  field.key === "theme"
+                    ? (e) =>
+                        setFieldValue(
+                          "theme",
+                          themes.find((theme) => theme.name === e.target.value)
+                        )
+                    : handleChange
+                }
                 required={field.required}
                 onBlur={handleBlur}
               >
                 {field.options?.map((option: any) => (
                   <option key={option.id} value={option.name}>
-                    {option.name}
+                    {field.key === "ressource_kind"
+                      ? displayKindReadable(option)
+                      : option.name}
                   </option>
                 ))}
               </Select>
@@ -181,6 +226,7 @@ const Contributions: React.FC = () => {
         return (
           <GridItem key={field.key} colSpan={[1, 1, 3]}>
             <FormControl
+              isDisabled={AllDisabled}
               isRequired={field.required}
               isInvalid={touched[field.name] && errors[field.name]}
             >
@@ -208,6 +254,7 @@ const Contributions: React.FC = () => {
         return (
           <GridItem key={field.key} colSpan={1}>
             <FormControl
+              isDisabled={AllDisabled}
               isRequired={field.required}
               isInvalid={touched[field.name] && errors[field.name]}
             >
@@ -246,36 +293,47 @@ const Contributions: React.FC = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, errors, touched, handleChange, handleBlur }) => (
-            <Form>
-              <Flex
-                justifyContent="space-between"
-                flexDir={"column"}
-                alignItems="center"
-              >
-                <SimpleGrid
-                  columns={[1, 2, 3]}
-                  w="full"
-                  gap={10}
-                  pt={"3.375rem"}
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            setFieldValue,
+          }) => (
+            console.log("values", values),
+            (
+              <Form>
+                <Flex
+                  justifyContent="space-between"
+                  flexDir={"column"}
+                  alignItems="center"
                 >
-                  {fields.map((field) => {
-                    return displayField(
-                      field,
-                      values,
-                      handleChange,
-                      handleBlur,
-                      errors,
-                      touched
-                    );
-                  })}
-                </SimpleGrid>
-                <Button mt="2.75rem" mb="3.375rem" type="submit">
-                  <Text mr={3}>Envoyer ma contribution</Text>
-                  <ArrowForwardIcon />
-                </Button>
-              </Flex>
-            </Form>
+                  <SimpleGrid
+                    columns={[1, 2, 3]}
+                    w="full"
+                    gap={10}
+                    pt={"3.375rem"}
+                  >
+                    {fields.map((field) => {
+                      return displayField(
+                        field,
+                        values,
+                        handleChange,
+                        handleBlur,
+                        setFieldValue,
+                        errors,
+                        touched
+                      );
+                    })}
+                  </SimpleGrid>
+                  <Button mt="2.75rem" mb="3.375rem" type="submit">
+                    <Text mr={3}>Envoyer ma contribution</Text>
+                    <ArrowForwardIcon />
+                  </Button>
+                </Flex>
+              </Form>
+            )
           )}
         </Formik>
       </Container>

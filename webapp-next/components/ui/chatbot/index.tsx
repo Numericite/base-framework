@@ -41,6 +41,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
     occupation: 0,
     theme: 0,
     subTheme: 0,
+    nextStep: stepQuestion ? stepQuestion : 0,
   });
   const [currentStep, setCurrentStep] = useState<ChatBotStep>();
   const [step, setStep] = useState(stepQuestion ? stepQuestion : 0);
@@ -131,27 +132,31 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
 
   useEffect(() => {
     if (personaes && personaeOccupations && themes && showToast) {
-      if (setStepQuestion) setStepQuestion(step);
+      if (setStepQuestion) setStepQuestion(selectedValue.nextStep);
 
-      if (step > 0) {
+      if (selectedValue.nextStep > 0) {
         let responses: ChatBotStepResponse[] = getResponsesFromStep(
-          step,
+          selectedValue.nextStep,
           personaes,
           personaeOccupations,
           themes
         );
 
         setCurrentStep({
-          ...steps[step],
+          ...steps[selectedValue.nextStep],
           responses,
         });
+        setStep(selectedValue.nextStep);
       } else {
         setCurrentStep({
           ...steps[0],
         });
+        setStep(0);
       }
     }
-  }, [step, personaes, personaeOccupations, themes, showToast, selectedValue]);
+  }, [personaes, personaeOccupations, themes, showToast, selectedValue]);
+
+  useEffect(() => {}, [selectedValue]);
 
   useEffect(() => {
     fetchPersonaes();
@@ -166,14 +171,19 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
     "::-webkit-scrollbar-thumb": { background: "#000" },
   };
 
-  const backButton = () => {
+  const backButton = (
+    slug?: "personae" | "occupation" | "theme" | "subTheme"
+  ) => {
     if (!toast)
       return (
         <Flex alignItems="center" mb={4}>
           <HStack
             cursor="pointer"
             onClick={() => {
-              setStep(step - 1);
+              if (slug) {
+                selectedValue[slug] = 0;
+              }
+              setSelectedValue({ ...selectedValue, nextStep: step - 1 });
               if (setStepQuestion) setStepQuestion(step - 1);
             }}
           >
@@ -197,7 +207,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
   const displayQuestion = (tmpStep: ChatBotStep) => {
     const stepIndex = steps.findIndex((s) => s.slug === tmpStep.slug);
     return (
-      <Flex ref={bottomRef} flexDir={"column"} key={tmpStep.slug}>
+      <Flex flexDir={"column"} key={tmpStep.slug}>
         <Flex alignItems="center">
           {toast && (
             <Image
@@ -208,7 +218,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
             />
           )}
           <Box>
-            {step > 0 && backButton()}
+            {step > 0 && tmpStep.slug !== "help" && backButton(tmpStep.slug)}
             <Flex flexDir="column" alignItems="flex-start">
               <Text
                 as={"div"}
@@ -236,11 +246,12 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                     }
                     mb={2}
                     onClick={() => {
-                      if (step <= steps.length - 1) setStep(step + 1);
-                      // setStep(stepIndex + 1);
                       selectedValue[tmpStep.slug] = response.value as never;
-                      setSelectedValue(selectedValue);
-                      scrollToBottom();
+                      selectedValue.nextStep = stepIndex + 1;
+                      setSelectedValue({ ...selectedValue });
+                      setTimeout(() => {
+                        scrollToBottom();
+                      }, 100);
                     }}
                   >
                     {response.label}
@@ -260,8 +271,11 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                   <Button
                     bgGradient="linear(to-t, #2F80ED, #97F8B1)"
                     onClick={() => {
-                      setStep(step + 1);
-                      setSelectedValue(selectedValue);
+                      setSelectedValue({
+                        ...selectedValue,
+                        help: true,
+                        nextStep: 1,
+                      });
                     }}
                   >
                     Oui <ArrowForwardIcon ml={2} />
@@ -452,6 +466,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                 </NextLink>
               </Flex>
             )}
+            <Box ref={bottomRef} />
           </Box>
         </>
       )}

@@ -105,7 +105,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
 
   useEffect(() => {
     fetchResponses();
-  }, [path]);
+  }, [responseParams]);
 
   return (
     <>

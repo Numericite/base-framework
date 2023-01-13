@@ -11,10 +11,12 @@ export const ZContribution = z.object({
   job_title: z.string(),
   producer: z.string(),
   commentary: z.string(),
+  email: z.string(),
   isAccepted: z.boolean().optional(),
   theme: z.object({
     id: z.number(),
     name: z.string(),
+    color: z.string().optional(),
   }),
 });
 export type TContribution = z.infer<typeof ZContribution>;

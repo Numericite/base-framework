@@ -18,6 +18,7 @@ import {
 } from "../../../../utils/globals/enums";
 import KindRessourceDisplayer from "../kind-input-create";
 import "react-quill/dist/quill.snow.css";
+import RessourceSummary from "../ressource-summary";
 
 interface RessourceFormStepProps {
   formik: FormikProps<TRessourceUpdatePayload | TRessourceCreationPayload>;
@@ -156,6 +157,12 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
           <KindRessourceDisplayer kind={formik.values.kind} formik={formik} />
         </>
       ),
+    },
+    {
+      id: 3,
+      componentToDisplay: (
+        formik: FormikProps<TRessourceUpdatePayload | TRessourceCreationPayload>
+      ) => <RessourceSummary formik={formik} />,
     },
   ];
 

@@ -18,7 +18,7 @@ const ZRessourceLink = z.object({
 });
 
 const ZRessourceFile = z.object({
-  files: z.array(ZStrapiFile),
+  files: z.array(ZStrapiFile).optional().nullable(),
   kind: z.literal("file"),
 });
 
@@ -56,10 +56,12 @@ const ZRessourceBase = z.object({
   publishedAt: z.optional(z.string()),
   theme: ZTheme,
   image: z.optional(ZStrapiFile.nullable()),
+  child_id: z.number(),
 });
 
 const createOmits = {
   id: true,
+  child_id: true,
 } as const;
 
 export const ZRessource = z.discriminatedUnion("kind", [
@@ -80,7 +82,11 @@ export const ZRessourceCreationPayload = z.discriminatedUnion("kind", [
   ZRessourceBase.extend(ZRessourceLink.shape).omit(createOmits),
   ZRessourceBase.extend(ZRessourceVideo.shape).omit(createOmits),
   ZRessourceBase.extend(ZRessourceQuiz.shape).omit(createOmits),
-  ZRessourceBase.extend(ZRessourceFile.shape).omit(createOmits),
+  ZRessourceBase.extend(ZRessourceFile.shape)
+    .omit({ ...createOmits, files: true })
+    .extend({
+      files: z.custom<File>().optional(),
+    }),
 ]);
 
 export type TRessourceCreationPayload = z.infer<
@@ -94,7 +100,9 @@ export const ZRessourceUpdatePayload = z.discriminatedUnion("kind", [
   ZRessourceBase.extend(ZRessourceLink.shape),
   ZRessourceBase.extend(ZRessourceVideo.shape),
   ZRessourceBase.extend(ZRessourceQuiz.shape),
-  ZRessourceBase.extend(ZRessourceFile.shape),
+  ZRessourceBase.extend(ZRessourceFile.shape).omit({ files: true }).extend({
+    files: z.custom<File>().optional(),
+  }),
 ]);
 
 export type TRessourceUpdatePayload = z.infer<typeof ZRessourceUpdatePayload>;

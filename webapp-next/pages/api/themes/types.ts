@@ -9,6 +9,7 @@ export const ZTheme = z.object({
   name: z.string(),
   description: z.string(),
   image: z.optional(ZStrapiFile),
+  color: z.string().optional(),
 });
 export type TTheme = z.infer<typeof ZTheme>;
 

@@ -68,7 +68,7 @@ const childRessourceUpdateRequest = async (ressource, formerKind) => {
 const childRessourceConsolidate = (childRessource) => {
   if (childRessource) {
     let { ressource, ...child } = childRessource;
-    return { ...child, ...ressource };
+    return { ...child, ...ressource, child_id: child.id };
   }
 };
 
@@ -108,7 +108,13 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
       const childRessourcePromise = await childRessourceCreateRequest(
         fullRessource
       );
-      return { data: { ...childRessourcePromise, ...data } };
+      return {
+        data: {
+          ...childRessourcePromise,
+          ...data,
+          child_id: childRessourcePromise.id,
+        },
+      };
     }
   },
   async update(ctx) {
@@ -124,7 +130,13 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
         formerKind
       );
 
-      return { data: { ...childRessourcePromise, ...data } };
+      return {
+        data: {
+          ...childRessourcePromise,
+          ...data,
+          child_id: childRessourcePromise.id,
+        },
+      };
     }
   },
 }));

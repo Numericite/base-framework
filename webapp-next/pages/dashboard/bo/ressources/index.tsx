@@ -1,6 +1,8 @@
-import { Box, Heading, Tag } from "@chakra-ui/react";
+import { Box, Flex, Heading, Icon, Tag, Text } from "@chakra-ui/react";
 import _ from "lodash";
 import { useRouter } from "next/router";
+import React from "react";
+import { IconBase, IconContext } from "react-icons";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import UITable from "../../../../components/ui/table";
 import {
@@ -9,15 +11,16 @@ import {
   DataResponse,
 } from "../../../../components/ui/table/interfaces";
 import { fetchApi } from "../../../../utils/api/fetch-api";
-import { displayKindReadable } from "../../../../utils/globals/enums";
+import {
+  displayKindReadable,
+  displayKindIcon,
+} from "../../../../utils/globals/enums";
 import useModals from "../../../../utils/hooks/useModals";
 import { TRessource } from "../../../api/ressources/types";
 
 const DashboardRessources = () => {
   const router = useRouter();
   const { confirm } = useModals();
-
-  const colors = ["red", "orange", "yellow", "green", "teal", "blue"];
 
   const columnDefs: ColumnDef<TRessource>[] = [
     {
@@ -32,7 +35,12 @@ const DashboardRessources = () => {
       key: "kind",
       label: "Type",
       renderItem: (item: TRessource) => {
-        return displayKindReadable(item.kind);
+        return (
+          <Flex align="center">
+            {displayKindIcon(item.kind)}
+            <Text ml={2}>{displayKindReadable(item.kind)}</Text>
+          </Flex>
+        );
       },
     },
     {
@@ -45,7 +53,7 @@ const DashboardRessources = () => {
             w="full"
             fontSize={{ base: "xs", sm: "xs" }}
             variant="subtle"
-            colorScheme={_.sample(colors)}
+            colorScheme={item.theme?.color || "gray"}
           >
             {item.theme?.name}
           </Tag>

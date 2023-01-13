@@ -1,6 +1,6 @@
-import { Box, Heading, Tag } from "@chakra-ui/react";
+import { Box, Flex, Heading, Modal, Tag, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { BsCheckCircleFill, BsTrash } from "react-icons/bs";
+import { BsCheckCircleFill, BsEyeFill, BsTrash } from "react-icons/bs";
 import UITable from "../../../../components/ui/table";
 import {
   ChangeAction,
@@ -10,6 +10,7 @@ import {
 import { fetchApi } from "../../../../utils/api/fetch-api";
 import useModals from "../../../../utils/hooks/useModals";
 import { TContribution } from "../../../api/contributions/types";
+import { AiFillCheckCircle, AiFillCloseSquare } from "react-icons/ai";
 
 const DashboardContributions = () => {
   const router = useRouter();
@@ -38,6 +39,7 @@ const DashboardContributions = () => {
             w="full"
             fontSize={{ base: "xs", sm: "xs" }}
             variant="subtle"
+            colorScheme={item.theme?.color || "gray"}
           >
             {item.theme?.name}
           </Tag>
@@ -45,10 +47,35 @@ const DashboardContributions = () => {
       },
     },
     {
+      key: "commentary",
+      label: "Contenu",
+      renderItem: (item: TContribution) => {
+        return (
+          <Flex align={"center"} justify="space-between">
+            <Text fontSize="sm">{item.commentary}</Text>
+          </Flex>
+        );
+      },
+    },
+    {
       key: "isAccepted",
       label: "Statut",
       renderItem: (item: TContribution) => {
-        return item.isAccepted ? "Validé" : "En attente";
+        return item.isAccepted ? (
+          <Flex>
+            <AiFillCheckCircle color="green" />
+            <Text ml={2} fontSize="sm">
+              Validée
+            </Text>
+          </Flex>
+        ) : (
+          <Flex align={"center"} justify="space-between">
+            <AiFillCloseSquare color="red" />
+            <Text ml={2} fontSize="sm">
+              En attente
+            </Text>
+          </Flex>
+        );
       },
     },
   ];
@@ -73,6 +100,31 @@ const DashboardContributions = () => {
   };
   const changeActions: ChangeAction<TContribution>[] = [
     {
+      key: "view",
+      label: "Voir",
+      icon: <BsEyeFill />,
+      action: (item: TContribution) => {
+        router.push("/dashboard/bo/contributions/" + item.id);
+      },
+    },
+    {
+      key: "validate",
+      label: "Valider",
+      icon: <BsCheckCircleFill />,
+      action: (item: TContribution) => {
+        return confirm(
+          "Valider la contribution de " +
+            item.first_name +
+            " " +
+            item.last_name +
+            " ?"
+        ).then(() => {
+          item.isAccepted = !item.isAccepted;
+          return fetchApi.put("/api/contributions/update", item);
+        });
+      },
+    },
+    {
       key: "delete",
       label: "Supprimer",
       icon: <BsTrash />,
@@ -89,15 +141,6 @@ const DashboardContributions = () => {
             });
           }
         });
-      },
-    },
-    {
-      key: "validate",
-      label: "Valider",
-      icon: <BsCheckCircleFill />,
-      action: (item: TContribution) => {
-        item.isAccepted = !item.isAccepted;
-        return fetchApi.put("/api/contributions/update", item);
       },
     },
   ];

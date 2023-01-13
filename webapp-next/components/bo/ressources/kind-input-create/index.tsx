@@ -8,7 +8,7 @@ import {
   Select,
   VStack,
 } from "@chakra-ui/react";
-
+import UploadZone from "../../../ui/form/upload";
 interface KindRessourceDisplayerProps {
   kind: string;
   formik: any;
@@ -17,29 +17,25 @@ interface KindRessourceDisplayerProps {
 const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
   const { kind, formik } = props;
 
-  // const handleFileChange = (e: any) => {
-  //   console.log("E", e.target.files[0]);
-  //   formData.append("files", e.target.files[0]);
-  //   console.log("FORM DATA", formData);
-  // };
-
   const displayRessourceKindFormElement = () => {
     switch (kind) {
       case "file":
         return (
           <FormControl
             isRequired={true}
-            isInvalid={!!formik.errors.file && formik.touched.file}
+            isInvalid={!!formik.errors.files && formik.touched.files}
           >
             <FormLabel htmlFor="link">Lien du fichier</FormLabel>
-            <Input
-              type="file"
-              id="files"
-              name="files"
-              value={formik.values.files}
-              w="100%"
-              onBlur={formik.handleBlur}
+
+            <UploadZone
+              width={"full"}
               onChange={formik.handleChange}
+              onRemove={() => {
+                formik.setFieldValue("files", null);
+              }}
+              value={formik.values.files}
+              name="files"
+              multiple={false}
             />
           </FormControl>
         );

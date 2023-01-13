@@ -83,6 +83,14 @@ const Contributions: React.FC = () => {
       required: true,
     },
     {
+      key: "email",
+      name: "email",
+      kind: "text",
+      label: "Adresse email",
+      placeholder: "Votre adresse email",
+      required: true,
+    },
+    {
       key: "theme",
       name: "theme",
       kind: "select",
@@ -126,6 +134,7 @@ const Contributions: React.FC = () => {
     ressource_kind: "",
     producer: "",
     commentary: "",
+    email: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -136,11 +145,13 @@ const Contributions: React.FC = () => {
     ressource_kind: Yup.string().required(
       "Le type de ressource est obligatoire"
     ),
+    email: Yup.string()
+      .email("Email invalide")
+      .required("L'email est obligatoire"),
     producer: Yup.string().required("Le producteur est obligatoire"),
   });
 
   const handleSubmit = (values: TContributionCreationPayload) => {
-    console.log("values", values);
     values.isAccepted = false;
     setIsLoading(true);
     fetchApi
@@ -301,39 +312,36 @@ const Contributions: React.FC = () => {
             handleBlur,
             setFieldValue,
           }) => (
-            console.log("values", values),
-            (
-              <Form>
-                <Flex
-                  justifyContent="space-between"
-                  flexDir={"column"}
-                  alignItems="center"
+            <Form>
+              <Flex
+                justifyContent="space-between"
+                flexDir={"column"}
+                alignItems="center"
+              >
+                <SimpleGrid
+                  columns={[1, 2, 3]}
+                  w="full"
+                  gap={10}
+                  pt={"3.375rem"}
                 >
-                  <SimpleGrid
-                    columns={[1, 2, 3]}
-                    w="full"
-                    gap={10}
-                    pt={"3.375rem"}
-                  >
-                    {fields.map((field) => {
-                      return displayField(
-                        field,
-                        values,
-                        handleChange,
-                        handleBlur,
-                        setFieldValue,
-                        errors,
-                        touched
-                      );
-                    })}
-                  </SimpleGrid>
-                  <Button mt="2.75rem" mb="3.375rem" type="submit">
-                    <Text mr={3}>Envoyer ma contribution</Text>
-                    <ArrowForwardIcon />
-                  </Button>
-                </Flex>
-              </Form>
-            )
+                  {fields.map((field) => {
+                    return displayField(
+                      field,
+                      values,
+                      handleChange,
+                      handleBlur,
+                      setFieldValue,
+                      errors,
+                      touched
+                    );
+                  })}
+                </SimpleGrid>
+                <Button mt="2.75rem" mb="3.375rem" type="submit">
+                  <Text mr={3}>Envoyer ma contribution</Text>
+                  <ArrowForwardIcon />
+                </Button>
+              </Flex>
+            </Form>
           )}
         </Formik>
       </Container>

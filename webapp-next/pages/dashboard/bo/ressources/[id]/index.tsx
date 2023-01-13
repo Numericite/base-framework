@@ -1,8 +1,6 @@
 import {
   Box,
-  Button,
   Container,
-  Flex,
   Heading,
   Stack,
   Text,
@@ -10,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import BackButton from "../../../../../components/ui/back-button/back-button";
 import Loader from "../../../../../components/ui/loader";
 import { fetchApi } from "../../../../../utils/api/fetch-api";
@@ -25,6 +23,10 @@ import { TTheme } from "../../../../api/themes/types";
 import RessourceFormStep from "../../../../../components/bo/ressources/ressource-form-step";
 import ButtonContainer from "../../../../../components/bo/ressources/ressource-button-container";
 import FormikListener from "../../../../../utils/globals/formik-listener";
+import axios from "axios";
+import AppContext from "../../../../../context/state";
+import { getJwt } from "../../../../../utils/globals/cookies";
+// import axios from "axios";
 
 const RessourceCreate = () => {
   const router = useRouter();
@@ -34,6 +36,8 @@ const RessourceCreate = () => {
   const [themes, setThemes] = useState<TTheme[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState<number>(1);
+
+  const jwt = getJwt();
 
   let initialValues: TRessourceCreationPayload | TRessourceUpdatePayload = {
     name: "",
@@ -45,9 +49,16 @@ const RessourceCreate = () => {
   };
 
   if (ressource && ressource.id) {
-    initialValues = {
-      ...ressource,
-    };
+    if (ressource.kind === "file") {
+      const { files, ...ressourceWithoutFiles } = ressource;
+      initialValues = {
+        ...ressourceWithoutFiles,
+      };
+    } else {
+      initialValues = {
+        ...ressource,
+      };
+    }
   }
 
   const fetchRessource = () => {
@@ -87,57 +98,60 @@ const RessourceCreate = () => {
     content: yup.string().required("Le contenu est obligatoire"),
   });
 
-  const validate = (
+  const validate = async (
     tmpRessource: TRessourceUpdatePayload | TRessourceCreationPayload
   ) => {
     setIsLoading(true);
 
-    if ("id" in tmpRessource) {
-      fetchApi
-        .put("/api/ressources/update", { ...tmpRessource })
-        .then(() => {
-          toast({
-            title: `${ressource?.name} modifié avec succès`,
-            status: "success",
-            duration: 5000,
-            isClosable: true,
-          });
-          router.push("/dashboard/bo/ressources");
-        })
-        .catch(() => {
-          toast({
-            title: `Erreur lors de la modification de ${ressource?.name}`,
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        })
-        .finally(() => {
-          setIsLoading(false);
+    let ressource_id, tmpFiles, child_id;
+
+    if (tmpRessource.kind === "file") {
+      const { files, ...tmpRessourceWithoutFiles } = tmpRessource;
+      tmpFiles = files;
+      tmpRessource = tmpRessourceWithoutFiles;
+    }
+    try {
+      if ("id" in tmpRessource) {
+        await fetchApi.put("/api/ressources/update", { ...tmpRessource });
+        ressource_id = tmpRessource.id;
+        child_id = tmpRessource.child_id;
+      } else {
+        const response = await fetchApi.post("/api/ressources/create", {
+          ...tmpRessource,
         });
-    } else {
-      fetchApi
-        .post("/api/ressources/create", { ...tmpRessource })
-        .then(() => {
-          toast({
-            title: `${tmpRessource.name} créé avec succès`,
-            status: "success",
-            duration: 5000,
-            isClosable: true,
-          });
-          router.push("/dashboard/bo/ressources");
-        })
-        .catch(() => {
-          toast({
-            title: `Erreur lors de la création de ${tmpRessource.name}`,
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        })
-        .finally(() => {
-          setIsLoading(false);
+        ressource_id = response.id;
+        child_id = response.child_id;
+      }
+      if (tmpFiles && child_id) {
+        let formData = new FormData();
+        let file = new File([tmpFiles], tmpFiles.name, {
+          type: tmpFiles.type,
         });
+        formData.append("files", file);
+        formData.append("ref", "api::ressource-file.ressource-file");
+        formData.append("refId", child_id.toString());
+        formData.append("field", "files");
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_STRAPI_URL}/upload`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+      }
+      setIsLoading(false);
+      router.push("/dashboard/bo/ressources");
+    } catch (e) {
+      toast({
+        title: `Erreur lors de la ${
+          "id" in tmpRessource ? "modification" : "création"
+        } de ${tmpRessource.name}`,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -149,7 +163,7 @@ const RessourceCreate = () => {
       <Box mb={4}>
         <BackButton />
       </Box>
-      <Container maxW="container.md">
+      <Container maxW="container.2lg">
         {id === "new" ? (
           <Heading>Créer une ressource</Heading>
         ) : (
@@ -178,8 +192,6 @@ const RessourceCreate = () => {
                     onValueChange={(key: string, value: any) => {
                       if (key === "kind" && value === "video") {
                         formik.setFieldValue("source", "youtube");
-                      }
-                      if (key === "kind" && value === "files") {
                       }
                     }}
                   />

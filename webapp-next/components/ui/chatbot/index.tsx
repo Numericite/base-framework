@@ -19,6 +19,7 @@ import { TTheme } from "../../../pages/api/themes/types";
 import { ChatBotProps, ChatBotStep, ChatBotStepResponse } from "./interfaces";
 import { steps } from "./steps";
 import { BsArrowRight } from "react-icons/bs";
+import IconPlaceHolder from "../icon-placeholder";
 
 const ChatBot: React.FC<ChatBotProps> = (props) => {
   let {
@@ -80,9 +81,9 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
   };
 
   const botRessources = [
-    { name: "Ressource 1", icon: "icon_computer.png" },
-    { name: "Ressource 2", icon: "icon_play.png" },
-    { name: "Ressource 3", icon: "icon_document.png" },
+    { name: "Ressource 1", icon: "file" },
+    { name: "Ressource 2", icon: "link" },
+    { name: "Ressource 3", icon: "quiz" },
   ];
 
   const getResponsesFromStep = (
@@ -401,10 +402,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                         <Text fontSize={"14px"} color="#1B1D1F">
                           {ressource.name}
                         </Text>
-                        <Image
-                          src={"/chatbot/" + ressource.icon}
-                          alt="icone ressource"
-                        />
+                        <IconPlaceHolder kind={ressource.icon} />
                       </Flex>
                     </Box>
                   ))}

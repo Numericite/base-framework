@@ -104,7 +104,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
   ));
 
   useEffect(() => {
-    fetchResponses();
+    if (responseParams.personae) fetchResponses();
   }, [responseParams]);
 
   return (

@@ -12,6 +12,9 @@ import { fetchApi } from "../../utils/api/fetch-api";
 import { TRessource, TRessourceKindEnum } from "../api/ressources/types";
 import { GeneralListQueryParams } from "../api/types";
 import { GetServerSideProps } from "next";
+import ChatBot from "../../components/ui/chatbot";
+import CustomBreadcrumb from "../../components/ui/breadcrumb";
+import { useEffect } from "react";
 
 interface RessourcesProps {
   searchParams: {
@@ -19,12 +22,55 @@ interface RessourcesProps {
     theme?: number;
     kind?: TRessourceKindEnum;
   };
+  responseParams: {
+    personae: number;
+    occupation: number;
+    theme: number;
+    subTheme: number;
+  };
 }
 
 const Ressources: React.FC<RessourcesProps> = (props) => {
-  const { searchParams } = props;
+  const { searchParams, responseParams } = props;
+  const [path, setPath] = useState({
+    personae: "",
+    occupation: "",
+    theme: "",
+    subTheme: "",
+  });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [ressources, setRessources] = useState<TRessource[]>([]);
+  const [showToast, setShowToast] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const toggleState = (show: boolean, isEditing: boolean) => {
+    setShowToast(show);
+    setIsEditing(isEditing);
+  };
+
+  const fetchResponses = () => {
+    Promise.all([
+      fetchApi.get("/api/personaes/find", { id: responseParams.personae }),
+      fetchApi.get("/api/personaeoccupations/find", {
+        id: responseParams.occupation,
+      }),
+      fetchApi.get("/api/themes/find", { id: responseParams.theme }),
+      fetchApi.get("/api/subthemes/find", { id: responseParams.subTheme }),
+    ]).then(
+      ([
+        responsePersonae,
+        responsePersonaeOccupation,
+        responseTheme,
+        responseSubTheme,
+      ]) => {
+        setPath({
+          personae: responsePersonae.name,
+          occupation: responsePersonaeOccupation.name,
+          theme: responseTheme.name,
+          subTheme: responseSubTheme.name,
+        });
+      }
+    );
+  };
 
   const fetchRessources = (
     _q?: string,
@@ -57,21 +103,57 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
     <Skeleton key={_} height={64} borderRadius="lg" />
   ));
 
+  useEffect(() => {
+    fetchResponses();
+  }, [responseParams]);
+
   return (
     <>
+      {showToast && (
+        <Box
+          background="rgba(32, 64, 100, 0.3)"
+          pos="absolute"
+          w="100%"
+          h="100%"
+          top="0"
+          left="0"
+          zIndex={99}
+          onClick={() => {
+            setShowToast(false);
+          }}
+        />
+      )}
       <Box bg={"neutral"}>
         <Container maxW="container.2lg" py={"2.75rem"} mb={"2.75rem"}>
           <Heading pb={6}>Ressources</Heading>
-          <SearchBar
-            searchParams={searchParams}
-            onSearch={(
-              _q?: string,
-              theme?: number,
-              kind?: TRessourceKindEnum
-            ) => {
-              fetchRessources(_q, { theme, kind });
-            }}
+          <ChatBot
+            toast={true}
+            showToast={showToast}
+            setShowToast={setShowToast}
+            stepQuestion={1}
+            isEditing={isEditing}
           />
+          <Box>
+            {responseParams.personae ? (
+              <CustomBreadcrumb
+                path={path}
+                toggleState={(show, isEditing) => {
+                  toggleState(show, isEditing);
+                }}
+              />
+            ) : (
+              <SearchBar
+                searchParams={searchParams}
+                onSearch={(
+                  _q?: string,
+                  theme?: number,
+                  kind?: TRessourceKindEnum
+                ) => {
+                  fetchRessources(_q, { theme, kind });
+                }}
+              />
+            )}
+          </Box>
         </Container>
       </Box>
       <Container maxW="container.2lg" pb={6}>
@@ -84,7 +166,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { _q, theme, kind } = ctx.query;
+  const { _q, theme, kind, personae, occupation, subTheme } = ctx.query;
 
   return {
     props: {
@@ -92,6 +174,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         _q: (_q as string) || null,
         theme: parseInt(theme as string) || null,
         kind: (kind as TRessourceKindEnum) || null,
+      },
+      responseParams: {
+        personae: parseInt(personae as string) || null,
+        occupation: parseInt(occupation as string) || null,
+        theme: parseInt(theme as string) || null,
+        subTheme: parseInt(subTheme as string) || null,
       },
     },
   };

@@ -33,6 +33,23 @@ import {
   ThemeRoutesPutParams,
   ThemeRoutesDeleteParams,
 } from "../../pages/api/themes/types";
+
+import {
+  PersonaeRoutesDataResponses,
+  PersonaeGetRoutes,
+  PersonaeRoutesGetParams,
+} from "../../pages/api/personaes/types";
+import {
+  PersonaeOccupationRoutesDataResponses,
+  PersonaeOccupationGetRoutes,
+  PersonaeOccupationRoutesGetParams,
+} from "../../pages/api/personaeoccupations/types";
+
+import {
+  SubThemeRoutesDataResponses,
+  SubThemeGetRoutes,
+  SubThemeRoutesGetParams,
+} from "../../pages/api/subthemes/types";
 import {
   UseCaseRoutesDataResponses,
   UseCaseGetRoutes,
@@ -58,6 +75,9 @@ export type DataResponses<T> =
   | ThemeRoutesDataResponses<T>
   | RessourceRoutesDataResponses<T>
   | FeedBackRoutesDataResponses<T>
+  | PersonaeRoutesDataResponses<T>
+  | PersonaeOccupationRoutesDataResponses<T>
+  | SubThemeRoutesDataResponses<T>
   | UseCaseRoutesDataResponses<T>;
 
 export type MyGetRoutes =
@@ -66,6 +86,9 @@ export type MyGetRoutes =
   | RessourceGetRoutes
   | ThemeGetRoutes
   | FeedBackGetRoutes
+  | PersonaeGetRoutes
+  | PersonaeOccupationGetRoutes
+  | SubThemeGetRoutes
   | UseCaseGetRoutes;
 export type MyPostRoutes =
   | AuthPostRoutes
@@ -85,6 +108,9 @@ export interface GetRouteParams
     UseCaseRoutesGetParams,
     RessourceRoutesGetParams,
     FeedBackRoutesGetParams,
+    PersonaeRoutesGetParams,
+    PersonaeOccupationRoutesGetParams,
+    SubThemeRoutesGetParams,
     ThemeRoutesGetParams {}
 
 export interface PostRouteParams

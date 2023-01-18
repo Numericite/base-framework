@@ -11,8 +11,8 @@ export const ZTheme = z.object({
   name: z.string(),
   description: z.string(),
   image: z.optional(ZStrapiFile),
-  personaes: z.array(ZPersonae).optional(),
-  sub_themes: z.array(ZSubTheme).optional(),
+  personaes: z.array(ZPersonae),
+  sub_themes: z.array(ZSubTheme),
 });
 export type TTheme = z.infer<typeof ZTheme>;
 

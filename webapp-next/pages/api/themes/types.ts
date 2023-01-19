@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { GeneralListQueryParams, Pagination, ZStrapiFile } from "../types";
 import { ZSubTheme } from "../subthemes/types";
-import { ZPersonae} from "../personaes/types";
+import { ZPersonae } from "../personaes/types";
 
 // -----------------------------
 // ----- STRAPI DATA TYPES -----
@@ -12,7 +12,7 @@ export const ZTheme = z.object({
   description: z.string(),
   image: z.optional(ZStrapiFile),
   personaes: z.array(ZPersonae),
-  sub_themes: z.array(ZSubTheme)
+  sub_themes: z.array(ZSubTheme),
 });
 export type TTheme = z.infer<typeof ZTheme>;
 

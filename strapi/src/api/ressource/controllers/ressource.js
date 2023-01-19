@@ -7,7 +7,7 @@
 const { createCoreController } = require("@strapi/strapi").factories;
 
 const childRessourceRequest = (ressource) =>
-  strapi
+strapi
     .service(
       `api::ressource-${ressource.attributes.kind}.ressource-${ressource.attributes.kind}`
     )
@@ -16,7 +16,11 @@ const childRessourceRequest = (ressource) =>
         ressource: { id: ressource.id },
       },
       populate: {
-        ressource: { populate: { theme: true, image: true } },
+        ressource: { populate: { theme: {
+          populate: {
+            sub_themes: true, personaes: true
+          }
+        }, image: true } },
         files: true,
       },
     });

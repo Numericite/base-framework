@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { AiTwotoneHome } from "react-icons/ai";
-import { BsBook, BsPeople } from "react-icons/bs";
+import { BsBook, BsInboxFill, BsPeople } from "react-icons/bs";
 import Menu from "../components/bo/menu";
 
 export interface MenuItem {
@@ -23,7 +23,7 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
     },
     {
       id: 2,
-      name: "Gestion des ressources",
+      name: "Ressources",
       icon: <BsBook />,
       link: "/dashboard/bo/ressources",
     },
@@ -32,6 +32,12 @@ const PrivateLayout = ({ children }: { children: ReactNode }) => {
       name: "Contributions",
       icon: <BsPeople />,
       link: "/dashboard/bo/contributions",
+    },
+    {
+      id: 4,
+      name: "Cas d'usage",
+      icon: <BsInboxFill />,
+      link: "/dashboard/bo/usecases",
     },
   ];
 

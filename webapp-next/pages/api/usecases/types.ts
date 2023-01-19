@@ -10,6 +10,7 @@ import { ZRessource } from "../ressources/types";
 const ZUseCaseStep = z.object({
   id: z.number(),
   ressource: ZRessource,
+  position: z.number(),
 });
 
 export const ZUseCase = z.object({

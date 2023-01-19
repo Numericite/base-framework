@@ -44,7 +44,7 @@ const Menu = (props: MenuProps) => {
     >
       <Box display="flex" mb={2}>
         <Box w="full">
-          <Text fontSize={["xl", "2xl"]} fontWeight={"bold"} my={4}>
+          {/* <Text fontSize={["xl", "2xl"]} fontWeight={"bold"} my={4}>
             Ressourcerie{" "}
             <Text
               as="span"
@@ -57,7 +57,7 @@ const Menu = (props: MenuProps) => {
             <Text as="span" color="primary">
               management
             </Text>
-          </Text>
+          </Text> */}
           {menuItems.map((item) => (
             <Box key={item.id} mb={2}>
               <NextLink

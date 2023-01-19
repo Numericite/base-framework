@@ -54,12 +54,13 @@ const childRessourceUpdateRequest = async (ressource, formerKind) => {
       }
     }
   } else {
+    let { id, created_at, updated_at, ...tmpRessource } = ressource;
     return strapi
       .service(`api::ressource-${ressource.kind}.ressource-${ressource.kind}`)
       .update(child.results[0].id, {
         data: {
-          ...ressource,
-          ressource: { id: ressource.id },
+          ...tmpRessource,
+          ressource: { id },
         },
       });
   }

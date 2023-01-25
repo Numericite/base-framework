@@ -39,10 +39,14 @@ import {
 } from "../../pages/api/themes/types";
 import {
   UseCaseRoutesDataResponses,
+  UseCasePostRoutes,
+  UseCasePutRoutes,
   UseCaseGetRoutes,
   UseCaseDeleteRoutes,
   UseCaseRoutesGetParams,
   UseCaseRoutesDeleteParams,
+  UseCaseRoutesPostParams,
+  UseCaseRoutesPutParams,
 } from "../../pages/api/usecases/types";
 import {
   FeedBackDeleteRoutes,
@@ -90,12 +94,14 @@ export type MyPostRoutes =
   | FeedBackPostRoutes
   | ContributionPostRoutes
   | RessourcePostRoutes
-  | ThemePostRoutes;
+  | ThemePostRoutes
+  | UseCasePostRoutes;
 export type MyPutRoutes =
   | UserPutRoutes
   | FeedBackPutRoutes
   | ContributionPutRoutes
   | ThemePutRoutes
+  | UseCasePutRoutes
   | RessourcePutRoutes;
 export type MyDeleteRoutes =
   | UserDeleteRoutes
@@ -119,6 +125,7 @@ export interface PostRouteParams
     FeedBackRoutesPostParams,
     RessourceRoutesPostParams,
     ContributionRoutesPostParams,
+    UseCaseRoutesPostParams,
     ThemeRoutesPostParams {}
 
 export interface PutRouteParams
@@ -126,6 +133,7 @@ export interface PutRouteParams
     FeedBackRoutesPutParams,
     RessourceRoutesPutParams,
     ContributionRoutesPutParams,
+    UseCaseRoutesPutParams,
     ThemeRoutesPutParams {}
 
 export interface DeleteRouteParams

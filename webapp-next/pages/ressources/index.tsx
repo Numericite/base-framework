@@ -50,7 +50,13 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
   };
 
   const displayRessources = ressources.map((ressource) => {
-    return <RessourceCard key={ressource.id} ressource={ressource} />;
+    return (
+      <RessourceCard
+        key={ressource.id}
+        ressource={ressource}
+        clickable={true}
+      />
+    );
   });
 
   const displaySkeleton = Array.from(Array(6).keys()).map((_) => (

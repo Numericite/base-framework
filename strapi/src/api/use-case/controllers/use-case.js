@@ -121,12 +121,6 @@ module.exports = createCoreController("api::use-case.use-case", () => ({
       return {
         ...finalUseCase,
         steps: responses.map((response) => {
-          console.log("response", {
-            ...response,
-            ressource: response.ressources.find(
-              (r) => r.id === response.step.ressource.id
-            ),
-          });
           return {
             ...response.step,
             ressource: response.ressources.find(
@@ -138,48 +132,5 @@ module.exports = createCoreController("api::use-case.use-case", () => ({
     });
 
     return { data: finalUseCase };
-
-    // let finalUseCase = await Promise.all(useCaseStep.results).then(
-    //   (useCasesStep) => {
-    //     return useCasesStep.map((useCaseStep) => {
-    //       let { use_case, ...stepWithoutUseCase } = useCasesStep;
-    //       let ressource = useCaseStep.ressource;
-    //       const ressourceChildPromise = strapi
-    //         .service(
-    //           `api::ressource-${ressource.kind}.ressource-${ressource.kind}`
-    //         )
-    //         .find({
-    //           filters: {
-    //             ressource: { id: ressource.id },
-    //           },
-    //         });
-
-    //       console.log("RESSOURCE CHILD", ressourceChildPromise);
-    //     });
-    //   }
-    // );
-
-    // console.log("FINALE", finalUseCase);
-
-    let { use_case, ...stepWithoutUseCase } = useCaseStep.results[0];
-    const ressource = useCaseStep.results[0].ressource;
-    const ressource_child = await strapi
-      .service(`api::ressource-${ressource.kind}.ressource-${ressource.kind}`)
-      .find({
-        filters: {
-          ressource: { id: ressource.id },
-        },
-      });
-    stepWithoutUseCase.ressource = {
-      ...ressource,
-      child_id: ressource_child.results[0].id,
-      ...ressource_child.results[0],
-    };
-
-    // console.log(stepWithoutUseCase);
-
-    // console.log({ data: { ...use_case, steps: [stepWithoutUseCase] } });
-
-    // return { data: { ...use_case, steps: [stepWithoutUseCase] } };
   },
 }));

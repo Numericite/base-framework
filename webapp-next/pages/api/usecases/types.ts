@@ -32,18 +32,21 @@ export type TUseCaseCreated = z.infer<typeof ZUseCaseCreated>;
 // // -------------------------
 // // ----- POST PAYLOADS -----
 // // -------------------------
-// export const ZUseCaseCreationPayload = ZUseCase.omit({
-//   id: true,
-// });
-// export type TUseCaseCreationPayload = z.infer<
-//   typeof ZUseCaseCreationPayload
-// >;
+export const ZUseCaseCreationPayload = ZUseCase.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  publishedAt: true,
+  steps: true,
+  image: true,
+});
+export type TUseCaseCreationPayload = z.infer<typeof ZUseCaseCreationPayload>;
 
 // // -------------------------
 // // ----- PUT PAYLOADS -----
 // // -------------------------
-// export const ZUseCaseUpdatePayload = ZUseCase;
-// export type TUseCaseUpdatePayload = z.infer<typeof ZUseCaseUpdatePayload>;
+export const ZUseCaseUpdatePayload = ZUseCase;
+export type TUseCaseUpdatePayload = z.infer<typeof ZUseCaseUpdatePayload>;
 
 // ---------------------------
 // ----- DELETE PAYLOADS -----
@@ -65,8 +68,8 @@ export type TUseCaseFindParams = z.infer<typeof ZUseCaseFindParams>;
 // --- ROUTES DEFINITION ---
 // -------------------------
 export type UseCaseGetRoutes = "/api/usecases/list" | "/api/usecases/find";
-// export type UseCasePostRoutes = "/api/usecases/create";
-// export type UseCasePutRoutes = "/api/usecases/update";
+export type UseCasePostRoutes = "/api/usecases/create";
+export type UseCasePutRoutes = "/api/usecases/update";
 export type UseCaseDeleteRoutes = "/api/usecases/delete";
 
 //REQUESTS
@@ -74,12 +77,12 @@ export interface UseCaseRoutesGetParams {
   "/api/usecases/list": GeneralListQueryParams | undefined;
   "/api/usecases/find": TUseCaseFindParams;
 }
-// export interface UseCaseRoutesPostParams {
-//   "/api/usecases/create": TUseCaseCreationPayload;
-// }
-// export interface UseCaseRoutesPutParams {
-//   "/api/usecases/update": TUseCaseUpdatePayload;
-// }
+export interface UseCaseRoutesPostParams {
+  "/api/usecases/create": TUseCaseCreationPayload;
+}
+export interface UseCaseRoutesPutParams {
+  "/api/usecases/update": TUseCaseUpdatePayload;
+}
 export interface UseCaseRoutesDeleteParams {
   "/api/usecases/delete": TUseCaseDeletionPayload;
 }
@@ -89,10 +92,10 @@ export type UseCaseRoutesDataResponses<T> = T extends "/api/usecases/list"
   ? { data: TUseCase[]; pagination: Pagination }
   : T extends "/api/usecases/find"
   ? TUseCase
-  : // : T extends "/api/usecases/create"
-  // ? TUseCase
-  // : T extends "/api/usecases/update"
-  // ? TUseCase
-  T extends "/api/usecases/delete"
+  : T extends "/api/usecases/create"
+  ? TUseCase
+  : T extends "/api/usecases/update"
+  ? TUseCase
+  : T extends "/api/usecases/delete"
   ? TUseCase
   : never;

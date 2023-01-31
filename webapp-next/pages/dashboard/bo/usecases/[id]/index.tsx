@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -9,6 +10,7 @@ import {
   Input,
   Text,
   useDisclosure,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
@@ -21,6 +23,7 @@ import {
   TUseCase,
   TUseCaseCreationPayload,
   TUseCaseUpdatePayload,
+  TUseCaseWithoutSteps,
 } from "../../../../api/usecases/types";
 import * as yup from "yup";
 import RessourceCard from "../../../../../components/ui/ressources/ressource-card";
@@ -28,9 +31,14 @@ import DragNDropComponent from "../../../../../components/bo/usecases/dragndrop"
 import { TRessource } from "../../../../api/ressources/types";
 import RessourceModal from "../../../../../components/bo/usecases/ressource-modal";
 import { AiFillCloseCircle } from "react-icons/ai";
+import {
+  TUseCaseStep,
+  TUseCaseStepCreationPayload,
+} from "../../../../api/usecasesteps/types";
 
 const UseCaseCreate = () => {
   const router = useRouter();
+  const toast = useToast();
   const { id } = router.query;
   const [useCase, setUseCase] = useState<TUseCase>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -90,6 +98,72 @@ const UseCaseCreate = () => {
     );
   };
 
+  const handleSubmit = async (
+    tmpUseCase: TUseCaseCreationPayload | TUseCaseUpdatePayload
+  ) => {
+    setIsLoading(true);
+    let usecase: TUseCaseWithoutSteps;
+    if (id !== "new") {
+      try {
+        const res = await fetchApi.put("/api/usecases/update", {
+          id: parseInt(id as string),
+          ...tmpUseCase,
+        });
+        usecase = res;
+      } catch (e) {
+        toast({
+          title: "Erereur à la création du cas d'usage",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } else {
+      try {
+        const res = await fetchApi.post("/api/usecases/create", {
+          ...tmpUseCase,
+        });
+        usecase = res;
+      } catch (e) {
+        toast({
+          title: "Erereur à la création du cas d'usage",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    }
+    let tmpUseCaseSteps = ressources.map((ressource, index) => {
+      return {
+        position: index + 1,
+        ressource: ressource.id,
+        use_case: usecase.id,
+      };
+    });
+    tmpUseCaseSteps.forEach((step) => {
+      fetchApi
+        .post("/api/usecasesteps/create", {
+          ...step,
+        })
+        .catch(() => {
+          toast({
+            title: "Erereur à la création du cas d'usage",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+    });
+    toast({
+      title: "Le cas d'usage a été créé avec succès !",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
+    setIsLoading(false);
+    router.push("/dashboard/bo/usecases");
+  };
+
   return (
     <>
       <Box>
@@ -99,7 +173,7 @@ const UseCaseCreate = () => {
         <Box mt={8}>
           <Formik
             initialValues={initialValues}
-            onSubmit={() => {}}
+            onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
             {(formik) => {
@@ -190,7 +264,7 @@ const UseCaseCreate = () => {
                         )}
                       />
 
-                      <Button mt={4} onClick={onOpen}>
+                      <Button mt={4} size="sm" onClick={onOpen}>
                         <Text>Ajouter une ressource</Text>
                       </Button>
                     </Flex>
@@ -200,6 +274,16 @@ const UseCaseCreate = () => {
                     isOpen={isOpen}
                     setRessources={setRessources}
                   />
+                  <Divider mt={8} w="full" />
+                  <Flex mt={8} justifyContent="flex-end">
+                    <Button type="submit">
+                      {id === "new" ? (
+                        <Text>Créer le cas d&apos;usage</Text>
+                      ) : (
+                        <Text>Modifier le cas d&apos;usage</Text>
+                      )}
+                    </Button>
+                  </Flex>
                 </Form>
               );
             }}

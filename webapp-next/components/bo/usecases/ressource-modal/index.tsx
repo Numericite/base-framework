@@ -84,7 +84,7 @@ const RessourceModal = (props: RessourceModalProps) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal size="xl" isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Recherchez la ressource à ajouter</ModalHeader>
@@ -115,7 +115,12 @@ const RessourceModal = (props: RessourceModalProps) => {
                 </Text>
               }
             >
-              <AutoCompleteInput w="full" onChange={handleChange} />
+              <AutoCompleteInput
+                placeholder="Recherchez une ressource"
+                size="sm"
+                w="full"
+                onChange={handleChange}
+              />
               {isApiLoading ? (
                 <Flex
                   w="full"

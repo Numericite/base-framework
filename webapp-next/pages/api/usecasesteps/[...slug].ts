@@ -3,17 +3,17 @@ import { ActiveSlugs, Pagination, StrapiResponseType } from "../types";
 import { AxiosInstance } from "axios";
 import nextToStrapiHandler from "../../../utils/api/next-to-strapi-handler";
 import {
-  TUseCase,
-  TUseCaseCreationPayload,
-  TUseCaseDeletionPayload,
-  TUseCaseUpdatePayload,
-  TUseCaseWithoutSteps,
-  ZUseCaseCreationPayload,
-  ZUseCaseFindParams,
-  ZUseCaseUpdatePayload,
-  ZUseCaseWithoutSteps,
+  TUseCaseStep,
+  TUseCaseStepCreationPayload,
+  TUseCaseStepDeletionPayload,
+  TUseCaseStepUpdatePayload,
+  TUseCaseStepWithoutRessource,
+  ZUseCaseStepCreationPayload,
+  ZUseCaseStepFindParams,
+  ZUseCaseStepUpdatePayload,
+  ZUseCaseStepWithoutRessource,
 } from "./types";
-import { ZUseCase, ZUseCaseDeletionPayload } from "./types";
+import { ZUseCaseStep, ZUseCaseStepDeletionPayload } from "./types";
 import { z } from "zod";
 import { getRecursiveStrapiObject } from "../../../utils/api/parse-strapi-object";
 
@@ -32,19 +32,22 @@ const getMethods = async (
   axios: AxiosInstance
 ): Promise<
   StrapiResponseType<
-    { data: TUseCase[]; pagination: Pagination } | TUseCase | number | string
+    | { data: TUseCaseStep[]; pagination: Pagination }
+    | TUseCaseStep
+    | number
+    | string
   >
 > => {
   switch (route) {
     case "list": {
-      let { status, data } = await axios.get(`/use-cases`, {
+      let { status, data } = await axios.get(`/use-case-steps`, {
         params: routeParams,
       });
       return {
         status,
         data: {
           data: data.data.map((_: any) =>
-            ZUseCase.parse(getRecursiveStrapiObject(_))
+            ZUseCaseStep.parse(getRecursiveStrapiObject(_))
           ),
           pagination: data.meta.pagination,
         },
@@ -52,18 +55,18 @@ const getMethods = async (
     }
     case "find": {
       const { id, ...otherParams } = routeParams;
-      ZUseCaseFindParams.parse({ id: parseInt(id as string) });
-      let { status, data } = await axios.get(`/use-cases/${id}`, {
+      ZUseCaseStepFindParams.parse({ id: parseInt(id as string) });
+      let { status, data } = await axios.get(`/use-case-steps/${id}`, {
         params: otherParams,
       });
 
       return {
         status,
-        data: ZUseCase.parse(getRecursiveStrapiObject(data.data)),
+        data: ZUseCaseStep.parse(getRecursiveStrapiObject(data.data)),
       };
     }
     case "count": {
-      const { status, data } = await axios.get(`/use-cases/count`, {
+      const { status, data } = await axios.get(`/use-case-steps/count`, {
         params: routeParams,
       });
       return { status, data: z.number().parse(data) };
@@ -83,18 +86,20 @@ const postMethods = async (
   },
   body: any,
   axios: AxiosInstance
-): Promise<StrapiResponseType<TUseCaseWithoutSteps | string>> => {
+): Promise<StrapiResponseType<TUseCaseStepWithoutRessource | string>> => {
   switch (route) {
     case "create":
       const payload = JSON.parse(body);
-      const params: TUseCaseCreationPayload =
-        ZUseCaseCreationPayload.parse(payload);
-      const { status, data } = await axios.post(`/use-cases`, {
+      const params: TUseCaseStepCreationPayload =
+        ZUseCaseStepCreationPayload.parse(payload);
+      const { status, data } = await axios.post(`/use-case-steps`, {
         data: params,
       });
       return {
         status,
-        data: ZUseCaseWithoutSteps.parse(getRecursiveStrapiObject(data.data)),
+        data: ZUseCaseStepWithoutRessource.parse(
+          getRecursiveStrapiObject(data.data)
+        ),
       };
     default:
       return {
@@ -111,18 +116,21 @@ const putMethods = async (
   },
   body: any,
   axios: AxiosInstance
-): Promise<StrapiResponseType<TUseCaseWithoutSteps | string>> => {
+): Promise<StrapiResponseType<TUseCaseStepWithoutRessource | string>> => {
   switch (route) {
     case "update":
       const payload = JSON.parse(body);
-      const params: TUseCaseUpdatePayload =
-        ZUseCaseUpdatePayload.parse(payload);
-      const { status, data } = await axios.put(`/use-cases/${params.id}`, {
+      const params: TUseCaseStepUpdatePayload =
+        ZUseCaseStepUpdatePayload.parse(payload);
+
+      const { status, data } = await axios.put(`/use-case-steps/${params}`, {
         data: params,
       });
       return {
         status,
-        data: ZUseCaseWithoutSteps.parse(getRecursiveStrapiObject(data.data)),
+        data: ZUseCaseStepWithoutRessource.parse(
+          getRecursiveStrapiObject(data.data)
+        ),
       };
     default:
       return {
@@ -139,14 +147,14 @@ const deleteMethods = async (
   },
   body: any,
   axios: AxiosInstance
-): Promise<StrapiResponseType<TUseCase | string>> => {
+): Promise<StrapiResponseType<TUseCaseStepWithoutRessource | string>> => {
   switch (route) {
     case "delete":
       const payload = JSON.parse(body);
-      const params: TUseCaseDeletionPayload =
-        ZUseCaseDeletionPayload.parse(payload);
-      const { status, data } = await axios.delete(`/use-cases/${params.id}`);
-      return { status, data: ZUseCase.parse(data) };
+      const params: TUseCaseStepDeletionPayload =
+        ZUseCaseStepDeletionPayload.parse(payload);
+      const { status, data } = await axios.delete(`/use-case/${params.id}`);
+      return { status, data: ZUseCaseStepWithoutRessource.parse(data) };
     default:
       return {
         status: 404,

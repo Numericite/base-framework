@@ -1,17 +1,10 @@
 import { z } from "zod";
 import { GeneralListQueryParams, Pagination, ZStrapiFile } from "../types";
-import { ressourceVideoSourceEnum } from "../../../utils/globals/enums";
-import { ZRessource } from "../ressources/types";
+import { ZUseCaseStep } from "../usecasesteps/types";
 
 // -----------------------------
 // ----- STRAPI DATA TYPES -----
 // -----------------------------
-
-const ZUseCaseStep = z.object({
-  id: z.number(),
-  ressource: ZRessource,
-  position: z.number(),
-});
 
 export const ZUseCase = z.object({
   id: z.number(),
@@ -19,33 +12,46 @@ export const ZUseCase = z.object({
   description: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  publishedAt: z.string(),
   image: z.optional(ZStrapiFile),
   steps: z.array(ZUseCaseStep),
 });
 
 export type TUseCase = z.infer<typeof ZUseCase>;
 
+export const ZUseCaseWithoutSteps = ZUseCase.omit({
+  steps: true,
+});
+
+export type TUseCaseWithoutSteps = z.infer<typeof ZUseCaseWithoutSteps>;
+
 export const ZUseCaseCreated = ZUseCase;
 export type TUseCaseCreated = z.infer<typeof ZUseCaseCreated>;
+
+const createOmits = {
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  image: true,
+  steps: true,
+} as const;
+
+const updateOmits = {
+  createdAt: true,
+  updatedAt: true,
+  image: true,
+  steps: true,
+} as const;
 
 // // -------------------------
 // // ----- POST PAYLOADS -----
 // // -------------------------
-export const ZUseCaseCreationPayload = ZUseCase.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-  publishedAt: true,
-  steps: true,
-  image: true,
-});
+export const ZUseCaseCreationPayload = ZUseCase.omit(createOmits);
 export type TUseCaseCreationPayload = z.infer<typeof ZUseCaseCreationPayload>;
 
 // // -------------------------
 // // ----- PUT PAYLOADS -----
 // // -------------------------
-export const ZUseCaseUpdatePayload = ZUseCase;
+export const ZUseCaseUpdatePayload = ZUseCase.omit(updateOmits);
 export type TUseCaseUpdatePayload = z.infer<typeof ZUseCaseUpdatePayload>;
 
 // ---------------------------
@@ -93,9 +99,9 @@ export type UseCaseRoutesDataResponses<T> = T extends "/api/usecases/list"
   : T extends "/api/usecases/find"
   ? TUseCase
   : T extends "/api/usecases/create"
-  ? TUseCase
+  ? TUseCaseWithoutSteps
   : T extends "/api/usecases/update"
-  ? TUseCase
+  ? TUseCaseWithoutSteps
   : T extends "/api/usecases/delete"
   ? TUseCase
   : never;

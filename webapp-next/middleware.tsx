@@ -9,7 +9,6 @@ export async function middleware(req: NextRequest) {
   const cookie = req.headers.get("cookie");
 
   //PRIVATE PAGES LOGIC
-  console.log("req.nextUrl.pathname", req.nextUrl.pathname);
 
   if (req.nextUrl.pathname.startsWith("/dashboard/bo")) {
     if (!cookie) {

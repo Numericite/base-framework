@@ -24,9 +24,10 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": [
-        "images"
-      ]
+      "allowedTypes": ["images"]
+    },
+    "color": {
+      "type": "string"
     },
     "personaes": {
       "type": "relation",

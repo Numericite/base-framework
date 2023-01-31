@@ -25,10 +25,55 @@ strapi
       },
     });
 
+const childRessourceCreateRequest = async (ressource) => {
+  let { id, created_at, updated_at, ...tmpRessource } = ressource;
+  return strapi
+    .service(`api::ressource-${ressource.kind}.ressource-${ressource.kind}`)
+    .create({
+      data: {
+        ...tmpRessource,
+        ressource: id,
+      },
+    });
+};
+
+const childRessourceUpdateRequest = async (ressource, formerKind) => {
+  const child = await strapi
+    .service(`api::ressource-${formerKind}.ressource-${formerKind}`)
+    .find({
+      filters: {
+        ressource: { id: ressource.id },
+      },
+      populate: "*",
+    });
+
+  if (ressource.kind !== formerKind) {
+    const delete_res = await strapi
+      .service(`api::ressource-${formerKind}.ressource-${formerKind}`)
+      .delete(child.results[0].id);
+    if (delete_res.id) {
+      const newChildRessource = await childRessourceCreateRequest(ressource);
+      if (newChildRessource) {
+        return newChildRessource;
+      }
+    }
+  } else {
+    let { id, created_at, updated_at, ...tmpRessource } = ressource;
+    return strapi
+      .service(`api::ressource-${ressource.kind}.ressource-${ressource.kind}`)
+      .update(child.results[0].id, {
+        data: {
+          ...tmpRessource,
+          ressource: { id },
+        },
+      });
+  }
+};
+
 const childRessourceConsolidate = (childRessource) => {
   if (childRessource) {
     let { ressource, ...child } = childRessource;
-    return { ...child, ...ressource };
+    return { ...child, ...ressource, child_id: child.id };
   }
 };
 
@@ -58,6 +103,45 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
       }
     );
 
-    return { data: finalRessources, meta };
+    return { data: finalRessources.filter((_) => !!_), meta };
+  },
+  async create(ctx) {
+    let fullRessource = ctx.request.body.data;
+    const { data } = await super.create(ctx);
+    if (data) {
+      fullRessource.id = data.id;
+      const childRessourcePromise = await childRessourceCreateRequest(
+        fullRessource
+      );
+      return {
+        data: {
+          ...childRessourcePromise,
+          ...data,
+          child_id: childRessourcePromise.id,
+        },
+      };
+    }
+  },
+  async update(ctx) {
+    let fullRessource = ctx.request.body.data;
+
+    const formerRessource = await super.findOne(ctx);
+    const formerKind = formerRessource.data.attributes.kind;
+
+    const { data } = await super.update(ctx);
+    if (data) {
+      const childRessourcePromise = await childRessourceUpdateRequest(
+        fullRessource,
+        formerKind
+      );
+
+      return {
+        data: {
+          ...childRessourcePromise,
+          ...data,
+          child_id: childRessourcePromise.id,
+        },
+      };
+    }
   },
 }));

@@ -2,7 +2,17 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { ActiveSlugs, Pagination, StrapiResponseType } from "../types";
 import { AxiosInstance } from "axios";
 import nextToStrapiHandler from "../../../utils/api/next-to-strapi-handler";
-import { TUseCase, TUseCaseDeletionPayload, ZUseCaseFindParams } from "./types";
+import {
+  TUseCase,
+  TUseCaseCreationPayload,
+  TUseCaseDeletionPayload,
+  TUseCaseUpdatePayload,
+  TUseCaseWithoutSteps,
+  ZUseCaseCreationPayload,
+  ZUseCaseFindParams,
+  ZUseCaseUpdatePayload,
+  ZUseCaseWithoutSteps,
+} from "./types";
 import { ZUseCase, ZUseCaseDeletionPayload } from "./types";
 import { z } from "zod";
 import { getRecursiveStrapiObject } from "../../../utils/api/parse-strapi-object";
@@ -73,8 +83,19 @@ const postMethods = async (
   },
   body: any,
   axios: AxiosInstance
-): Promise<StrapiResponseType<TUseCase | string>> => {
+): Promise<StrapiResponseType<TUseCaseWithoutSteps | string>> => {
   switch (route) {
+    case "create":
+      const payload = JSON.parse(body);
+      const params: TUseCaseCreationPayload =
+        ZUseCaseCreationPayload.parse(payload);
+      const { status, data } = await axios.post(`/use-cases`, {
+        data: params,
+      });
+      return {
+        status,
+        data: ZUseCaseWithoutSteps.parse(getRecursiveStrapiObject(data.data)),
+      };
     default:
       return {
         status: 404,
@@ -90,8 +111,19 @@ const putMethods = async (
   },
   body: any,
   axios: AxiosInstance
-): Promise<StrapiResponseType<TUseCase | string>> => {
+): Promise<StrapiResponseType<TUseCaseWithoutSteps | string>> => {
   switch (route) {
+    case "update":
+      const payload = JSON.parse(body);
+      const params: TUseCaseUpdatePayload =
+        ZUseCaseUpdatePayload.parse(payload);
+      const { status, data } = await axios.put(`/use-cases/${params.id}`, {
+        data: params,
+      });
+      return {
+        status,
+        data: ZUseCaseWithoutSteps.parse(getRecursiveStrapiObject(data.data)),
+      };
     default:
       return {
         status: 404,

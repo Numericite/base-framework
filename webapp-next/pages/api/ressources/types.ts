@@ -18,7 +18,7 @@ const ZRessourceLink = z.object({
 });
 
 const ZRessourceFile = z.object({
-  files: z.array(ZStrapiFile),
+  files: z.array(ZStrapiFile).optional().nullable(),
   kind: z.literal("file"),
 });
 
@@ -51,12 +51,18 @@ const ZRessourceBase = z.object({
   name: z.string(),
   description: z.string(),
   content: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  publishedAt: z.string(),
+  createdAt: z.optional(z.string()),
+  updatedAt: z.optional(z.string()),
+  publishedAt: z.optional(z.string()),
   theme: ZTheme,
-  image: z.optional(ZStrapiFile),
+  image: z.optional(ZStrapiFile.nullable()),
+  child_id: z.number(),
 });
+
+const createOmits = {
+  id: true,
+  child_id: true,
+} as const;
 
 export const ZRessource = z.discriminatedUnion("kind", [
   ZRessourceBase.extend(ZRessourceLink.shape),
@@ -72,18 +78,34 @@ export type TRessourceCreated = z.infer<typeof ZRessourceCreated>;
 // // -------------------------
 // // ----- POST PAYLOADS -----
 // // -------------------------
-// export const ZRessourceCreationPayload = ZRessource.omit({
-//   id: true,
-// });
-// export type TRessourceCreationPayload = z.infer<
-//   typeof ZRessourceCreationPayload
-// >;
+export const ZRessourceCreationPayload = z.discriminatedUnion("kind", [
+  ZRessourceBase.extend(ZRessourceLink.shape).omit(createOmits),
+  ZRessourceBase.extend(ZRessourceVideo.shape).omit(createOmits),
+  ZRessourceBase.extend(ZRessourceQuiz.shape).omit(createOmits),
+  ZRessourceBase.extend(ZRessourceFile.shape)
+    .omit({ ...createOmits, files: true })
+    .extend({
+      files: z.custom<File>().optional(),
+    }),
+]);
+
+export type TRessourceCreationPayload = z.infer<
+  typeof ZRessourceCreationPayload
+>;
 
 // // -------------------------
 // // ----- PUT PAYLOADS -----
 // // -------------------------
-// export const ZRessourceUpdatePayload = ZRessource;
-// export type TRessourceUpdatePayload = z.infer<typeof ZRessourceUpdatePayload>;
+export const ZRessourceUpdatePayload = z.discriminatedUnion("kind", [
+  ZRessourceBase.extend(ZRessourceLink.shape),
+  ZRessourceBase.extend(ZRessourceVideo.shape),
+  ZRessourceBase.extend(ZRessourceQuiz.shape),
+  ZRessourceBase.extend(ZRessourceFile.shape).omit({ files: true }).extend({
+    files: z.custom<File>().optional(),
+  }),
+]);
+
+export type TRessourceUpdatePayload = z.infer<typeof ZRessourceUpdatePayload>;
 
 // ---------------------------
 // ----- DELETE PAYLOADS -----
@@ -109,8 +131,8 @@ export type TRessourceFindParams = z.infer<typeof ZRessourceFindParams>;
 export type RessourceGetRoutes =
   | "/api/ressources/list"
   | "/api/ressources/find";
-// export type RessourcePostRoutes = "/api/ressources/create";
-// export type RessourcePutRoutes = "/api/ressources/update";
+export type RessourcePostRoutes = "/api/ressources/create";
+export type RessourcePutRoutes = "/api/ressources/update";
 export type RessourceDeleteRoutes = "/api/ressources/delete";
 
 //REQUESTS
@@ -118,12 +140,12 @@ export interface RessourceRoutesGetParams {
   "/api/ressources/list": GeneralListQueryParams | undefined;
   "/api/ressources/find": TRessourceFindParams;
 }
-// export interface RessourceRoutesPostParams {
-//   "/api/ressources/create": TRessourceCreationPayload;
-// }
-// export interface RessourceRoutesPutParams {
-//   "/api/ressources/update": TRessourceUpdatePayload;
-// }
+export interface RessourceRoutesPostParams {
+  "/api/ressources/create": TRessourceCreationPayload;
+}
+export interface RessourceRoutesPutParams {
+  "/api/ressources/update": TRessourceUpdatePayload;
+}
 export interface RessourceRoutesDeleteParams {
   "/api/ressources/delete": TRessourceDeletionPayload;
 }
@@ -133,10 +155,10 @@ export type RessourceRoutesDataResponses<T> = T extends "/api/ressources/list"
   ? { data: TRessource[]; pagination: Pagination }
   : T extends "/api/ressources/find"
   ? TRessource
-  : // : T extends "/api/ressources/create"
-  // ? TRessource
-  // : T extends "/api/ressources/update"
-  // ? TRessource
-  T extends "/api/ressources/delete"
+  : T extends "/api/ressources/create"
+  ? TRessource
+  : T extends "/api/ressources/update"
+  ? TRessource
+  : T extends "/api/ressources/delete"
   ? TRessource
   : never;

@@ -11,6 +11,7 @@ export const ZTheme = z.object({
   name: z.string(),
   description: z.string(),
   image: z.optional(ZStrapiFile),
+  color: z.string().optional(),
   personaes: z.array(ZPersonae),
   sub_themes: z.array(ZSubTheme),
 });

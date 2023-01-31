@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.0.13",
+    "@chakra-ui/icons": "2.0.13",
     "@chakra-ui/react": "^2.4.2",
     "@choc-ui/chakra-autocomplete": "^5.1.4",
     "@emotion/react": "^11",

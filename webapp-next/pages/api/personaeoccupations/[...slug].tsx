@@ -2,8 +2,15 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { ActiveSlugs, Pagination, StrapiResponseType } from "../types";
 import { AxiosInstance } from "axios";
 import nextToStrapiHandler from "../../../utils/api/next-to-strapi-handler";
-import { TPersonaeOccupation, TPersonaeOccupationDeletionPayload, ZPersonaeOccupationFindParams } from "./types";
-import { ZPersonaeOccupation, ZPersonaeOccupationDeletionPayload } from "./types";
+import {
+  TPersonaeOccupation,
+  TPersonaeOccupationDeletionPayload,
+  ZPersonaeOccupationFindParams,
+} from "./types";
+import {
+  ZPersonaeOccupation,
+  ZPersonaeOccupationDeletionPayload,
+} from "./types";
 import { z } from "zod";
 import { getRecursiveStrapiObject } from "../../../utils/api/parse-strapi-object";
 
@@ -22,7 +29,10 @@ const getMethods = async (
   axios: AxiosInstance
 ): Promise<
   StrapiResponseType<
-    { data: TPersonaeOccupation[]; pagination: Pagination } | TPersonaeOccupation | number | string
+    | { data: TPersonaeOccupation[]; pagination: Pagination }
+    | TPersonaeOccupation
+    | number
+    | string
   >
 > => {
   switch (route) {
@@ -114,7 +124,9 @@ const deleteMethods = async (
       const payload = JSON.parse(body);
       const params: TPersonaeOccupationDeletionPayload =
         ZPersonaeOccupationDeletionPayload.parse(payload);
-      const { status, data } = await axios.delete(`/personae-occupations/${params.id}`);
+      const { status, data } = await axios.delete(
+        `/personae-occupations/${params.id}`
+      );
       return { status, data: ZPersonaeOccupation.parse(data) };
     default:
       return {

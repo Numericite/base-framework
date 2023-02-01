@@ -46,6 +46,9 @@ const RessourceCreate = () => {
     content: "",
     theme: themes && (themes[0] as TTheme),
     link: "",
+    personaes: [],
+    personae_occupations: [],
+    sub_themes: [],
   };
 
   if (ressource && ressource.id) {
@@ -53,10 +56,18 @@ const RessourceCreate = () => {
       const { files, ...ressourceWithoutFiles } = ressource;
       initialValues = {
         ...ressourceWithoutFiles,
+        personaes: ressourceWithoutFiles.personaes?.map((p) => p.id),
+        personae_occupations: ressourceWithoutFiles.personae_occupations?.map(
+          (p) => p.id
+        ),
+        sub_themes: ressourceWithoutFiles.sub_themes?.map((p) => p.id),
       };
     } else {
       initialValues = {
         ...ressource,
+        personaes: ressource.personaes?.map((p) => p.id),
+        personae_occupations: ressource.personae_occupations?.map((p) => p.id),
+        sub_themes: ressource.sub_themes?.map((p) => p.id),
       };
     }
   }

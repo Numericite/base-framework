@@ -47,6 +47,21 @@
     },
     "content": {
       "type": "richtext"
+    },
+    "sub_themes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::sub-theme.sub-theme"
+    },
+    "personaes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::personae.personae"
+    },
+    "personae_occupations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::personae-occupation.personae-occupation"
     }
   }
 }

@@ -24,6 +24,7 @@ const CheckboxDisplayer = <TItem extends { id: number; name: string }>(
   props: CheckboxDisplayerProps<TItem>
 ) => {
   const { items, spacing, props_name, formik, onClick } = props;
+
   return (
     <SimpleGrid columns={spacing} spacing={4} py={3} bg="neutral" minW="full">
       <CheckboxGroup>

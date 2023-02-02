@@ -98,7 +98,7 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
           onClick={(e) => setIsPersonaesSelected(e.target.checked)}
         />
       </Box>
-      {personaeOccupations && personaeOccupations?.length > 0 && (
+      {personaeOccupations && personaeOccupations.length > 0 && (
         <Box w="full">
           <Heading size="sm" my={4}>
             A quel(s) activité(s) s&apos;adresse cette resource ?
@@ -112,7 +112,7 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
           />
         </Box>
       )}
-      {isPersonaeOccupationsSelected && (
+      {subThemes && subThemes.length > 0 && (
         <Box w="full">
           <Heading size="sm" my={4}>
             Choisissez le sous-thème de la resource

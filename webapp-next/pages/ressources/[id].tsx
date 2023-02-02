@@ -50,6 +50,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         },
       ]);
     }
+    return () => setTitles([]);
   }, []);
 
   const options: HTMLReactParserOptions = {

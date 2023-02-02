@@ -38,6 +38,8 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
   const { formik, step, themes } = props;
 
+  console.log(formik.values);
+
   const stepElements: RessourceFormStepElement[] = [
     {
       id: 1,
@@ -120,6 +122,26 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
                       style={{ height: "15rem", marginBottom: "1.25rem" }}
                       value={formik.values.content}
                       theme="snow"
+                      modules={{
+                        toolbar: [
+                          [{ header: [1, 2, false] }],
+                          [
+                            "bold",
+                            "italic",
+                            "underline",
+                            "strike",
+                            "blockquote",
+                          ],
+                          [
+                            { list: "ordered" },
+                            { list: "bullet" },
+                            { indent: "-1" },
+                            { indent: "+1" },
+                          ],
+                          ["link"],
+                          ["clean"],
+                        ],
+                      }}
                       onChange={field.onChange(field.name)}
                     />
                   </>

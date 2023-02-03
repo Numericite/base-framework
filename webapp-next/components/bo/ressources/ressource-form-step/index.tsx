@@ -38,8 +38,6 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
   const { formik, step, themes } = props;
 
-  console.log(formik.values);
-
   const stepElements: RessourceFormStepElement[] = [
     {
       id: 1,

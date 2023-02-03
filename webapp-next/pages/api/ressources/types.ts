@@ -70,6 +70,7 @@ const ZRessourceBase = z.object({
   ),
   image: z.optional(ZStrapiFile.nullable()),
   child_id: z.number(),
+  score: z.optional(z.number()),
 });
 
 const createOmits = {
@@ -170,11 +171,23 @@ export const ZRessourceFindParams = z.object({
 });
 export type TRessourceFindParams = z.infer<typeof ZRessourceFindParams>;
 
+export const ZRessourceAkinatorParams = z.object({
+  occupation: z.number(),
+  personae: z.number(),
+  subTheme: z.number(),
+  theme: z.number(),
+});
+export type TRessourceAkinatorParams = z.infer<
+  typeof ZRessourceAkinatorParams
+> &
+  GeneralListQueryParams;
+
 // -------------------------
 // --- ROUTES DEFINITION ---
 // -------------------------
 export type RessourceGetRoutes =
   | "/api/ressources/list"
+  | "/api/ressources/akinator"
   | "/api/ressources/find";
 export type RessourcePostRoutes = "/api/ressources/create";
 export type RessourcePutRoutes = "/api/ressources/update";
@@ -183,6 +196,7 @@ export type RessourceDeleteRoutes = "/api/ressources/delete";
 //REQUESTS
 export interface RessourceRoutesGetParams {
   "/api/ressources/list": GeneralListQueryParams | undefined;
+  "/api/ressources/akinator": TRessourceAkinatorParams;
   "/api/ressources/find": TRessourceFindParams;
 }
 export interface RessourceRoutesPostParams {
@@ -197,6 +211,8 @@ export interface RessourceRoutesDeleteParams {
 
 //RESPONSES
 export type RessourceRoutesDataResponses<T> = T extends "/api/ressources/list"
+  ? { data: TRessource[]; pagination: Pagination }
+  : T extends "/api/ressources/akinator"
   ? { data: TRessource[]; pagination: Pagination }
   : T extends "/api/ressources/find"
   ? TRessource

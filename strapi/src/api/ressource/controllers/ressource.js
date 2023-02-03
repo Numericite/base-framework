@@ -81,6 +81,29 @@ const childRessourceConsolidate = (childRessource) => {
   }
 };
 
+const baseRessourcesToResponse = async (data, meta) => {
+  const childRessourcesPromises = data.map((ressource) =>
+    childRessourceRequest(ressource)
+  );
+
+  const finalRessources = await Promise.all(childRessourcesPromises).then(
+    (childRessources) => {
+      return childRessources.map((childRessource) => {
+        const r = data.find(
+          (d) => d.id === childRessource.results[0].ressource.id
+        );
+        return {
+          ...childRessourceConsolidate(childRessource.results[0]),
+          score: r.score,
+        };
+      });
+    }
+  );
+
+  console.log(finalRessources);
+  return { data: finalRessources.filter((_) => !!_), meta };
+};
+
 module.exports = createCoreController("api::ressource.ressource", () => ({
   async findOne(ctx) {
     const response = await super.findOne(ctx);
@@ -95,19 +118,7 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
   async customFind(ctx) {
     const { data, meta } = await super.find(ctx);
 
-    const childRessourcesPromises = data.map((ressource) =>
-      childRessourceRequest(ressource)
-    );
-
-    const finalRessources = await Promise.all(childRessourcesPromises).then(
-      (childRessources) => {
-        return childRessources.map((childRessource) =>
-          childRessourceConsolidate(childRessource.results[0])
-        );
-      }
-    );
-
-    return { data: finalRessources.filter((_) => !!_), meta };
+    return baseRessourcesToResponse(data, meta);
   },
   async create(ctx) {
     let fullRessource = ctx.request.body.data;
@@ -147,5 +158,40 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
         },
       };
     }
+  },
+  async akinator(ctx) {
+    const { personae, occupation, subTheme, theme, pagination } =
+      ctx.request.query;
+
+    const { rows } = await strapi.db.connection.raw(
+      `SELECT t0.id, t0.name, t0.score FROM ( SELECT t1.id, t1.name, coalesce(personae_score, 0) + coalesce(personae_occupation_score, 0) + coalesce(sub_theme_score, 0) + coalesce(theme_score, 0) as score FROM ressources t1 LEFT JOIN ( SELECT t2.ressource_id, SUM(CASE WHEN personae_id=${personae} THEN 1 ELSE 0 END) as personae_score FROM ressources_personaes_links t2 GROUP BY t2.ressource_id ) t2 ON t1.id = t2.ressource_id LEFT JOIN ( SELECT t3.ressource_id, SUM(CASE WHEN personae_occupation_id=${occupation} THEN 1 ELSE 0 END) as personae_occupation_score FROM ressources_personae_occupations_links t3 GROUP BY t3.ressource_id ) t3 ON t1.id = t3.ressource_id LEFT JOIN ( SELECT t4.ressource_id, SUM(CASE WHEN sub_theme_id=${subTheme} THEN 1 ELSE 0 END) as sub_theme_score FROM ressources_sub_themes_links t4 GROUP BY t4.ressource_id ) t4 ON t1.id = t4.ressource_id LEFT JOIN ( SELECT t5.ressource_id, SUM(CASE WHEN theme_id=${theme} THEN 1 ELSE 0 END) as theme_score FROM ressources_theme_links t5 GROUP BY t5.ressource_id ) t5 ON t1.id = t5.ressource_id ) t0 ORDER BY score DESC LIMIT ${
+        pagination.pageSize
+      } OFFSET ${(pagination.page - 1) * pagination.pageSize};`
+    );
+
+    const consultation_ids = rows.map((_) => _.id);
+
+    const response = await strapi.service("api::ressource.ressource").find({
+      filters: {
+        id: { $in: consultation_ids },
+      },
+    });
+
+    return baseRessourcesToResponse(
+      response.results
+        .map((_) => {
+          const { id, ...attributes } = _;
+
+          return {
+            id,
+            attributes,
+            score: parseInt(rows.find((r) => r.id === _.id)?.score),
+          };
+        })
+        .sort((a, b) => b.score - a.score),
+      {
+        pagination: response.pagination,
+      }
+    );
   },
 }));

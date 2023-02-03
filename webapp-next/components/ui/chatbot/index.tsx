@@ -110,7 +110,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
       case 3:
         return tmpThemes
           .filter((_) =>
-            _.personaes.map((p) => p.id).includes(selectedValue.personae)
+            _.personaes?.map((p) => p.id).includes(selectedValue.personae)
           )
           .map((_) => ({
             label: _.name,
@@ -120,7 +120,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
       case 4:
         const theme = tmpThemes.find((_) => _.id === selectedValue.theme);
         if (theme)
-          return theme.sub_themes.map((_) => ({
+          return theme.sub_themes?.map((_) => ({
             label: _.name,
             value: _.id,
             checked: selectedValue.subTheme === _.id,
@@ -136,7 +136,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
       if (setStepQuestion) setStepQuestion(selectedValue.nextStep);
 
       if (selectedValue.nextStep > 0) {
-        let responses: ChatBotStepResponse[] = getResponsesFromStep(
+        let responses: ChatBotStepResponse[] | undefined = getResponsesFromStep(
           selectedValue.nextStep,
           personaes,
           personaeOccupations,

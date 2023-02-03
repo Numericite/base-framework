@@ -21,7 +21,6 @@ import { GetServerSideProps } from "next";
 import ChatBot from "../../components/ui/chatbot";
 import CustomBreadcrumb from "../../components/ui/breadcrumb";
 import { useEffect } from "react";
-import PageTitle from "../../components/ui/title";
 
 interface RessourcesProps {
   searchParams: {
@@ -156,7 +155,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
       )}
       <Box bg={"neutral"}>
         <Container maxW="container.2lg" py={"2.75rem"} mb={"2.75rem"}>
-          <PageTitle text="Ressources" />
+          <Heading pb={6}>Ressources</Heading>
           <ChatBot
             toast={true}
             showToast={showToast}

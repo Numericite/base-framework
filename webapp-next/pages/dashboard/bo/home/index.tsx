@@ -44,16 +44,19 @@ const BackOffice = () => {
       title: "Ressources",
       count: ressourcesCount,
       icon: <BsBook size={20} />,
+      bgColor: "blue.100",
     },
     {
       title: "Contributions",
       count: contributionsCount,
       icon: <BsPeople size={20} />,
+      bgColor: "green.100",
     },
     {
       title: "Cas d'usages",
       count: usecasesCount,
       icon: <BsInboxFill size={20} />,
+      bgColor: "yellow.100",
     },
   ];
 
@@ -71,6 +74,7 @@ const BackOffice = () => {
             title={card.title}
             count={card.count}
             icon={card.icon}
+            bgColor={card.bgColor}
             isLoading={isLoading}
           />
         ))}

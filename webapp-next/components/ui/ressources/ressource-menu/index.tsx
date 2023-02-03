@@ -31,7 +31,12 @@ const RessourceMenu = (props: RessourceMenuProps) => {
         <UnorderedList>
           {el.subtitles.map((sub, index) => {
             return (
-              <ListItem key={index} color="neutralBlue" fontWeight={"400"}>
+              <ListItem
+                listStyleType={"none"}
+                key={index}
+                color="neutralBlue"
+                fontWeight={"400"}
+              >
                 <Link href={`#${sub}`}>{sub}</Link>
               </ListItem>
             );

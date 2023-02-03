@@ -1,14 +1,26 @@
-import { Box, Flex, Skeleton, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Skeleton,
+  Stat,
+  StatArrow,
+  StatGroup,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  Text,
+} from "@chakra-ui/react";
 
 interface Props {
   title: string;
   count: number;
   icon: JSX.Element;
+  bgColor: string;
   isLoading?: boolean;
 }
 
 const HomeCard = (props: Props) => {
-  const { title, count, icon, isLoading } = props;
+  const { title, count, icon, isLoading, bgColor } = props;
   return (
     <Box
       shadow={"md"}
@@ -23,7 +35,7 @@ const HomeCard = (props: Props) => {
       }}
       transition="linear-gradient 0.2s ease-in-out"
     >
-      <Box
+      <StatGroup
         bg="white"
         _hover={{
           bgGradient:
@@ -32,25 +44,39 @@ const HomeCard = (props: Props) => {
         p={4}
         borderRadius="xl"
       >
-        <Flex align="center" w="fit-content" justify="space-between">
-          <Box mr={3}>{icon}</Box>
-          <Text>{title}</Text>
-        </Flex>
-        {isLoading ? (
-          <Skeleton height="20px" />
-        ) : (
-          <Flex w="full" justifyContent={"center"}>
-            <Text
-              fontSize="2xl"
-              bgGradient="linear(to-t, #2F80ED, #97F8B1)"
-              bgClip="text"
-              fontWeight="bold"
-            >
-              {count}
-            </Text>
+        <Stat>
+          <Flex align="center" w="fit-content" justify="space-between">
+            <StatLabel display="flex" flexDir={"row"} alignItems="center">
+              <Box mr={3} p={3} borderRadius="xl" bg={bgColor}>
+                {icon}
+              </Box>
+              <Text>{title}</Text>
+            </StatLabel>
           </Flex>
-        )}
-      </Box>
+          {isLoading ? (
+            <Skeleton height="20px" />
+          ) : (
+            <>
+              <Flex w="full" justifyContent={"center"} my={1}>
+                <StatNumber
+                  fontSize="3xl"
+                  bgGradient="linear(to-t, #2F80ED, #97F8B1)"
+                  bgClip="text"
+                  fontWeight="bold"
+                >
+                  {count}
+                </StatNumber>
+              </Flex>
+              <StatHelpText>
+                <StatArrow
+                  type={title === "Contributions" ? "decrease" : "increase"}
+                />
+                23.36%
+              </StatHelpText>
+            </>
+          )}
+        </Stat>
+      </StatGroup>
     </Box>
   );
 };

@@ -28,7 +28,7 @@ const ButtonContainer: React.FC<ButtonContainerProps> = (props) => {
           Suivant
         </Button>
       )}
-      {step === 2 && (
+      {step > 1 && step <= 3 && (
         <Flex justifyContent={"space-around"} w="fit-content" px={6}>
           <Button
             type="button"
@@ -48,7 +48,7 @@ const ButtonContainer: React.FC<ButtonContainerProps> = (props) => {
           </Button>
         </Flex>
       )}
-      {step === 3 && (
+      {step === 4 && (
         <Flex justifyContent={"space-around"} w="fit-content" px={6}>
           <Button
             type="button"

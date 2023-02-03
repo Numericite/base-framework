@@ -19,6 +19,7 @@ import {
 import KindRessourceDisplayer from "../kind-input-create";
 import "react-quill/dist/quill.snow.css";
 import RessourceSummary from "../ressource-summary";
+import RessourceThemeSelection from "../ressource-theme-selection";
 
 interface RessourceFormStepProps {
   formik: FormikProps<TRessourceUpdatePayload | TRessourceCreationPayload>;
@@ -180,6 +181,12 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
     },
     {
       id: 3,
+      componentToDisplay: (
+        formik: FormikProps<TRessourceUpdatePayload | TRessourceCreationPayload>
+      ) => <RessourceThemeSelection formik={formik} />,
+    },
+    {
+      id: 4,
       componentToDisplay: (
         formik: FormikProps<TRessourceUpdatePayload | TRessourceCreationPayload>
       ) => <RessourceSummary formik={formik} />,

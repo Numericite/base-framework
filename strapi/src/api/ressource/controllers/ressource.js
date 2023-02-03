@@ -18,13 +18,11 @@ const childRessourceRequest = (ressource) =>
       populate: {
         ressource: {
           populate: {
-            theme: {
-              populate: {
-                sub_themes: true,
-                personaes: true,
-              },
-            },
+            theme: true,
             image: true,
+            sub_themes: true,
+            personaes: true,
+            personae_occupations: true,
           },
         },
         files: true,

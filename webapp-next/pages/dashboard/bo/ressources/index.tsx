@@ -97,6 +97,9 @@ const DashboardRessources = () => {
           page,
           pageSize,
         },
+        sort: {
+          createdAt: "desc",
+        },
       })
       .then((response) => {
         return {

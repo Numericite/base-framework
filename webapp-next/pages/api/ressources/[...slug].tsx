@@ -16,7 +16,7 @@ import { z } from "zod";
 import { getRecursiveStrapiObject } from "../../../utils/api/parse-strapi-object";
 
 const activeSlugs: ActiveSlugs = {
-  GET: ["list", "count", "find"],
+  GET: ["list", "count", "find", "akinator"],
   POST: ["create"],
   PUT: ["update"],
   DELETE: ["delete"],
@@ -39,6 +39,20 @@ const getMethods = async (
   switch (route) {
     case "list": {
       let { status, data } = await axios.get(`/ressources`, {
+        params: routeParams,
+      });
+      return {
+        status,
+        data: {
+          data: data.data.map((_: any) =>
+            ZRessource.parse(getRecursiveStrapiObject(_))
+          ),
+          pagination: data.meta.pagination,
+        },
+      };
+    }
+    case "akinator": {
+      let { status, data } = await axios.get(`/ressources/akinator`, {
         params: routeParams,
       });
       return {

@@ -5,16 +5,23 @@ import {
   Heading,
   SimpleGrid,
   Skeleton,
+  Text,
+  keyframes,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import RessourceCard from "../../components/ui/ressources/ressource-card";
 import { fetchApi } from "../../utils/api/fetch-api";
-import { TRessource, TRessourceKindEnum } from "../api/ressources/types";
+import {
+  TRessource,
+  TRessourceAkinatorParams,
+  TRessourceKindEnum,
+} from "../api/ressources/types";
 import { GeneralListQueryParams } from "../api/types";
 import { GetServerSideProps } from "next";
 import ChatBot from "../../components/ui/chatbot";
 import CustomBreadcrumb from "../../components/ui/breadcrumb";
 import { useEffect } from "react";
+import PageTitle from "../../components/ui/title";
 
 interface RessourcesProps {
   searchParams: {
@@ -22,7 +29,7 @@ interface RessourcesProps {
     theme?: number;
     kind?: TRessourceKindEnum;
   };
-  responseParams: {
+  akinatorParams: {
     personae: number;
     occupation: number;
     theme: number;
@@ -31,8 +38,8 @@ interface RessourcesProps {
 }
 
 const Ressources: React.FC<RessourcesProps> = (props) => {
-  const { searchParams, responseParams } = props;
-  const [path, setPath] = useState({
+  const { searchParams, akinatorParams } = props;
+  const [akinatorPath, setAkinatorPath] = useState({
     personae: "",
     occupation: "",
     theme: "",
@@ -47,14 +54,14 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
     setIsEditing(isEditing);
   };
 
-  const fetchResponses = () => {
+  const fetchAkinatorParamsValues = () => {
     Promise.all([
-      fetchApi.get("/api/personaes/find", { id: responseParams.personae }),
+      fetchApi.get("/api/personaes/find", { id: akinatorParams.personae }),
       fetchApi.get("/api/personaeoccupations/find", {
-        id: responseParams.occupation,
+        id: akinatorParams.occupation,
       }),
-      fetchApi.get("/api/themes/find", { id: responseParams.theme }),
-      fetchApi.get("/api/subthemes/find", { id: responseParams.subTheme }),
+      fetchApi.get("/api/themes/find", { id: akinatorParams.theme }),
+      fetchApi.get("/api/subthemes/find", { id: akinatorParams.subTheme }),
     ]).then(
       ([
         responsePersonae,
@@ -62,7 +69,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
         responseTheme,
         responseSubTheme,
       ]) => {
-        setPath({
+        setAkinatorPath({
           personae: responsePersonae.name,
           occupation: responsePersonaeOccupation.name,
           theme: responseTheme.name,
@@ -72,7 +79,22 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
     );
   };
 
-  const fetchRessources = (
+  const fetchRessourcesAkinator = () => {
+    setIsLoading(true);
+    fetchApi
+      .get("/api/ressources/akinator", {
+        pagination: { page: 1, pageSize: 10 },
+        ...akinatorParams,
+      })
+      .then((response) => {
+        setRessources(response.data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const fetchRessourcesClassic = (
     _q?: string,
     filters?: {
       theme?: number;
@@ -110,8 +132,11 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
   ));
 
   useEffect(() => {
-    if (responseParams.personae) fetchResponses();
-  }, [responseParams]);
+    if (akinatorParams.personae) {
+      fetchAkinatorParamsValues();
+      fetchRessourcesAkinator();
+    }
+  }, [akinatorParams]);
 
   return (
     <>
@@ -131,7 +156,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
       )}
       <Box bg={"neutral"}>
         <Container maxW="container.2lg" py={"2.75rem"} mb={"2.75rem"}>
-          <Heading pb={6}>Ressources</Heading>
+          <PageTitle text="Ressources" />
           <ChatBot
             toast={true}
             showToast={showToast}
@@ -140,9 +165,9 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
             isEditing={isEditing}
           />
           <Box>
-            {responseParams.personae ? (
+            {akinatorParams.personae ? (
               <CustomBreadcrumb
-                path={path}
+                path={akinatorPath}
                 toggleState={(show, isEditing) => {
                   toggleState(show, isEditing);
                 }}
@@ -155,7 +180,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
                   theme?: number,
                   kind?: TRessourceKindEnum
                 ) => {
-                  fetchRessources(_q, { theme, kind });
+                  fetchRessourcesClassic(_q, { theme, kind });
                 }}
               />
             )}
@@ -181,7 +206,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         theme: parseInt(theme as string) || null,
         kind: (kind as TRessourceKindEnum) || null,
       },
-      responseParams: {
+      akinatorParams: {
         personae: parseInt(personae as string) || null,
         occupation: parseInt(occupation as string) || null,
         theme: parseInt(theme as string) || null,

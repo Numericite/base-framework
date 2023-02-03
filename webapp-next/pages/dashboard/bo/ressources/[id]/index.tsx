@@ -105,6 +105,7 @@ const RessourceCreate = () => {
     description: yup.string().required("La description est obligatoire"),
     theme: yup.object().required("Le thème est obligatoire"),
     content: yup.string().required("Le contenu est obligatoire"),
+    link: yup.string().required("Le lien est obligatoire"),
   });
 
   const validate = async (

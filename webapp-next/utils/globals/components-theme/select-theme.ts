@@ -6,7 +6,7 @@ const SelectTheme = defineStyleConfig({
       minHeight: "60px",
       border: "1.5px solid",
       borderColor: "#E9F1FF",
-      color: "neutralDark",
+      color: "black",
       py: "1.125rem",
       px: 5,
       pr: 12,

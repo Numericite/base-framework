@@ -22,7 +22,14 @@ const ButtonContainer: React.FC<ButtonContainerProps> = (props) => {
         <Button
           type="button"
           variant="primary"
-          // disabled={!formik.dirty || id === "new"}
+          disabled={
+            formik.errors.name ||
+            formik.errors.description ||
+            formik.errors.theme ||
+            formik.errors.content
+              ? true
+              : false
+          }
           onClick={() => setStep(2)}
         >
           Suivant
@@ -41,7 +48,7 @@ const ButtonContainer: React.FC<ButtonContainerProps> = (props) => {
           <Button
             type="button"
             variant="primary"
-            // disabled={!formik.isValid || id === "new"}
+            disabled={Object.keys(formik.errors).length !== 0}
             onClick={() => setStep(step + 1)}
           >
             Suivant

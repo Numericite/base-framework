@@ -4,6 +4,7 @@ import {
   FormLabel,
   Input,
   Select,
+  Text,
 } from "@chakra-ui/react";
 import { Field, FormikProps } from "formik";
 import dynamic from "next/dynamic";
@@ -93,6 +94,7 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
               id="kind"
               name="theme"
               onBlur={formik.handleBlur}
+              color="black"
               onChange={(e) =>
                 formik.setFieldValue(
                   "theme",
@@ -103,7 +105,7 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
             >
               {themes.map((theme) => (
                 <option key={theme.id} value={theme.name}>
-                  {theme.name}
+                  <Text>{theme.name}</Text>
                 </option>
               ))}
             </Select>
@@ -113,7 +115,7 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
             isInvalid={!!formik.errors.content && formik.touched.content}
           >
             <FormLabel htmlFor="name">Contenu</FormLabel>
-            <Field name="content">
+            <Field touched={formik.touched.content} name="content">
               {({ field }: any) => {
                 return (
                   <>
@@ -147,6 +149,9 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
                 );
               }}
             </Field>
+            <FormErrorMessage zIndex={9999}>
+              {formik.errors.content as string}
+            </FormErrorMessage>
           </FormControl>
         </>
       ),

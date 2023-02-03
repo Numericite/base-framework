@@ -41,6 +41,7 @@ const PasswordField = React.forwardRef<HTMLInputElement, InputProps>(
             />
           </InputRightElement>
           <Input
+            w="full"
             id="password"
             ref={mergeRef}
             name="password"

@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "questions",
+  "info": {
+    "singularName": "question",
+    "pluralName": "questions",
+    "displayName": "Question"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "responses": {
+      "displayName": "response",
+      "type": "component",
+      "repeatable": true,
+      "component": "tools.response"
+    },
+    "ressource_quiz": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ressource-quiz.ressource-quiz"
+    }
+  }
+}

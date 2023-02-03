@@ -148,4 +148,17 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
       };
     }
   },
+  async akinator(ctx) {
+    const { personaes, occupation, subTheme, theme } = ctx.request.query;
+    console.log(personaes);
+    console.log(occupation);
+    console.log(subTheme);
+    console.log(theme);
+    const ressources = await strapi.db.connection.raw(
+      `SELECT *, (CASE WHEN personaes = ${personaes} THEN 1 ELSE 0 END + CASE WHEN occupation = ${occupation} THEN 1 ELSE 0 END + CASE WHEN subTheme = ${subTheme} THEN 1 ELSE 0 END + CASE WHEN theme = ${theme} THEN 1 ELSE 0 END) as score FROM ressource ORDER BY score DESC;`
+    );
+
+    console.log(ressources);
+    return {};
+  },
 }));

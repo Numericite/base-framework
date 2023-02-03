@@ -20,6 +20,8 @@ import { ChatBotProps, ChatBotStep, ChatBotStepResponse } from "./interfaces";
 import { steps } from "./steps";
 import { BsArrowRight } from "react-icons/bs";
 import IconPlaceHolder from "../icon-placeholder";
+import { TRessource } from "../../../pages/api/ressources/types";
+import Loader from "../loader";
 
 const ChatBot: React.FC<ChatBotProps> = (props) => {
   let {
@@ -46,6 +48,10 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
   });
   const [currentStep, setCurrentStep] = useState<ChatBotStep>();
   const [step, setStep] = useState(stepQuestion ? stepQuestion : 0);
+  const [akinatorRessources, setAkinatorRessources] = useState<TRessource[]>(
+    []
+  );
+  const [akinatorLoading, setAkinatorLoading] = useState<boolean>(true);
 
   const fetchPersonaes = () => {
     fetchApi
@@ -79,12 +85,6 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
       inline: "nearest",
     });
   };
-
-  const botRessources = [
-    { name: "Ressource 1", icon: "file" },
-    { name: "Ressource 2", icon: "link" },
-    { name: "Ressource 3", icon: "quiz" },
-  ];
 
   const getResponsesFromStep = (
     stepIndex: number,
@@ -130,6 +130,23 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
 
     return [];
   };
+
+  useEffect(() => {
+    if (step === 5) {
+      fetchApi
+        .get("/api/ressources/akinator", {
+          pagination: {
+            page: 1,
+            pageSize: 3,
+          },
+          ...selectedValue,
+        })
+        .then((responses) => {
+          setAkinatorRessources(responses.data);
+          setAkinatorLoading(false);
+        });
+    }
+  }, [step]);
 
   useEffect(() => {
     if (personaes && personaeOccupations && themes && showToast) {
@@ -342,7 +359,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
             bottom={toast ? "0" : "auto"}
             width={toast ? ["100%", "100%", "100%", toastStyle] : homeStyle}
             sx={scrollbarStyle}
-            maxW={toast ? ["100%", "100%", "100%", "40%"] : "70%"}
+            maxW={toast ? ["100%", "100%", "100%", "40%"] : "630px"}
             maxH={toast ? "80%" : "auto"}
             zIndex={990}
             border={"1px solid #E9F1FF"}
@@ -387,25 +404,34 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                   que je peux te proposer :
                 </Text>
                 <VStack spacing={5} mt={3.5} align="left">
-                  {botRessources.map((ressource, index) => (
-                    <Box key={index}>
-                      <Flex
-                        w="100%"
-                        justifyContent={"space-between"}
-                        px={"14px"}
-                        py={"16px"}
-                        border={"1px solid #E9F1FF"}
-                        borderRadius={16}
-                        alignItems="center"
-                        cursor="pointer"
-                      >
-                        <Text fontSize={"14px"} color="#1B1D1F">
-                          {ressource.name}
-                        </Text>
-                        <IconPlaceHolder kind={ressource.icon} />
-                      </Flex>
-                    </Box>
-                  ))}
+                  {akinatorLoading ? (
+                    <Loader />
+                  ) : (
+                    akinatorRessources.map((ressource, index) => (
+                      <Box key={index}>
+                        <Flex
+                          w="100%"
+                          justifyContent={"space-between"}
+                          px={"14px"}
+                          py={"16px"}
+                          border={"1px solid #E9F1FF"}
+                          borderRadius={16}
+                          alignItems="center"
+                          cursor="pointer"
+                        >
+                          <Text
+                            fontSize={"14px"}
+                            color="#1B1D1F"
+                            noOfLines={1}
+                            paddingRight={4}
+                          >
+                            {ressource.name}
+                          </Text>
+                          <IconPlaceHolder kind={ressource.kind} />
+                        </Flex>
+                      </Box>
+                    ))
+                  )}
                 </VStack>
                 <NextLink
                   href={{
@@ -432,7 +458,7 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
                       mr={2}
                       display="flex"
                     >
-                      Voir toutes les ressources
+                      Voir plus de ressources pour cette recherche
                     </Text>
                     <BsArrowRight color="blue" />
                   </Flex>

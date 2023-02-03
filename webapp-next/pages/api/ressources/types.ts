@@ -70,6 +70,7 @@ const ZRessourceBase = z.object({
   ),
   image: z.optional(ZStrapiFile.nullable()),
   child_id: z.number(),
+  score: z.optional(z.number()),
 });
 
 const createOmits = {

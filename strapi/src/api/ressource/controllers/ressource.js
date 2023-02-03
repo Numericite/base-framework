@@ -88,12 +88,19 @@ const baseRessourcesToResponse = async (data, meta) => {
 
   const finalRessources = await Promise.all(childRessourcesPromises).then(
     (childRessources) => {
-      return childRessources.map((childRessource) =>
-        childRessourceConsolidate(childRessource.results[0])
-      );
+      return childRessources.map((childRessource) => {
+        const r = data.find(
+          (d) => d.id === childRessource.results[0].ressource.id
+        );
+        return {
+          ...childRessourceConsolidate(childRessource.results[0]),
+          score: r.score,
+        };
+      });
     }
   );
 
+  console.log(finalRessources);
   return { data: finalRessources.filter((_) => !!_), meta };
 };
 

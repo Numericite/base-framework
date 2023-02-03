@@ -1,7 +1,13 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { TRessource } from "../../../../pages/api/ressources/types";
 
-const RessourceInfos = () => {
+interface RessourceInfosProps {
+  ressource: TRessource;
+}
+
+const RessourceInfos = (props: RessourceInfosProps) => {
+  const { ressource } = props;
   return (
     <Box bg="#FAFCFF" borderRadius={"xl"} py="1.5rem" px="1.875rem" maxH="auto">
       <Heading size="sm" mb={"0.375rem"}>

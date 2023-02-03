@@ -12,6 +12,7 @@ import { ModalProvider } from "../utils/hooks/useModals";
 import "@fontsource/poppins";
 import Fonts from "../components/ui/fonts";
 import PrivateLayout from "../layouts/PrivateLayout";
+import Head from "next/head";
 
 const NEXT_PUBLIC_JWT_STORAGE_KEY: string = process.env
   .NEXT_PUBLIC_JWT_STORAGE_KEY as string;
@@ -51,6 +52,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AppContext.Provider value={contextValue}>
       <ChakraProvider theme={theme}>
+        <Head>
+          <style>
+            {`
+              html {
+                scroll-behavior: smooth;
+              }`}
+          </style>
+        </Head>
         <Fonts />
         <ModalProvider>{getLayout(<Component {...pageProps} />)}</ModalProvider>
       </ChakraProvider>

@@ -59,7 +59,9 @@ const RessourceSummary: React.FC<RessourceSummaryProps> = (props) => {
           <Tr>
             <Td>URL du lien : </Td>
             <Td>
-              <Link href={values.link}>{values.link}</Link>
+              <Link href={values.link} target="_blank">
+                {values.link}
+              </Link>
             </Td>
           </Tr>
         );

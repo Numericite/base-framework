@@ -19,6 +19,7 @@ const theme_extend = {
     neutral: "#FAFCFF",
     neutralDark: "#6B829B",
     neutralLight: "#627992",
+    neutralBlue: "#204064",
     lightBlue: "#A2DDF1",
     lightPink: "#FF7E95",
   },

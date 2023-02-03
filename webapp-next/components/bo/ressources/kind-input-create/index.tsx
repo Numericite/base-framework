@@ -2,6 +2,7 @@ import {
   Box,
   Checkbox,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   HStack,
   Input,
@@ -26,7 +27,6 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
             isInvalid={!!formik.errors.files && formik.touched.files}
           >
             <FormLabel htmlFor="link">Lien du fichier</FormLabel>
-
             <UploadZone
               width={"full"}
               onChange={formik.handleChange}
@@ -37,6 +37,7 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
               name="files"
               multiple={false}
             />
+            <FormErrorMessage>{formik.errors.files as string}</FormErrorMessage>
           </FormControl>
         );
       case "video":
@@ -56,6 +57,9 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
                 onBlur={formik.handleBlur}
                 onChange={(e) => formik.setFieldValue("link", e.target.value)}
               />
+              <FormErrorMessage>
+                {formik.errors.link as string}
+              </FormErrorMessage>
             </FormControl>
             <HStack
               w="full"
@@ -121,6 +125,7 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
               onBlur={formik.handleBlur}
               onChange={(e) => formik.setFieldValue("link", e.target.value)}
             />
+            <FormErrorMessage>{formik.errors.link as string}</FormErrorMessage>
           </FormControl>
         );
       // case "quiz":

@@ -22,11 +22,6 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
     useState<TPersonaeOccupation[]>();
   const [subThemes, setSubThemes] = useState<TSubTheme[]>();
 
-  const [isPersonaesSelected, setIsPersonaesSelected] = useState(false);
-  const [isPersonaeOccupationsSelected, setIsPersonaeOccupationsSelected] =
-    useState(false);
-  const [isSubThemesSelected, setIsSubThemesSelected] = useState(false);
-
   const retrievePersonae = () => {
     fetchApi.get("/api/personaes/list").then((res) => {
       setPersonaes(res.data);
@@ -78,7 +73,7 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
 
   useEffect(() => {
     retrievePersonaeOccupation(formik.values.personaes as unknown as number[]);
-  }, [formik.values.personaes]);
+  }, [formik.values.personaes.length]);
 
   useEffect(() => {
     retrieveSubThemes();
@@ -93,9 +88,8 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
         <CheckboxDisplayer
           items={personaes}
           props_name={"personaes"}
-          spacing={5}
+          spacing={2}
           formik={formik}
-          onClick={(e) => setIsPersonaesSelected(e.target.checked)}
         />
       </Box>
       {personaeOccupations && personaeOccupations.length > 0 && (
@@ -108,7 +102,6 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
             items={personaeOccupations}
             props_name={"personae_occupations"}
             formik={formik}
-            onClick={(e) => setIsPersonaeOccupationsSelected(e.target.checked)}
           />
         </Box>
       )}
@@ -122,7 +115,6 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
             props_name={"sub_themes"}
             spacing={3}
             formik={formik}
-            onClick={(e) => setIsSubThemesSelected(e.target.checked)}
           />
         </Box>
       )}

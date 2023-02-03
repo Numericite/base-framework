@@ -13,7 +13,7 @@ const theme_extend = {
     body: `Poppins`,
   },
   colors: {
-    primary: "#2F6CFF",
+    primary: "#2f6cff",
     secondary: "#E1006C",
     black: "#1B1D1F",
     neutral: "#FAFCFF",

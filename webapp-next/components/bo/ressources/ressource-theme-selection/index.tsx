@@ -57,7 +57,7 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
 					pageSize: 100,
 				},
 				filters: {
-					themes: { $in: formik.values.theme.id },
+					themes: formik.values.theme.id,
 				},
 			})
 			.then((res) => {

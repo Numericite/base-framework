@@ -71,7 +71,7 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
 
 	useEffect(() => {
 		retrievePersonaeOccupation(formik.values.personaes as unknown as number[]);
-	}, [formik.values.personaes.length]);
+	}, [formik.values.personaes.length, formik.values.theme]);
 
 	useEffect(() => {
 		retrieveSubThemes();

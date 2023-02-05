@@ -405,7 +405,9 @@ const ChatBot: React.FC<ChatBotProps> = (props) => {
 								</Text>
 								<VStack spacing={5} mt={3.5} align="left">
 									{akinatorLoading ? (
-										<Loader h={32} />
+										<Box h={32}>
+											<Loader />
+										</Box>
 									) : (
 										akinatorRessources.map((ressource, index) => (
 											<Box key={index}>

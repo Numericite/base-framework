@@ -17,6 +17,7 @@ import {
 } from "../../../../utils/globals/enums";
 import useModals from "../../../../utils/hooks/useModals";
 import { TRessource } from "../../../api/ressources/types";
+import IconPlaceHolder from "../../../../components/ui/icon-placeholder";
 
 const DashboardRessources = () => {
 	const router = useRouter();
@@ -42,8 +43,7 @@ const DashboardRessources = () => {
 			renderItem: (item: TRessource) => {
 				return (
 					<Flex align="center">
-						{displayKindIcon(item.kind)}
-						<Text ml={2}>{displayKindReadable(item.kind)}</Text>
+						<IconPlaceHolder kind={item.kind} />
 					</Flex>
 				);
 			},

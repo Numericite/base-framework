@@ -54,6 +54,7 @@ const DashboardRessources = () => {
 			renderItem: (item: TRessource) => {
 				return (
 					<Tag
+						minW={32}
 						size="sm"
 						w="full"
 						fontSize={{ base: "xs", sm: "xs" }}

@@ -23,13 +23,13 @@ const DashboardUseCases = () => {
 			label: "Nom",
 		},
 		{
+			key: "description",
+			label: "Description",
+		},
+		{
 			key: "steps",
 			label: "Nombre de ressources",
 			renderItem: (item: TUseCase) => item.steps.length
-		},
-		{
-			key: "description",
-			label: "Description",
 		},
 	];
 

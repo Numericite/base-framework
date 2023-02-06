@@ -29,15 +29,6 @@ const DashboardRessources = () => {
 			label: "Nom",
 		},
 		{
-			key: "description",
-			label: "Description",
-			renderItem: (item: TRessource) => {
-				return (
-					<Text noOfLines={3}>{item.description}</Text>
-				)
-			}
-		},
-		{
 			key: "kind",
 			label: "Type",
 			renderItem: (item: TRessource) => {

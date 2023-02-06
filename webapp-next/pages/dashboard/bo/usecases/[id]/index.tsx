@@ -7,6 +7,7 @@ import {
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
+	Heading,
 	Input,
 	Text,
 	Textarea,
@@ -171,6 +172,13 @@ const UseCaseCreate = () => {
 				<BackButton />
 			</Box>
 			<Container maxW="container.lg">
+				{id === "new" ? (
+					<Heading>Créer un cas d{"'"}usage</Heading>
+				) : (
+					<Heading>
+						Modifier le cas d{"'"}usage{" "}
+					</Heading>
+				)}
 				<Box mt={8}>
 					<Formik
 						initialValues={initialValues}

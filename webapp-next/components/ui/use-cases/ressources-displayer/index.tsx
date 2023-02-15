@@ -42,7 +42,7 @@ const UseCaseRessourceDisplay = (props: Props) => {
       bg="neutralLightBlue"
       position="sticky"
       h={isSticky ? "24" : "auto"}
-      transition="all 0.2s ease-in-out"
+      transition="all 0.3s ease-in-out"
       top={0}
       zIndex={3}
       py={isSticky ? "1.5rem" : "2.75rem"}
@@ -53,7 +53,12 @@ const UseCaseRessourceDisplay = (props: Props) => {
         alignItems={"center"}
         justifyItems={"center"}
       >
-        <SimpleGrid columns={[1, 2, 3]} spacing={4}>
+        <SimpleGrid
+          h={isSticky ? "24" : "auto"}
+          transition="all 0.3s ease-in-out"
+          columns={[1, 2, 3]}
+          spacing={4}
+        >
           {steps.map((step, index) => {
             return (
               <Box

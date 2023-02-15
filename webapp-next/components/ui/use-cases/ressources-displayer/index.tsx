@@ -1,5 +1,10 @@
 import { Box, Container, Flex, SimpleGrid, Text } from "@chakra-ui/react";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { TRessource } from "../../../../pages/api/ressources/types";
 import { TUseCaseStep } from "../../../../pages/api/usecasesteps/types";
 import RessourceCard from "../../ressources/ressource-card";
@@ -16,10 +21,9 @@ const UseCaseRessourceDisplay = (props: Props) => {
     (step) => step.ressource.id === currentRessource.id
   );
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [isSticky, setIsSticky] = useState(false);
+  const [isSticky, setIsSticky] = useState<boolean>(true);
 
-  // trigger sticky state when scrolling to the top of the container element (when the container is sticky) and when scrolling back to the top of the page (when the container is not sticky)
-  useLayoutEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       if (containerRef.current) {
         const { top } = containerRef.current.getBoundingClientRect();
@@ -27,7 +31,11 @@ const UseCaseRessourceDisplay = (props: Props) => {
       }
     };
     window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  console.log("isSticky", isSticky);
+  console.log(containerRef.current?.getBoundingClientRect().top);
 
   return (
     <Box
@@ -36,6 +44,7 @@ const UseCaseRessourceDisplay = (props: Props) => {
       bg="neutralLightBlue"
       position="sticky"
       top={0}
+      zIndex={3}
       py={isSticky ? "1.5rem" : "2.75rem"}
     >
       <Container

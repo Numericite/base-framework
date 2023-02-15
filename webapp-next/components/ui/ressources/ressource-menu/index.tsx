@@ -50,7 +50,7 @@ const RessourceMenu = (props: RessourceMenuProps) => {
   return (
     <Box
       position={["relative", "sticky"]}
-      zIndex={-1}
+      zIndex={1}
       top={isUseCase ? [0, 100] : [0, 30]}
     >
       <Box

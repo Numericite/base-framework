@@ -1,7 +1,6 @@
 import {
   Box,
   Container,
-  Divider,
   Heading,
   Image,
   Tab,
@@ -62,7 +61,7 @@ const UseCasesContainer: React.FC<UseCaseProps> = (props) => {
         <UseCaseSlider tabIndex={tabIndex} setTabIndex={setTabIndex} />
         {isLargerThan768 && (
           <Box w="50%">
-            <Image src="./element_usecase.png" />
+            <Image src="./element_usecase.png" alt="" />
           </Box>
         )}
       </TabPanel>

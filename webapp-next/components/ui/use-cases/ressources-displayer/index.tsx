@@ -23,19 +23,17 @@ const UseCaseRessourceDisplay = (props: Props) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [isSticky, setIsSticky] = useState<boolean>(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleScroll = () => {
       if (containerRef.current) {
         const { top } = containerRef.current.getBoundingClientRect();
-        setIsSticky(top === 0);
+        const scrollTop = window.pageYOffset;
+        setIsSticky(scrollTop - top >= 0);
       }
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  console.log("isSticky", isSticky);
-  console.log(containerRef.current?.getBoundingClientRect().top);
+  }, [containerRef.current]);
 
   return (
     <Box

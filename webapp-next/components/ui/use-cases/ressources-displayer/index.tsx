@@ -1,10 +1,5 @@
 import { Box, Container, Flex, SimpleGrid, Text } from "@chakra-ui/react";
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { TRessource } from "../../../../pages/api/ressources/types";
 import { TUseCaseStep } from "../../../../pages/api/usecasesteps/types";
 import RessourceCard from "../../ressources/ressource-card";
@@ -21,9 +16,9 @@ const UseCaseRessourceDisplay = (props: Props) => {
     (step) => step.ressource.id === currentRessource.id
   );
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [isSticky, setIsSticky] = useState<boolean>(true);
+  const [isSticky, setIsSticky] = useState<boolean>(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       if (containerRef.current) {
         const { top } = containerRef.current.getBoundingClientRect();

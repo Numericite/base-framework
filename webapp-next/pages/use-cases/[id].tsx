@@ -1,7 +1,6 @@
 import { Box, Container, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
-import RessourceHeader from "../../components/ui/ressources/header";
 import UseCaseRessourceDisplay from "../../components/ui/use-cases/ressources-displayer";
 import UseCaseHeader from "../../components/ui/use-cases/use-case-header";
 import { fetchApi } from "../../utils/api/fetch-api";

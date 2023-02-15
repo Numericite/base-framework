@@ -38,9 +38,13 @@ const RessourceCard: React.FC<RessourceProps> = (props) => {
 
   const children = (
     <Box
-      visibility={isSticky ? "hidden" : "visible"}
-      transform={isSticky ? "translateY(-100%)" : "translateY(0)"}
-      opacity={isSticky ? 0 : 1}
+      visibility={isSticky || (isSticky && isSelected) ? "hidden" : "visible"}
+      transform={
+        isSticky || (isSticky && isSelected)
+          ? "translateY(-100%)"
+          : "translateY(0)"
+      }
+      opacity={isSticky || (isSticky && isSelected) ? 0 : 1}
       transition="all 0.2s ease-in-out"
       ref={ref}
       position="relative"

@@ -22,13 +22,25 @@ interface RessourceProps {
   position?: number;
   isUseCase?: boolean;
   isSelected?: boolean;
+  isSticky?: boolean;
 }
 
 const RessourceCard: React.FC<RessourceProps> = (props) => {
-  const { ressource, clickable, ref, position, isUseCase, isSelected } = props;
+  const {
+    ressource,
+    clickable,
+    ref,
+    position,
+    isUseCase,
+    isSelected,
+    isSticky,
+  } = props;
 
   const children = (
     <Box
+      visibility={isSticky ? "hidden" : "visible"}
+      opacity={isSticky ? 0 : 1}
+      transition="all 0.2s ease-in-out"
       ref={ref}
       position="relative"
       w="full"

@@ -41,6 +41,8 @@ const UseCaseRessourceDisplay = (props: Props) => {
       w="full"
       bg="neutralLightBlue"
       position="sticky"
+      h={isSticky ? "24" : "auto"}
+      transition="all 0.2s ease-in-out"
       top={0}
       zIndex={3}
       py={isSticky ? "1.5rem" : "2.75rem"}
@@ -95,13 +97,12 @@ const UseCaseRessourceDisplay = (props: Props) => {
                     />
                   )}
                 </Flex>
-                {!isSticky && (
-                  <RessourceCard
-                    ressource={step.ressource}
-                    isUseCase={true}
-                    isSelected={currentRessource.id === step.ressource.id}
-                  />
-                )}
+                <RessourceCard
+                  ressource={step.ressource}
+                  isUseCase={true}
+                  isSelected={currentRessource.id === step.ressource.id}
+                  isSticky={isSticky}
+                />
               </Box>
             );
           })}

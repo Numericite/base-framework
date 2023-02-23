@@ -100,7 +100,6 @@ const baseRessourcesToResponse = async (data, meta) => {
     }
   );
 
-  console.log(finalRessources);
   return { data: finalRessources.filter((_) => !!_), meta };
 };
 

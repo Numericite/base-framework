@@ -1,4 +1,12 @@
-import { Box, Container, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 import UseCaseRessourceDisplay from "../../components/ui/use-cases/ressources-displayer";
@@ -24,6 +32,9 @@ const UseCasePage = (props: Props) => {
 
   const [currentRessource, setCurrentRessource] = useState<TRessource>(
     useCase.steps[0]?.ressource
+  );
+  const [currentPosition, setCurrentPosition] = useState<number>(
+    useCase.steps[0]?.position
   );
 
   const [titles, setTitles] = useState<
@@ -126,11 +137,14 @@ const UseCasePage = (props: Props) => {
   return (
     <Box w="full">
       <UseCaseHeader useCase={useCase} />
-      <UseCaseRessourceDisplay
-        steps={useCase.steps}
-        currentRessource={currentRessource}
-        setCurrentRessource={setCurrentRessource}
-      />
+      {isLargerThan768 && (
+        <UseCaseRessourceDisplay
+          steps={useCase.steps}
+          currentRessource={currentRessource}
+          setCurrentPosition={setCurrentPosition}
+          setCurrentRessource={setCurrentRessource}
+        />
+      )}
       <Container maxW="container.2lg" my="2.125rem">
         <Flex justifyItems={"space-between"}>
           {isLargerThan768 && (
@@ -152,9 +166,39 @@ const UseCasePage = (props: Props) => {
               isUseCase={true}
             />
             {!isLargerThan768 && (
-              <Box w="100%" px={"1.5rem"}>
-                {ressourceBody}
-              </Box>
+              <>
+                <Box w="100%" px={"1.5rem"}>
+                  {ressourceBody}
+                </Box>
+                <Flex
+                  w="full"
+                  justifyContent={"space-around"}
+                  position={"sticky"}
+                  bottom={10}
+                  my={5}
+                >
+                  <Button
+                    onClick={() => {
+                      setCurrentPosition(currentPosition - 1);
+                      setCurrentRessource(
+                        useCase.steps[currentPosition - 1].ressource
+                      );
+                    }}
+                  >
+                    Précédent
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setCurrentPosition(currentPosition + 1);
+                      setCurrentRessource(
+                        useCase.steps[currentPosition + 1].ressource
+                      );
+                    }}
+                  >
+                    Suivant
+                  </Button>
+                </Flex>
+              </>
             )}
           </Box>
         </Flex>

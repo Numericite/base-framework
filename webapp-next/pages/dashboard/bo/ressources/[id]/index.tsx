@@ -70,8 +70,6 @@ const RessourceCreate = () => {
     }
   }
 
-  console.log("initialValues", initialValues);
-
   const fetchRessource = () => {
     setIsLoading(true);
     fetchApi

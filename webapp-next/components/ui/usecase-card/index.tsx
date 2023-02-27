@@ -1,5 +1,6 @@
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { Box, Button, Heading, Text } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { TUseCase } from "../../../pages/api/usecases/types";
 import IconPlaceHolder from "../icon-placeholder";
 
@@ -9,6 +10,7 @@ interface UseCaseProps {
 
 const UseCaseCard: React.FC<UseCaseProps> = (props) => {
   const { usecase } = props;
+  const router = useRouter();
   return (
     <Box
       maxW="50%"
@@ -35,7 +37,13 @@ const UseCaseCard: React.FC<UseCaseProps> = (props) => {
           return <IconPlaceHolder key={index} kind={step.ressource.kind} />;
         })}
       </Box>
-      <Button variant="neutral" mt="2.75rem">
+      <Button
+        variant="neutral"
+        mt="2.75rem"
+        onClick={() => {
+          router.push(`/use-cases/${usecase.id}`);
+        }}
+      >
         Voir les cas d&apos;usage <ArrowForwardIcon ml={2} />
       </Button>
     </Box>

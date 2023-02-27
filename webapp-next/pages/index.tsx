@@ -58,7 +58,11 @@ const Home = () => {
         title="Dernières ressources"
         items={ressources}
         renderCard={(ressource: TRessource) => (
-          <RessourceCard key={ressource.id} ressource={ressource} />
+          <RessourceCard
+            key={ressource.id}
+            ressource={ressource}
+            clickable={true}
+          />
         )}
       />
 

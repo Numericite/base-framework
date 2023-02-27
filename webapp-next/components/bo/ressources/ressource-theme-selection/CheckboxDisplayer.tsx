@@ -1,6 +1,6 @@
 import { Box, Checkbox, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { FormikProps } from "formik";
-import React, { ChangeEvent, useCallback } from "react";
+import React from "react";
 import {
   TRessourceCreationPayload,
   TRessourceUpdatePayload,

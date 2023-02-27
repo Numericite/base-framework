@@ -1,5 +1,7 @@
 import {
   Box,
+  Button,
+  Flex,
   Heading,
   Link,
   ListItem,
@@ -18,10 +20,11 @@ interface RessourceMenuProps {
       }[]
     | null;
   ressource: TRessource;
+  isUseCase?: boolean;
 }
 
 const RessourceMenu = (props: RessourceMenuProps) => {
-  const { titles, ressource } = props;
+  const { titles, ressource, isUseCase } = props;
   const isLargerThan768 = useMediaQueryAdapter("(min-width: 768px)");
 
   const menuItems = titles?.map((el) => (
@@ -47,7 +50,11 @@ const RessourceMenu = (props: RessourceMenuProps) => {
   ));
 
   return (
-    <Box position={["relative", "sticky"]} top={[0, 30]}>
+    <Box
+      position={["relative", "sticky"]}
+      zIndex={1}
+      top={isUseCase ? [0, 100] : [0, 30]}
+    >
       <Box
         borderRadius={"2xl"}
         p="0.9px"

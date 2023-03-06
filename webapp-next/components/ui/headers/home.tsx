@@ -37,7 +37,7 @@ const HomeHeader = () => {
           pos="relative"
         >
           <Box w={["100%", "100%", "100%", "45%"]}>
-            <Heading as="h1" fontSize={["4xl", "4xl", "4xl", "5.5xl"]}>
+            <Heading as="h1" fontSize={["4xl", "4xl", "4xl", "5xl"]}>
               Ressourcerie{" "}
               <Text
                 as="span"
@@ -49,15 +49,17 @@ const HomeHeader = () => {
               et{" "}
               <Text as="span" color="primary">
                 management
-              </Text>
+              </Text>{" "}
+              en Normandie
             </Heading>
             <Text
-              fontSize={["xl", "xl", "xl", "1.5xl"]}
+              fontSize={["xl", "xl", "xl", "xl"]}
               mt={6}
               color="neutralDark"
             >
-              Lörem ipsum vovis nivönon ködöst.
-              <br /> Odegt anoll, om dekinde hihet. Eurologi anonåns.
+              Simple et Efficace ! Venez découvrir la fonction publique sous un
+              autre angle, grace à notre nouvel espace d’exploration et
+              d’expérimentation.
             </Text>
             <Flex justifyContent="left" alignItems="center" mt={10}>
               <NextLink href={"/ressources"}>

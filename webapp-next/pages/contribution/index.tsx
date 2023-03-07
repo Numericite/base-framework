@@ -149,7 +149,6 @@ const Contributions: React.FC = () => {
 
   const handleSubmit = async (values: TContributionCreationPayload) => {
     values.isAccepted = false;
-    console.log("values", values);
     setIsLoading(true);
     let contributionId, tmpFiles, tmpContrib;
     if (values.files) {
@@ -204,7 +203,7 @@ const Contributions: React.FC = () => {
     switch (field.kind) {
       case "select":
         return (
-          <GridItem key={field.key} colSpan={1}>
+          <GridItem key={field.key} colSpan={2}>
             <FormControl
               isDisabled={allDisabled}
               isRequired={field.required}

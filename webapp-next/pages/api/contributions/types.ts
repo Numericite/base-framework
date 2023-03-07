@@ -1,23 +1,33 @@
 import { z } from "zod";
-import { GeneralListQueryParams, Pagination } from "../types";
+import { GeneralListQueryParams, Pagination, ZStrapiFile } from "../types";
 
 // -----------------------------
 // ----- STRAPI DATA TYPES -----
 // -----------------------------
 export const ZContribution = z.object({
   id: z.number().optional(),
-  first_name: z.string(),
-  last_name: z.string(),
-  job_title: z.string(),
-  producer: z.string(),
-  commentary: z.string(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  job_title: z.string().optional(),
+  description: z.string(),
   email: z.string(),
   isAccepted: z.boolean().optional(),
-  theme: z.object({
-    id: z.number(),
-    name: z.string(),
-    color: z.string().optional(),
-  }),
+  link: z.string().optional(),
+  theme: z
+    .object({
+      id: z.number(),
+      name: z.string(),
+      color: z.string().optional(),
+    })
+    .optional(),
+  files: z
+    .array(
+      z.union([
+        ZStrapiFile,
+        typeof window === "undefined" ? z.null() : z.instanceof(File),
+      ])
+    )
+    .optional(),
 });
 export type TContribution = z.infer<typeof ZContribution>;
 

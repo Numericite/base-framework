@@ -21,7 +21,7 @@
     "job_title": {
       "type": "string"
     },
-    "commentary": {
+    "description": {
       "type": "text"
     },
     "theme": {
@@ -29,17 +29,25 @@
       "relation": "oneToOne",
       "target": "api::theme.theme"
     },
-    "producer": {
-      "type": "string"
-    },
     "isAccepted": {
       "type": "boolean"
     },
-    "ressource_kind": {
-      "type": "string"
-    },
     "email": {
       "type": "email"
+    },
+    "files": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "link": {
+      "type": "string"
     }
   }
 }

@@ -4,6 +4,8 @@ import {
   Container,
   Flex,
   Heading,
+  Image,
+  Link,
   Table,
   TableCaption,
   TableContainer,
@@ -22,6 +24,8 @@ import {
   FaUser,
   FaBrain,
   FaFolder,
+  FaFile,
+  FaFilePdf,
 } from "react-icons/fa";
 import BackButton from "../../../../../components/ui/back-button/back-button";
 import { fetchApi } from "../../../../../utils/api/fetch-api";
@@ -29,6 +33,16 @@ import { TContribution } from "../../../../api/contributions/types";
 
 interface IContributionPageProps {
   contribution: TContribution;
+}
+
+interface IFile {
+  file:
+    | {
+        id: number;
+        url: string;
+      }
+    | File
+    | null;
 }
 
 const ContributionPage = (props: IContributionPageProps) => {
@@ -59,6 +73,70 @@ const ContributionPage = (props: IContributionPageProps) => {
           isClosable: true,
         });
       });
+  };
+
+  const displayResource = (
+    file:
+      | {
+          id: number;
+          url: string;
+        }
+      | File
+      | null,
+    index: number
+  ) => {
+    if (file !== null && "url" in file) {
+      let extension = file.url.split(".").pop();
+      switch (extension) {
+        case "pdf":
+          return (
+            <Td>
+              <Button
+                key={index}
+                variant="ghost"
+                onClick={() =>
+                  window.open(process.env.NEXT_PUBLIC_STRAPI_URL + file.url)
+                }
+                h={"auto"}
+                my={4}
+              >
+                <Box mr={3}>
+                  <FaFilePdf />
+                </Box>
+                Consulter le document
+              </Button>
+            </Td>
+          );
+        case "png":
+          return (
+            <Td>
+              <Image
+                key={index}
+                src={file.url}
+                alt="Ressource"
+                w={"full"}
+                h={"auto"}
+                my={4}
+              />
+            </Td>
+          );
+        case "jpg":
+          return (
+            <Td>
+              <Image
+                key={index}
+                src={file.url}
+                alt="Ressource"
+                w={"full"}
+                h={"auto"}
+                my={4}
+              />
+            </Td>
+          );
+        default:
+          break;
+      }
+    }
   };
 
   return (
@@ -127,6 +205,24 @@ const ContributionPage = (props: IContributionPageProps) => {
                   </Flex>
                 </Td>
                 <Td>{contribution.description}</Td>
+              </Tr>
+              <Tr>
+                <Td>
+                  <Flex>
+                    <FaBrain />
+                    <Text ml={3}>Ressource proposée :</Text>
+                  </Flex>
+                </Td>
+
+                {contribution.link && (
+                  <Td>
+                    <Link href={contribution.link} />
+                  </Td>
+                )}
+                {contribution.files &&
+                  contribution.files.map((file, index) =>
+                    displayResource(file, index)
+                  )}
               </Tr>
             </Tbody>
             <TableCaption>

@@ -24,8 +24,9 @@ import {
   FaUser,
   FaBrain,
   FaFolder,
-  FaFile,
   FaFilePdf,
+  FaFileWord,
+  FaFileExcel,
 } from "react-icons/fa";
 import BackButton from "../../../../../components/ui/back-button/back-button";
 import { fetchApi } from "../../../../../utils/api/fetch-api";
@@ -33,16 +34,6 @@ import { TContribution } from "../../../../api/contributions/types";
 
 interface IContributionPageProps {
   contribution: TContribution;
-}
-
-interface IFile {
-  file:
-    | {
-        id: number;
-        url: string;
-      }
-    | File
-    | null;
 }
 
 const ContributionPage = (props: IContributionPageProps) => {
@@ -93,7 +84,7 @@ const ContributionPage = (props: IContributionPageProps) => {
             <Td>
               <Button
                 key={index}
-                variant="ghost"
+                variant="outline"
                 onClick={() =>
                   window.open(process.env.NEXT_PUBLIC_STRAPI_URL + file.url)
                 }
@@ -108,6 +99,8 @@ const ContributionPage = (props: IContributionPageProps) => {
             </Td>
           );
         case "png":
+        case "jpg":
+        case "jpeg":
           return (
             <Td>
               <Image
@@ -120,17 +113,30 @@ const ContributionPage = (props: IContributionPageProps) => {
               />
             </Td>
           );
-        case "jpg":
+        case "docx":
+        case "doc":
+        case "xlsx":
+        case "xls":
           return (
             <Td>
-              <Image
+              <Button
                 key={index}
-                src={file.url}
-                alt="Ressource"
-                w={"full"}
+                variant="outline"
+                onClick={() =>
+                  window.open(process.env.NEXT_PUBLIC_STRAPI_URL + file.url)
+                }
                 h={"auto"}
                 my={4}
-              />
+              >
+                <Box mr={3}>
+                  {extension === "xlsx" || extension === "xls" ? (
+                    <FaFileExcel />
+                  ) : (
+                    <FaFileWord />
+                  )}
+                </Box>
+                Consulter le document
+              </Button>
             </Td>
           );
         default:
@@ -216,7 +222,7 @@ const ContributionPage = (props: IContributionPageProps) => {
 
                 {contribution.link && (
                   <Td>
-                    <Link href={contribution.link} />
+                    <Link href={contribution.link} target="_blank" />
                   </Td>
                 )}
                 {contribution.files &&

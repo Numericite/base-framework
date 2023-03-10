@@ -148,7 +148,7 @@ const Contributions: React.FC = () => {
   });
 
   const handleSubmit = async (values: TContributionCreationPayload) => {
-    values.isAccepted = false;
+    values.status = "pending";
     setIsLoading(true);
     let contributionId, tmpFiles, tmpContrib;
     if (values.files) {

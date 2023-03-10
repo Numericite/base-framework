@@ -29,9 +29,6 @@
       "relation": "oneToOne",
       "target": "api::theme.theme"
     },
-    "isAccepted": {
-      "type": "boolean"
-    },
     "email": {
       "type": "email"
     },
@@ -48,6 +45,16 @@
     },
     "link": {
       "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "in_progress",
+        "accepted",
+        "refused",
+        "published"
+      ]
     }
   }
 }

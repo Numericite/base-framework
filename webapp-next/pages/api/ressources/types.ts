@@ -8,6 +8,7 @@ import { ZTheme } from "../themes/types";
 import { ZSubTheme } from "../subthemes/types";
 import { ZPersonae } from "../personaes/types";
 import { ZPersonaeOccupation } from "../personaeoccupations/types";
+import { ZContribution } from "../contributions/types";
 
 // -----------------------------
 // ----- STRAPI DATA TYPES -----
@@ -61,16 +62,20 @@ const ZRessourceBase = z.object({
     personaes: true,
     sub_themes: true,
   }),
-  sub_themes: z.array(ZSubTheme),
-  personaes: z.array(ZPersonae),
-  personae_occupations: z.array(
-    ZPersonaeOccupation.omit({
-      personae: true,
-    })
-  ),
+  sub_themes: z.array(ZSubTheme).or(z.object({})),
+  personaes: z.array(ZPersonae).or(z.object({})),
+  personae_occupations: z
+    .array(
+      ZPersonaeOccupation.omit({
+        personae: true,
+      })
+    )
+    .or(z.object({})),
   image: z.optional(ZStrapiFile.nullable()),
   child_id: z.number(),
   score: z.optional(z.number()),
+  contribution: ZContribution.optional(),
+  status: z.enum(["published", "draft"]),
 });
 
 const createOmits = {
@@ -79,18 +84,21 @@ const createOmits = {
   sub_themes: true,
   personaes: true,
   personae_occupations: true,
+  contribution: true,
 } as const;
 
 const updateOmits = {
   sub_themes: true,
   personaes: true,
   personae_occupations: true,
+  contribution: true,
 } as const;
 
 const createExtends = {
   sub_themes: z.array(z.number()),
   personaes: z.array(z.number()),
   personae_occupations: z.array(z.number()),
+  contribution: z.number().optional().nullable(),
 } as const;
 
 export const ZRessource = z.discriminatedUnion("kind", [

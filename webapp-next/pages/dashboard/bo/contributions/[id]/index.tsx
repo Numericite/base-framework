@@ -1,3 +1,4 @@
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -17,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { BsCheckCircleFill } from "react-icons/bs";
+import React, { useEffect } from "react";
 import {
   FaBook,
   FaAddressCard,
@@ -28,6 +29,7 @@ import {
   FaFileWord,
   FaFileExcel,
 } from "react-icons/fa";
+import StatusIndicator from "../../../../../components/bo/contributions/status-indicator";
 import BackButton from "../../../../../components/ui/back-button/back-button";
 import { fetchApi } from "../../../../../utils/api/fetch-api";
 import { TContribution } from "../../../../api/contributions/types";
@@ -40,20 +42,20 @@ const ContributionPage = (props: IContributionPageProps) => {
   const { contribution } = props;
   const toast = useToast();
   const router = useRouter();
+  const [status, setStatus] = React.useState<string>(contribution.status!);
 
   const handleValidation = () => {
     let tmpContribution = contribution;
-    tmpContribution.isAccepted = true;
+    tmpContribution.status = status;
     fetchApi
       .put("/api/contributions/update", tmpContribution)
       .then(() => {
         toast({
-          title: "La contribution a bien été validée !",
+          title: "La contribution a bien été modifiée avec succès !",
           status: "success",
           duration: 5000,
           isClosable: true,
         });
-        router.push("/dashboard/bo/contributions");
       })
       .catch((error) => {
         toast({
@@ -65,6 +67,10 @@ const ContributionPage = (props: IContributionPageProps) => {
         });
       });
   };
+
+  useEffect(() => {
+    if (status !== contribution.status) handleValidation();
+  }, [status]);
 
   const displayResource = (
     file:
@@ -222,7 +228,10 @@ const ContributionPage = (props: IContributionPageProps) => {
 
                 {contribution.link && (
                   <Td>
-                    <Link href={contribution.link} target="_blank" />
+                    <Link href={contribution.link} isExternal>
+                      Consulter la contribution
+                      <ExternalLinkIcon mx="2px" />
+                    </Link>
                   </Td>
                 )}
                 {contribution.files &&
@@ -232,23 +241,13 @@ const ContributionPage = (props: IContributionPageProps) => {
               </Tr>
             </Tbody>
             <TableCaption>
-              {!contribution.isAccepted ? (
-                <Button variant="primary" onClick={() => handleValidation()}>
-                  Valider la contribution
-                </Button>
-              ) : (
-                <Flex
-                  w="full"
-                  justifyContent="center"
-                  alignContent="center"
-                  align={"center"}
-                >
-                  <BsCheckCircleFill color="green" />
-                  <Text fontSize={"md"} fontWeight={"bold"} ml={4}>
-                    Contribution validée
-                  </Text>
-                </Flex>
-              )}
+              {
+                <StatusIndicator
+                  contribution={contribution}
+                  status={status}
+                  setStatus={setStatus}
+                />
+              }
             </TableCaption>
           </Table>
         </TableContainer>

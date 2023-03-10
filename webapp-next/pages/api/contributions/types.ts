@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ZTheme } from "../themes/types";
 import { GeneralListQueryParams, Pagination, ZStrapiFile } from "../types";
 
 // -----------------------------
@@ -11,15 +12,9 @@ export const ZContribution = z.object({
   job_title: z.string().optional(),
   description: z.string(),
   email: z.string(),
-  isAccepted: z.boolean().optional(),
+  status: z.string().optional(),
   link: z.string().optional(),
-  theme: z
-    .object({
-      id: z.number(),
-      name: z.string(),
-      color: z.string().optional(),
-    })
-    .optional(),
+  theme: ZTheme.optional(),
   files: z
     .array(
       z.union([

@@ -5,6 +5,7 @@ import { TabsTheme } from "./components-theme/tabs-theme";
 import InputTheme from "./components-theme/input-theme";
 import CardTheme from "./components-theme/card-theme";
 import SelectTheme from "./components-theme/select-theme";
+import { StepsTheme as Steps } from "chakra-ui-steps";
 
 const theme_extend = {
   styles: {},
@@ -49,6 +50,7 @@ const theme_extend = {
     Input: InputTheme,
     Card: CardTheme,
     Select: SelectTheme,
+    Steps: Steps,
   },
 };
 

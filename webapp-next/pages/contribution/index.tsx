@@ -151,6 +151,9 @@ const Contributions: React.FC = () => {
     values.status = "pending";
     setIsLoading(true);
     let contributionId, tmpFiles, tmpContrib;
+    if (values.theme === undefined) {
+      values.theme = themes[0];
+    }
     if (values.files) {
       const { files, ...contributionWithoutFiles } = values;
       tmpFiles = files;

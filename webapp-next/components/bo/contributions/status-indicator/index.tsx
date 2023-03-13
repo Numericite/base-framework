@@ -1,13 +1,10 @@
-import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FaCross, FaTimes } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { TContribution } from "../../../../pages/api/contributions/types";
-import {
-  TRessource,
-  TRessourceCreationPayload,
-} from "../../../../pages/api/ressources/types";
+import { TRessourceCreationPayload } from "../../../../pages/api/ressources/types";
 import { fetchApi } from "../../../../utils/api/fetch-api";
 import useModals from "../../../../utils/hooks/useModals";
 

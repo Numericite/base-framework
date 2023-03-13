@@ -2,7 +2,7 @@ import { Box, Button, Flex, SimpleGrid, Text } from "@chakra-ui/react";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { FaCross } from "react-icons/fa";
+import { FaCross, FaTimes } from "react-icons/fa";
 import { TContribution } from "../../../../pages/api/contributions/types";
 import {
   TRessource,
@@ -151,7 +151,7 @@ const StatusIndicator = (props: IStatusIndicatorProps) => {
             label={el.label}
             key={el.label}
             state={"error"}
-            icon={() => <FaCross />}
+            checkIcon={() => <FaTimes color="white" size={20} />}
           ></Step>
         );
       } else {
@@ -182,6 +182,22 @@ const StatusIndicator = (props: IStatusIndicatorProps) => {
       {status === "accepted" && (
         <Button my={5} onClick={() => setStatus("in_progress")}>
           Valider la révision par l&apos;équipe
+        </Button>
+      )}
+      {status === "refused" && (
+        <Button
+          my={5}
+          onClick={() =>
+            confirm(
+              "Êtes vous sur de vouloir réouvrir cette contribution ?"
+            ).then((res) => {
+              if (res) {
+                setStatus("pending");
+              }
+            })
+          }
+        >
+          Réouvrir la contribution
         </Button>
       )}
       {status === "in_progress" && (

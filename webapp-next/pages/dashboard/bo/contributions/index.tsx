@@ -10,11 +10,50 @@ import {
 import { fetchApi } from "../../../../utils/api/fetch-api";
 import useModals from "../../../../utils/hooks/useModals";
 import { TContribution } from "../../../api/contributions/types";
-import { AiFillCheckCircle, AiFillCloseSquare } from "react-icons/ai";
+import {
+  AiFillCheckCircle,
+  AiFillCloseSquare,
+  AiFillEye,
+  AiOutlineFieldTime,
+} from "react-icons/ai";
 
 const DashboardContributions = () => {
   const router = useRouter();
   const { confirm } = useModals();
+
+  const displayStatusName = (status: string | undefined) => {
+    switch (status) {
+      case "pending":
+        return "En attente de validation";
+      case "accepted":
+        return "Acceptée";
+      case "refused":
+        return "Refusée";
+      case "in_progress":
+        return "En cours de révision";
+      case "published":
+        return "Publiée";
+      default:
+        break;
+    }
+  };
+
+  const displayStatusIcon = (status: string | undefined) => {
+    switch (status) {
+      case "pending":
+        return <AiFillEye color="orange" size={20} />;
+      case "accepted":
+        return <AiFillCheckCircle color="green" size={20} />;
+      case "refused":
+        return <AiFillCloseSquare color="red" size={20} />;
+      case "in_progress":
+        return <AiOutlineFieldTime color="orange" size={20} />;
+      case "published":
+        return <AiFillCheckCircle color="green" size={20} />;
+      default:
+        break;
+    }
+  };
 
   const columnDefs: ColumnDef<TContribution>[] = [
     {
@@ -52,9 +91,9 @@ const DashboardContributions = () => {
       renderItem: (item: TContribution) => {
         return (
           <Flex>
-            <AiFillCheckCircle color="green" />
+            {displayStatusIcon(item.status)}
             <Text ml={2} fontSize="sm">
-              {item.status}
+              {displayStatusName(item.status)}
             </Text>
           </Flex>
         );
@@ -87,23 +126,6 @@ const DashboardContributions = () => {
       icon: <BsEyeFill />,
       action: (item: TContribution) => {
         router.push("/dashboard/bo/contributions/" + item.id);
-      },
-    },
-    {
-      key: "validate",
-      label: "Valider",
-      icon: <BsCheckCircleFill />,
-      action: (item: TContribution) => {
-        return confirm(
-          "Valider la contribution de " +
-            item.first_name +
-            " " +
-            item.last_name +
-            " ?"
-        ).then(() => {
-          item.status = "in_progress";
-          return fetchApi.put("/api/contributions/update", item);
-        });
       },
     },
     {

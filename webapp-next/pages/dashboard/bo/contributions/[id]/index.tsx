@@ -241,13 +241,15 @@ const ContributionPage = (props: IContributionPageProps) => {
               </Tr>
             </Tbody>
             <TableCaption>
-              {
-                <StatusIndicator
-                  contribution={contribution}
-                  status={status}
-                  setStatus={setStatus}
-                />
-              }
+              <Heading size={"sm"}>
+                Détail du processus de validation de la contribution n°{" "}
+                {contribution.id}
+              </Heading>
+              <StatusIndicator
+                contribution={contribution}
+                status={status}
+                setStatus={setStatus}
+              />
             </TableCaption>
           </Table>
         </TableContainer>

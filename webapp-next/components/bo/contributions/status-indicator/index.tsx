@@ -59,9 +59,11 @@ const StatusIndicator = (props: IStatusIndicatorProps) => {
       };
     }
     try {
-      await fetchApi.post("/api/ressources/create", { ...ressource });
+      const res = await fetchApi.post("/api/ressources/create", {
+        ...ressource,
+      });
       router.push({
-        pathname: "/dashboard/bo/ressources/[id]",
+        pathname: `/dashboard/bo/ressources/${res.id}`,
         query: { contribution_id: contribution.id },
       });
     } catch (e) {

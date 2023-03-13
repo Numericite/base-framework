@@ -92,6 +92,7 @@ const RessourceCreate = () => {
         ? contribution.theme
         : themes && (themes[0] as TTheme),
       link: contribution.link ? contribution.link : "",
+      contribution: contribution.id,
     };
   }
   if (contribution && contribution.files) {
@@ -172,6 +173,10 @@ const RessourceCreate = () => {
           ...tmpRessource,
           status: "published",
         });
+        if (contribution_id && contribution) {
+          contribution.status = "published";
+          await fetchApi.put("/api/contributions/update", { ...contribution });
+        }
         ressource_id = tmpRessource.id;
         child_id = tmpRessource.child_id;
       } else {
@@ -179,10 +184,6 @@ const RessourceCreate = () => {
           ...tmpRessource,
           status: "published",
         });
-        if (contribution_id && contribution) {
-          contribution.status = "published";
-          await fetchApi.put("/api/contributions/update", { ...contribution });
-        }
         ressource_id = response.id;
         child_id = response.child_id;
       }

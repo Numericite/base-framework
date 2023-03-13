@@ -16,6 +16,7 @@ import {
   AiFillEye,
   AiOutlineFieldTime,
 } from "react-icons/ai";
+import { Filter } from "../../../../components/ui/filters/interface";
 
 const DashboardContributions = () => {
   const router = useRouter();
@@ -103,13 +104,20 @@ const DashboardContributions = () => {
 
   const retrieveData = (
     page: number,
-    pageSize: number
+    pageSize: number,
+    search: string,
+    filters: Filter[]
   ): Promise<DataResponse<TContribution>> => {
     return fetchApi
       .get("/api/contributions/list", {
         pagination: {
           page,
           pageSize,
+        },
+        filters: {
+          status: filters
+            .filter((f) => f.label === "status")
+            .map((f) => f.value),
         },
       })
       .then((response) => {
@@ -149,6 +157,35 @@ const DashboardContributions = () => {
     },
   ];
 
+  const filters = [
+    {
+      title: "Statut",
+      slug: "status",
+      items: [
+        {
+          label: "En attente de validation",
+          value: "pending",
+        },
+        {
+          label: "Acceptée",
+          value: "accepted",
+        },
+        {
+          label: "Refusée",
+          value: "refused",
+        },
+        {
+          label: "En cours de révision",
+          value: "in_progress",
+        },
+        {
+          label: "Publiée",
+          value: "published",
+        },
+      ],
+    },
+  ];
+
   return (
     <Box minW="full">
       <Heading mb={5}>Gestion des contributions : </Heading>
@@ -156,6 +193,7 @@ const DashboardContributions = () => {
         retrieveData={retrieveData}
         columnDefs={columnDefs}
         changeActions={changeActions}
+        filters={filters}
       />
     </Box>
   );

@@ -215,7 +215,12 @@ const About: React.FC = () => {
             />
 
             <Text color="neutralDark">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+              Lörem ipsum monorat pav. Ben klimatflykting. Grönt elcertifikat
+              eudelogi, autost inklusive grindstad jäjugt. Latirat tresade jurar
+              samt ör antes vavis. Rebel paragina ovåseras. Kast byr jag syngen
+              nysa såsom autopär. Nende gigask har kåsamma emedan prekroliga.
+              Kross demånde opp. Man disera mononat. Vongen dikon, i sode kav
+              läligt i lätt. Dibyv orat. Beras gäbelt och sossa krov.
             </Text>
           </Flex>
         </Container>

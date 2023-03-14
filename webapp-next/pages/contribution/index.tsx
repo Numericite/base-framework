@@ -96,7 +96,7 @@ const Contributions: React.FC = () => {
       name: "theme",
       kind: "select",
       label: "Thématique",
-      placeholder: "La thématique",
+      placeholder: "Choisissez une thématique",
       required: false,
       options: themes,
     },

@@ -17,6 +17,7 @@ import {
   AiOutlineFieldTime,
 } from "react-icons/ai";
 import { Filter } from "../../../../components/ui/filters/interface";
+import { FaPaperPlane } from "react-icons/fa";
 
 const DashboardContributions = () => {
   const router = useRouter();
@@ -50,7 +51,7 @@ const DashboardContributions = () => {
       case "in_progress":
         return <AiOutlineFieldTime color="orange" size={20} />;
       case "published":
-        return <AiFillCheckCircle color="green" size={20} />;
+        return <FaPaperPlane color="green" size={15} />;
       default:
         break;
     }

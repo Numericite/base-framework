@@ -72,69 +72,81 @@ const StatusIndicator = (props: IStatusIndicatorProps) => {
     if (status === "pending") {
       setStep(0);
       setStatusList([
-        { label: "En attente", content: <Text>En attente</Text> },
+        {
+          label: "En attente",
+          content: <Text fontSize={"sm"}>En attente</Text>,
+        },
       ]);
     } else if (status === "refused") {
       setStep(2);
       setStatusList([
-        { label: "En attente", content: <Text>En attente</Text> },
+        {
+          label: "En attente",
+          content: <Text fontSize={"sm"}>En attente</Text>,
+        },
         {
           label: "Refusée",
-          content: <Text>Refusée</Text>,
+          content: <Text fontSize={"sm"}>Refusée</Text>,
         },
       ]);
     } else if (status === "accepted") {
       setStep(2);
       setStatusList([
-        { label: "En attente", content: <Text>En attente</Text> },
+        { label: "En attente", content: <Text fontSize="sm">En attente</Text> },
         {
           label: "Acceptée",
-          content: <Text>Acceptée</Text>,
+          content: <Text fontSize={"sm"}>Acceptée</Text>,
         },
         {
           label: "En révision",
-          content: <Text>En cours</Text>,
+          content: <Text fontSize={"sm"}>En cours</Text>,
         },
 
         {
           label: "Publiée",
-          content: <Text>Publiée</Text>,
+          content: <Text fontSize={"sm"}>Publiée</Text>,
         },
       ]);
     } else if (status === "in_progress") {
       setStep(3);
       setStatusList([
-        { label: "En attente", content: <Text>En attente</Text> },
+        {
+          label: "En attente",
+          content: <Text fontSize={"sm"}>En attente</Text>,
+        },
         {
           label: "Acceptée",
-          content: <Text>Acceptée</Text>,
+          content: <Text fontSize={"sm"}>Acceptée</Text>,
         },
         {
           label: "En révision",
-          content: <Text>En cours</Text>,
+          content: <Text fontSize={"sm"}>En cours</Text>,
         },
 
         {
           label: "Publiée",
-          content: <Text>Publiée</Text>,
+          content: <Text fontSize={"sm"}>Publiée</Text>,
         },
       ]);
     } else if (status === "published") {
       setStep(4);
       setStatusList([
-        { label: "En attente", content: <Text>En attente</Text> },
+        {
+          label: "En attente",
+          content: <Text fontSize={"sm"}>En attente</Text>,
+        },
         {
           label: "Acceptée",
-          content: <Text>Acceptée</Text>,
+          content: <Text fontSize={"sm"}>Acceptée</Text>,
         },
         {
           label: "En révision",
-          content: <Text>En cours</Text>,
+          content: <Text fontSize={"sm"}>En cours</Text>,
         },
 
         {
           label: "Publiée",
-          content: <Text>Publiée</Text>,
+          content: <Text fontSize={"sm"}>Publiée</Text>,
         },
       ]);
     }
@@ -169,20 +181,27 @@ const StatusIndicator = (props: IStatusIndicatorProps) => {
         </Steps>
         {status === "pending" && (
           <Flex gap={5}>
-            <Button onClick={() => setStatus("accepted")}>Accepter</Button>
-            <Button onClick={() => setStatus("refused")} variant="solid">
+            <Button size={"sm"} onClick={() => setStatus("accepted")}>
+              Accepter
+            </Button>
+            <Button
+              size={"sm"}
+              onClick={() => setStatus("refused")}
+              variant="solid"
+            >
               Refuser
             </Button>
           </Flex>
         )}
       </Flex>
       {status === "accepted" && (
-        <Button my={5} onClick={() => setStatus("in_progress")}>
+        <Button size={"sm"} my={5} onClick={() => setStatus("in_progress")}>
           Valider la révision par l&apos;équipe
         </Button>
       )}
       {status === "refused" && (
         <Button
+          size={"sm"}
           my={5}
           onClick={() =>
             confirm(

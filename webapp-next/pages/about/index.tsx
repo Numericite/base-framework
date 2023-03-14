@@ -90,7 +90,7 @@ const About: React.FC = () => {
                 Fonction Publique
               </Text>
             </Heading>
-            <Tabs variant={"soft-rounded"} colorScheme="blue">
+            <Tabs variant={"blueVersion"} colorScheme="blue">
               <TabList w="full">
                 {tabPannels.map((tabPannel) => (
                   <Tab key={tabPannel.id}>{tabPannel.title}</Tab>

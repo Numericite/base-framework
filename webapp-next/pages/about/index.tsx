@@ -124,8 +124,7 @@ const About: React.FC = () => {
                         }
                         borderRadius={"full"}
                         mr={"0.875rem"}
-                        minW={"2px"}
-                        w={"3px"}
+                        minW={"1px"}
                         bgClip={"border-box"}
                       />
                       <Text color={"neutralDark"}>{tabPannel.subContent}</Text>
@@ -156,7 +155,7 @@ const About: React.FC = () => {
                 de notre espace{" "}
               </Heading>
               <Text color="dark" py={1}>
-                <Text as="span" color="primary">
+                <Text as="span" color="primary" fontWeight="bold">
                   Accueillante :
                 </Text>{" "}
                 parce que trop de sites internet sont froids et formatés, nous
@@ -165,7 +164,7 @@ const About: React.FC = () => {
                 découvrir.
               </Text>
               <Text color="dark" py={1}>
-                <Text as="span" color="primary">
+                <Text as="span" color="primary" fontWeight="bold">
                   Efficace :
                 </Text>{" "}
                 parce que trop de sites internet sont froids et formatés, nous
@@ -174,7 +173,7 @@ const About: React.FC = () => {
                 découvrir.
               </Text>
               <Text color="dark" py={1}>
-                <Text as="span" color="primary">
+                <Text as="span" color="primary" fontWeight="bold">
                   Originale :
                 </Text>{" "}
                 dépassant les préjugés sur les administrations publiques, cette
@@ -182,7 +181,7 @@ const About: React.FC = () => {
                 terres inconnues ou mal connues.
               </Text>
               <Text color="dark" py={1}>
-                <Text as="span" color="primary">
+                <Text as="span" color="primary" fontWeight="bold">
                   Audacieuse :
                 </Text>{" "}
                 la Ressourcerie RH et management ose, elle expérimente et
@@ -197,7 +196,7 @@ const About: React.FC = () => {
                   }
                   borderRadius={"full"}
                   mr={"0.875rem"}
-                  w={"3px"}
+                  minW={"1px"}
                   bgClip={"border-box"}
                 />
                 <Text color={"neutralDark"}>
@@ -269,7 +268,7 @@ const About: React.FC = () => {
               bgGradient={"linear-gradient(360deg, #97F8B1 0%, #2F6CFF 100%)"}
               borderRadius={"full"}
               mr={"0.875rem"}
-              w={"3px"}
+              minW={"1px"}
               bgClip={"border-box"}
             />
             <Box>

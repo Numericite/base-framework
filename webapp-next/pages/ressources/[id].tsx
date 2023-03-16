@@ -125,8 +125,6 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
     </Box>
   );
 
-
-
   return (
     <Box w="full">
       <RessourceHeader
@@ -164,7 +162,8 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
                     </Text>
                   </Box>
                 )}
-
+              </Box>
+            )}
           </Box>
         </Flex>
       </Container>

@@ -1,8 +1,6 @@
 import { Box, Container, Flex, Heading, HStack, Link } from "@chakra-ui/react";
-import { useMediaQuery } from "usehooks-ts";
 import { useRouter } from "next/router";
 import MobileDrawer from "../mobile-drawer";
-import { useEffect, useState } from "react";
 import { useMediaQueryAdapter } from "../../../utils/hooks/useMediaQuery";
 import NextLink from "next/link";
 
@@ -18,7 +16,6 @@ const Navbar: React.FC = () => {
     { label: "Ressources", href: "/ressources" },
     { label: "Contribution", href: "/contribution" },
     { label: "A propos", href: "/about" },
-    { label: "Articles", href: "/articles" },
   ];
 
   const displayLinks = links.map((link, index) => {

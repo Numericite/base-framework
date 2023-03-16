@@ -12,7 +12,13 @@ interface Props {
 
 const RessourceSimilar: React.FC<Props> = ({ similarRessources }) => {
   const elements = similarRessources.map((ressource) => {
-    return <RessourceCard key={ressource.id} ressource={ressource} />;
+    return (
+      <RessourceCard
+        key={ressource.id}
+        ressource={ressource}
+        clickable={true}
+      />
+    );
   });
 
   return (

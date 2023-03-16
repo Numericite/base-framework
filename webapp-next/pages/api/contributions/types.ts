@@ -13,7 +13,7 @@ export const ZContribution = z.object({
   description: z.string(),
   email: z.string(),
   status: z.string().optional(),
-  link: z.string().optional(),
+  link: z.string().optional().nullable(),
   theme: ZTheme.optional(),
   files: z
     .array(

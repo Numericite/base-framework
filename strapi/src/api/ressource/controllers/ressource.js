@@ -23,6 +23,7 @@ const childRessourceRequest = (ressource) =>
             sub_themes: true,
             personaes: true,
             personae_occupations: true,
+            contribution: true,
           },
         },
         files: true,

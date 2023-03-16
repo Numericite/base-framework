@@ -74,7 +74,7 @@ const ZRessourceBase = z.object({
   image: z.optional(ZStrapiFile.nullable()),
   child_id: z.number(),
   score: z.optional(z.number()),
-  contribution: ZContribution.optional(),
+  contribution: ZContribution.optional().nullable(),
   status: z.enum(["published", "draft"]),
 });
 

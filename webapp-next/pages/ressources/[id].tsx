@@ -114,6 +114,14 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         </Box>
       )}
       {parse(ressource.content, options)}
+      {ressource.contribution && (
+        <Box mt={8}>
+          <Text>
+            Merci à {ressource.contribution?.first_name}{" "}
+            {ressource.contribution?.last_name} pour cette ressource !
+          </Text>
+        </Box>
+      )}
     </Box>
   );
 
@@ -146,6 +154,14 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
             {!isLargerThan768 && (
               <Box w="100%" px={"1.5rem"}>
                 {ressourceBody}
+                {ressource.contribution && (
+                  <Box mt={8}>
+                    <Text>
+                      Merci à {ressource.contribution?.first_name}{" "}
+                      {ressource.contribution?.last_name} pour cette ressource
+                    </Text>
+                  </Box>
+                )}
               </Box>
             )}
           </Box>

@@ -107,6 +107,7 @@ const postMethods = async (
       const { status, data } = await axios.post(`/ressources`, {
         data: params,
       });
+
       return {
         status,
         data: ZRessource.parse(getRecursiveStrapiObject(data.data)),

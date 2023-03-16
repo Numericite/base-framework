@@ -96,7 +96,7 @@ const Contributions: React.FC = () => {
       name: "theme",
       kind: "select",
       label: "Thématique",
-      placeholder: "La thématique",
+      placeholder: "Choisissez une thématique",
       required: false,
       options: themes,
     },
@@ -148,9 +148,12 @@ const Contributions: React.FC = () => {
   });
 
   const handleSubmit = async (values: TContributionCreationPayload) => {
-    values.isAccepted = false;
+    values.status = "pending";
     setIsLoading(true);
     let contributionId, tmpFiles, tmpContrib;
+    if (values.theme === undefined) {
+      values.theme = themes[0];
+    }
     if (values.files) {
       const { files, ...contributionWithoutFiles } = values;
       tmpFiles = files;

@@ -10,11 +10,52 @@ import {
 import { fetchApi } from "../../../../utils/api/fetch-api";
 import useModals from "../../../../utils/hooks/useModals";
 import { TContribution } from "../../../api/contributions/types";
-import { AiFillCheckCircle, AiFillCloseSquare } from "react-icons/ai";
+import {
+  AiFillCheckCircle,
+  AiFillCloseSquare,
+  AiFillEye,
+  AiOutlineFieldTime,
+} from "react-icons/ai";
+import { Filter } from "../../../../components/ui/filters/interface";
+import { FaPaperPlane } from "react-icons/fa";
 
 const DashboardContributions = () => {
   const router = useRouter();
   const { confirm } = useModals();
+
+  const displayStatusName = (status: string | undefined) => {
+    switch (status) {
+      case "pending":
+        return "En attente de validation";
+      case "accepted":
+        return "Acceptée";
+      case "refused":
+        return "Refusée";
+      case "in_progress":
+        return "En cours de révision";
+      case "published":
+        return "Publiée";
+      default:
+        break;
+    }
+  };
+
+  const displayStatusIcon = (status: string | undefined) => {
+    switch (status) {
+      case "pending":
+        return <AiFillEye color="orange" size={20} />;
+      case "accepted":
+        return <AiFillCheckCircle color="green" size={20} />;
+      case "refused":
+        return <AiFillCloseSquare color="red" size={20} />;
+      case "in_progress":
+        return <AiOutlineFieldTime color="orange" size={20} />;
+      case "published":
+        return <FaPaperPlane color="green" size={15} />;
+      default:
+        break;
+    }
+  };
 
   const columnDefs: ColumnDef<TContribution>[] = [
     {
@@ -36,7 +77,7 @@ const DashboardContributions = () => {
         return (
           <Tag
             size="sm"
-            w="fit-content"
+            w="full"
             fontSize={{ base: "xs", sm: "xs" }}
             variant="subtle"
             colorScheme={item.theme?.color || "gray"}
@@ -47,21 +88,14 @@ const DashboardContributions = () => {
       },
     },
     {
-      key: "isAccepted",
+      key: "status",
       label: "Statut",
       renderItem: (item: TContribution) => {
-        return item.isAccepted ? (
+        return (
           <Flex>
-            <AiFillCheckCircle color="green" />
+            {displayStatusIcon(item.status)}
             <Text ml={2} fontSize="sm">
-              Validée
-            </Text>
-          </Flex>
-        ) : (
-          <Flex align={"center"} justify="space-between">
-            <AiFillCloseSquare color="red" />
-            <Text ml={2} fontSize="sm">
-              En attente
+              {displayStatusName(item.status)}
             </Text>
           </Flex>
         );
@@ -71,13 +105,20 @@ const DashboardContributions = () => {
 
   const retrieveData = (
     page: number,
-    pageSize: number
+    pageSize: number,
+    search: string,
+    filters: Filter[]
   ): Promise<DataResponse<TContribution>> => {
     return fetchApi
       .get("/api/contributions/list", {
         pagination: {
           page,
           pageSize,
+        },
+        filters: {
+          status: filters
+            .filter((f) => f.label === "status")
+            .map((f) => f.value),
         },
       })
       .then((response) => {
@@ -94,23 +135,6 @@ const DashboardContributions = () => {
       icon: <BsEyeFill />,
       action: (item: TContribution) => {
         router.push("/dashboard/bo/contributions/" + item.id);
-      },
-    },
-    {
-      key: "validate",
-      label: "Valider",
-      icon: <BsCheckCircleFill />,
-      action: (item: TContribution) => {
-        return confirm(
-          "Valider la contribution de " +
-            item.first_name +
-            " " +
-            item.last_name +
-            " ?"
-        ).then(() => {
-          item.isAccepted = !item.isAccepted;
-          return fetchApi.put("/api/contributions/update", item);
-        });
       },
     },
     {
@@ -134,6 +158,35 @@ const DashboardContributions = () => {
     },
   ];
 
+  const filters = [
+    {
+      title: "Statut",
+      slug: "status",
+      items: [
+        {
+          label: "En attente de validation",
+          value: "pending",
+        },
+        {
+          label: "Acceptée",
+          value: "accepted",
+        },
+        {
+          label: "Refusée",
+          value: "refused",
+        },
+        {
+          label: "En cours de révision",
+          value: "in_progress",
+        },
+        {
+          label: "Publiée",
+          value: "published",
+        },
+      ],
+    },
+  ];
+
   return (
     <Box minW="full">
       <Heading mb={5}>Gestion des contributions : </Heading>
@@ -141,6 +194,7 @@ const DashboardContributions = () => {
         retrieveData={retrieveData}
         columnDefs={columnDefs}
         changeActions={changeActions}
+        filters={filters}
       />
     </Box>
   );

@@ -62,6 +62,19 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::personae-occupation.personae-occupation"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "draft",
+        "published"
+      ],
+      "default": "draft"
+    },
+    "contribution": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::contribution.contribution"
     }
   }
 }

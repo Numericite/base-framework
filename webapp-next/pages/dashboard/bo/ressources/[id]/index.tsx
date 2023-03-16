@@ -25,15 +25,20 @@ import ButtonContainer from "../../../../../components/bo/ressources/ressource-b
 import FormikListener from "../../../../../utils/globals/formik-listener";
 import axios from "axios";
 import { getJwt } from "../../../../../utils/globals/cookies";
+import { TContribution } from "../../../../api/contributions/types";
+import { TPersonae } from "../../../../api/personaes/types";
+import { TPersonaeOccupation } from "../../../../api/personaeoccupations/types";
+import { TSubTheme } from "../../../../api/subthemes/types";
 
 const RessourceCreate = () => {
   const router = useRouter();
   const toast = useToast();
-  const { id } = router.query;
+  const { id, contribution_id } = router.query;
   const [ressource, setRessource] = useState<TRessource>();
   const [themes, setThemes] = useState<TTheme[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState<number>(1);
+  const [contribution, setContribution] = useState<TContribution>();
 
   const jwt = getJwt();
 
@@ -47,6 +52,7 @@ const RessourceCreate = () => {
     personaes: [],
     personae_occupations: [],
     sub_themes: [],
+    status: "draft",
   };
 
   if (ressource && ressource.id) {
@@ -54,20 +60,47 @@ const RessourceCreate = () => {
       const { files, ...ressourceWithoutFiles } = ressource;
       initialValues = {
         ...ressourceWithoutFiles,
-        personaes: ressourceWithoutFiles.personaes?.map((p) => p.id),
-        personae_occupations: ressourceWithoutFiles.personae_occupations?.map(
+        personaes: (ressourceWithoutFiles.personaes as TPersonae[])?.map(
           (p) => p.id
         ),
-        sub_themes: ressourceWithoutFiles.sub_themes?.map((p) => p.id),
+        personae_occupations: (
+          ressourceWithoutFiles.personae_occupations as TPersonaeOccupation[]
+        )?.map((p) => p.id),
+        sub_themes: (ressourceWithoutFiles.sub_themes as TSubTheme[])?.map(
+          (p) => p.id
+        ),
+        contribution: null,
       };
     } else {
       initialValues = {
         ...ressource,
-        personaes: ressource.personaes?.map((p) => p.id),
-        personae_occupations: ressource.personae_occupations?.map((p) => p.id),
-        sub_themes: ressource.sub_themes?.map((p) => p.id),
+        personaes: (ressource.personaes as TPersonae[])?.map((p) => p.id),
+        personae_occupations: (
+          ressource.personae_occupations as TPersonaeOccupation[]
+        )?.map((p) => p.id),
+        sub_themes: (ressource.sub_themes as TSubTheme[])?.map((p) => p.id),
+        contribution: null,
       };
     }
+  }
+
+  if (contribution_id && contribution) {
+    initialValues = {
+      ...initialValues,
+      description: contribution.description,
+      theme: contribution.theme
+        ? contribution.theme
+        : themes && (themes[0] as TTheme),
+      link: contribution.link ? contribution.link : "",
+      contribution: contribution.id,
+    };
+  }
+  if (contribution && contribution.files) {
+    initialValues = {
+      ...initialValues,
+      kind: "file",
+      files: contribution.files[0] as File | undefined,
+    };
   }
 
   const fetchRessource = () => {
@@ -100,6 +133,21 @@ const RessourceCreate = () => {
     fetchThemes();
   }, []);
 
+  useEffect(() => {
+    if (contribution_id) {
+      fetchApi
+        .get("/api/contributions/find", {
+          id: parseInt(contribution_id as string),
+        })
+        .then((response) => {
+          setContribution(response);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  }, [contribution_id]);
+
   const validationSchema = yup.object().shape({
     name: yup.string().required("Le nom est obligatoire"),
     description: yup.string().required("La description est obligatoire"),
@@ -121,12 +169,20 @@ const RessourceCreate = () => {
     }
     try {
       if ("id" in tmpRessource) {
-        await fetchApi.put("/api/ressources/update", { ...tmpRessource });
+        await fetchApi.put("/api/ressources/update", {
+          ...tmpRessource,
+          status: "published",
+        });
+        if (contribution_id && contribution) {
+          contribution.status = "published";
+          await fetchApi.put("/api/contributions/update", { ...contribution });
+        }
         ressource_id = tmpRessource.id;
         child_id = tmpRessource.child_id;
       } else {
         const response = await fetchApi.post("/api/ressources/create", {
           ...tmpRessource,
+          status: "published",
         });
         ressource_id = response.id;
         child_id = response.child_id;

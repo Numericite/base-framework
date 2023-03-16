@@ -1,9 +1,12 @@
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Container,
   Flex,
   Heading,
+  Image,
+  Link,
   Table,
   TableCaption,
   TableContainer,
@@ -15,14 +18,18 @@ import {
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { BsCheckCircleFill } from "react-icons/bs";
+import React, { useEffect } from "react";
 import {
   FaBook,
   FaAddressCard,
   FaUser,
   FaBrain,
   FaFolder,
+  FaFilePdf,
+  FaFileWord,
+  FaFileExcel,
 } from "react-icons/fa";
+import StatusIndicator from "../../../../../components/bo/contributions/status-indicator";
 import BackButton from "../../../../../components/ui/back-button/back-button";
 import { fetchApi } from "../../../../../utils/api/fetch-api";
 import { TContribution } from "../../../../api/contributions/types";
@@ -35,20 +42,20 @@ const ContributionPage = (props: IContributionPageProps) => {
   const { contribution } = props;
   const toast = useToast();
   const router = useRouter();
+  const [status, setStatus] = React.useState<string>(contribution.status!);
 
   const handleValidation = () => {
     let tmpContribution = contribution;
-    tmpContribution.isAccepted = true;
+    tmpContribution.status = status;
     fetchApi
       .put("/api/contributions/update", tmpContribution)
       .then(() => {
         toast({
-          title: "La contribution a bien été validée !",
+          title: "La contribution a bien été modifiée avec succès !",
           status: "success",
           duration: 5000,
           isClosable: true,
         });
-        router.push("/dashboard/bo/contributions");
       })
       .catch((error) => {
         toast({
@@ -59,6 +66,89 @@ const ContributionPage = (props: IContributionPageProps) => {
           isClosable: true,
         });
       });
+  };
+
+  useEffect(() => {
+    if (status !== contribution.status) handleValidation();
+  }, [status]);
+
+  const displayResource = (
+    file:
+      | {
+          id: number;
+          url: string;
+        }
+      | File
+      | null,
+    index: number
+  ) => {
+    if (file !== null && "url" in file) {
+      let extension = file.url.split(".").pop();
+      switch (extension) {
+        case "pdf":
+          return (
+            <Td>
+              <Button
+                key={index}
+                variant="outline"
+                onClick={() =>
+                  window.open(process.env.NEXT_PUBLIC_STRAPI_URL + file.url)
+                }
+                h={"auto"}
+                my={4}
+              >
+                <Box mr={3}>
+                  <FaFilePdf />
+                </Box>
+                Consulter le document
+              </Button>
+            </Td>
+          );
+        case "png":
+        case "jpg":
+        case "jpeg":
+          return (
+            <Td>
+              <Image
+                key={index}
+                src={file.url}
+                alt="Ressource"
+                w={"full"}
+                h={"auto"}
+                my={4}
+              />
+            </Td>
+          );
+        case "docx":
+        case "doc":
+        case "xlsx":
+        case "xls":
+          return (
+            <Td>
+              <Button
+                key={index}
+                variant="outline"
+                onClick={() =>
+                  window.open(process.env.NEXT_PUBLIC_STRAPI_URL + file.url)
+                }
+                h={"auto"}
+                my={4}
+              >
+                <Box mr={3}>
+                  {extension === "xlsx" || extension === "xls" ? (
+                    <FaFileExcel />
+                  ) : (
+                    <FaFileWord />
+                  )}
+                </Box>
+                Consulter le document
+              </Button>
+            </Td>
+          );
+        default:
+          break;
+      }
+    }
   };
 
   return (
@@ -128,25 +218,38 @@ const ContributionPage = (props: IContributionPageProps) => {
                 </Td>
                 <Td>{contribution.description}</Td>
               </Tr>
+              <Tr>
+                <Td>
+                  <Flex>
+                    <FaBrain />
+                    <Text ml={3}>Ressource proposée :</Text>
+                  </Flex>
+                </Td>
+
+                {contribution.link && (
+                  <Td>
+                    <Link href={contribution.link} isExternal>
+                      Consulter la contribution
+                      <ExternalLinkIcon mx="2px" />
+                    </Link>
+                  </Td>
+                )}
+                {contribution.files &&
+                  contribution.files.map((file, index) =>
+                    displayResource(file, index)
+                  )}
+              </Tr>
             </Tbody>
             <TableCaption>
-              {!contribution.isAccepted ? (
-                <Button variant="primary" onClick={() => handleValidation()}>
-                  Valider la contribution
-                </Button>
-              ) : (
-                <Flex
-                  w="full"
-                  justifyContent="center"
-                  alignContent="center"
-                  align={"center"}
-                >
-                  <BsCheckCircleFill color="green" />
-                  <Text fontSize={"md"} fontWeight={"bold"} ml={4}>
-                    Contribution validée
-                  </Text>
-                </Flex>
-              )}
+              <Heading size={"sm"}>
+                Détail du processus de validation de la contribution n°{" "}
+                {contribution.id}
+              </Heading>
+              <StatusIndicator
+                contribution={contribution}
+                status={status}
+                setStatus={setStatus}
+              />
             </TableCaption>
           </Table>
         </TableContainer>

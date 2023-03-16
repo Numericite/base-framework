@@ -154,9 +154,7 @@ const DashboardContributions = () => {
             });
           }
         });
-      },
-    },
-  ];
+
 
   const filters = [
     {

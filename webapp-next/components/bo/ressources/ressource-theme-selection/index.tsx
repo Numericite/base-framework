@@ -76,6 +76,22 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
       formik.setFieldValue("sub_themes", []);
       setSubThemes([]);
     } else {
+      const personaeOccupationsIds = personaeOccupations?.map(
+        (personaeOccupation) => personaeOccupation.id
+      );
+      const personaeOccupationsToRemove =
+        formik.values.personae_occupations.filter(
+          (personaeOccupation) =>
+            !personaeOccupationsIds?.includes(personaeOccupation)
+        );
+      formik.setFieldValue(
+        "personae_occupations",
+        formik.values.personae_occupations.filter(
+          (personaeOccupation) =>
+            !personaeOccupationsToRemove.includes(personaeOccupation)
+        )
+      );
+
       retrievePersonaeOccupation(formik.values.personaes);
     }
   }, [formik.values.personaes.length, formik.values.theme]);

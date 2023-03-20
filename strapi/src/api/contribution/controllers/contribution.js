@@ -54,35 +54,6 @@ module.exports = createCoreController("api::contribution.contribution", () => ({
       console.log("error", error);
     }
 
-    if (data.attributes.status === "accepted") {
-    }
-
-    if (data.attributes.status === "accepted") {
-      try {
-        strapi.plugins["email"].services.email.sendTemplatedEmail(
-          {
-            to: email,
-          },
-          acceptedEmailTemplate
-        );
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
-    if (data.attributes.status === "published") {
-      try {
-        strapi.plugins["email"].services.email.sendTemplatedEmail(
-          {
-            to: email,
-          },
-          publishedEmailTemplate
-        );
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-
     return { data, meta };
   },
 }));

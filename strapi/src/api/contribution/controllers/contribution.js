@@ -20,8 +20,8 @@ module.exports = createCoreController("api::contribution.contribution", () => ({
 
     const refusedEmailTemplate = {
       subject: "Votre contribution à la Ressourcerie PFRH a été refusée",
-      text: "Bonjour, malheureusement votre contribution n'a pas été retenue",
-      html: "Bonjour, malheureusement votre contribution n'a pas été retenue",
+      text: "Bonjour, malheureusement votre contribution n'a pas été retenue, n'hésitez pas à nous contacter pour plus d'informations.",
+      html: "Bonjour, malheureusement votre contribution n'a pas été retenue, n'hésitez pas à nous contacter pour plus d'informations.",
     };
 
     const publishedEmailTemplate = {

@@ -7,6 +7,7 @@ import {
   TRessourceCreationPayload,
   TRessourceDeletionPayload,
   TRessourceUpdatePayload,
+  TRessourceUpdateStatusPayload,
   ZRessourceCreationPayload,
   ZRessourceFindParams,
   ZRessourceUpdatePayload,
@@ -18,7 +19,7 @@ import { getRecursiveStrapiObject } from "../../../utils/api/parse-strapi-object
 const activeSlugs: ActiveSlugs = {
   GET: ["list", "count", "find", "akinator"],
   POST: ["create"],
-  PUT: ["update"],
+  PUT: ["update", "update-status"],
   DELETE: ["delete"],
 };
 
@@ -138,6 +139,23 @@ const putMethods = async (
         data: params,
       });
 
+      return {
+        status,
+        data: ZRessource.parse(getRecursiveStrapiObject(data.data)),
+      };
+    }
+    case "update-status": {
+      const payload = JSON.parse(body);
+      const params: TRessourceUpdateStatusPayload = z
+        .object({
+          id: z.number(),
+          status: z.string(),
+        })
+        .parse(payload);
+      const { status, data } = await axios.put(
+        `/ressources/updateStatus`,
+        params
+      );
       return {
         status,
         data: ZRessource.parse(getRecursiveStrapiObject(data.data)),

@@ -101,7 +101,10 @@ const baseRessourcesToResponse = async (data, meta) => {
     }
   );
 
-  return { data: finalRessources.filter((_) => !!_), meta };
+  return {
+    data: finalRessources.filter((_) => !!_),
+    meta,
+  };
 };
 
 module.exports = createCoreController("api::ressource.ressource", () => ({
@@ -158,6 +161,16 @@ module.exports = createCoreController("api::ressource.ressource", () => ({
         },
       };
     }
+  },
+  async updateStatus(ctx) {
+    const { id, status } = ctx.request.body;
+    const response = await strapi
+      .service("api::ressource.ressource")
+      .update(id, { data: { status: status } });
+    let fullRessource = await strapi
+      .controller("api::ressource.ressource")
+      .findOne({ params: { id: response.id } });
+    return { data: fullRessource.data };
   },
   async akinator(ctx) {
     const { personae, occupation, subTheme, theme, pagination } =

@@ -83,6 +83,9 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
     fetchApi
       .get("/api/ressources/akinator", {
         pagination: { page: 1, pageSize: 10 },
+        filters: {
+          status: "published",
+        },
         ...akinatorParams,
       })
       .then((response) => {
@@ -103,9 +106,12 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
     setIsLoading(true);
     let params: GeneralListQueryParams = {
       pagination: { page: 1, pageSize: 12 },
+      filters: {
+        status: "published",
+      },
     };
 
-    if (filters) params.filters = filters;
+    if (filters) params.filters = { ...params.filters, ...filters };
     if (_q) params._q = _q;
 
     fetchApi

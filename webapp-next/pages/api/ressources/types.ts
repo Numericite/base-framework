@@ -159,6 +159,15 @@ export const ZRessourceUpdatePayload = z.discriminatedUnion("kind", [
     }),
 ]);
 
+export const ZRessourceUpdateStatusPayload = z.object({
+  id: z.number(),
+  status: z.string(),
+});
+
+export type TRessourceUpdateStatusPayload = z.infer<
+  typeof ZRessourceUpdateStatusPayload
+>;
+
 export type TRessourceUpdatePayload = z.infer<typeof ZRessourceUpdatePayload>;
 
 // ---------------------------
@@ -198,7 +207,9 @@ export type RessourceGetRoutes =
   | "/api/ressources/akinator"
   | "/api/ressources/find";
 export type RessourcePostRoutes = "/api/ressources/create";
-export type RessourcePutRoutes = "/api/ressources/update";
+export type RessourcePutRoutes =
+  | "/api/ressources/update"
+  | "/api/ressources/update-status";
 export type RessourceDeleteRoutes = "/api/ressources/delete";
 
 //REQUESTS
@@ -212,6 +223,7 @@ export interface RessourceRoutesPostParams {
 }
 export interface RessourceRoutesPutParams {
   "/api/ressources/update": TRessourceUpdatePayload;
+  "/api/ressources/update-status": TRessourceUpdateStatusPayload;
 }
 export interface RessourceRoutesDeleteParams {
   "/api/ressources/delete": TRessourceDeletionPayload;
@@ -227,6 +239,8 @@ export type RessourceRoutesDataResponses<T> = T extends "/api/ressources/list"
   : T extends "/api/ressources/create"
   ? TRessource
   : T extends "/api/ressources/update"
+  ? TRessource
+  : T extends "/api/ressources/update-status"
   ? TRessource
   : T extends "/api/ressources/delete"
   ? TRessource

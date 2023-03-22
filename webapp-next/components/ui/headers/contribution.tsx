@@ -8,10 +8,11 @@ const ContributionHeader = () => {
         <Flex alignItems={"center"}>
           <Image src="./contribution_header_icon.png" w="10.25rem" />
           <Text color="#6B829B">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
-            reprehenderit aspernatur totam tempora, ad sequi quidem cum
-            cupiditate quo, id, amet sit voluptas inventore aliquid commodi
-            optio fuga quam architecto.
+            Vous avez des ressources numériques RH et management intéressantes à
+            partager ? Nous serions ravis de les inclure sur notre plateforme !
+            Remplissez simplement ce formulaire de contribution et notre équipe
+            se chargera de les examiner pour qu&apos;elles soient rapidement
+            accessibles à tous.
           </Text>
         </Flex>
       </Container>

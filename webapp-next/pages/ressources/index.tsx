@@ -33,6 +33,7 @@ interface RessourcesProps {
     occupation: number;
     theme: number;
     subTheme: number;
+    status: "published";
   };
 }
 

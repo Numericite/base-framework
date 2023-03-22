@@ -70,27 +70,56 @@ const DashboardRessources = () => {
         );
       },
     },
+    // {
+    //   key: "contribution",
+    //   label: "Contribution",
+    //   renderItem: (item: TRessource) => {
+    //     return (
+    //       <Text fontSize="sm" color="gray.500">
+    //         {item.contribution?.name}
+    //       </Text>
+    //     );
+    //   },
+    // },
   ];
 
   const changeActions: ChangeAction<TRessource>[] = [
     {
-      key: "status",
-      label: "Publier/Dépublier",
+      key: "status-publish",
+      label: "Publier",
+      hide: (item: TRessource) => item.status === "published",
       icon: <BsJournal />,
       action: (item: TRessource) => {
-        return confirm(
-          item.status === "published"
-            ? "Dépublier la ressource " + item.name + " ?"
-            : "Publier la ressource " + item.name + " ?"
-        ).then((value) => {
-          if (value) {
-            const payload: TRessourceUpdateStatusPayload = {
-              id: item.id,
-              status: item.status === "published" ? "draft" : "published",
-            };
-            return fetchApi.put("/api/ressources/update-status", payload);
+        return confirm("Publier la ressource " + item.name + " ?").then(
+          (value) => {
+            if (value) {
+              const payload: TRessourceUpdateStatusPayload = {
+                id: item.id,
+                status: "published",
+              };
+              return fetchApi.put("/api/ressources/update-status", payload);
+            }
           }
-        });
+        );
+      },
+    },
+    {
+      key: "status-draft",
+      label: "Dépublier",
+      hide: (item: TRessource) => item.status === "draft",
+      icon: <BsJournal />,
+      action: (item: TRessource) => {
+        return confirm("Dépublier la ressource " + item.name + " ?").then(
+          (value) => {
+            if (value) {
+              const payload: TRessourceUpdateStatusPayload = {
+                id: item.id,
+                status: "draft",
+              };
+              return fetchApi.put("/api/ressources/update-status", payload);
+            }
+          }
+        );
       },
     },
     {

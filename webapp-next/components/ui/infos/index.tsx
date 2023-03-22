@@ -25,23 +25,20 @@ const Infos = () => {
         ]}
       >
         <Box w={["100%", "100%", "100%", "30%"]}>
-          <Heading fontSize={["3xl", "3xl", "3xl", "5xl"]} mt={[8, 8, 8, 0]}>
-            Lorem ipsum{" "}
+          <Heading fontSize={["3xl", "3xl", "3xl", "4xl"]} mt={[8, 8, 8, 0]}>
+            Mais c&apos;est quoi une{" "}
             <Text
               as="span"
               bgGradient="linear(to-t, #2F80ED, #97F8B1)"
               bgClip="text"
             >
-              dolors
+              ressourcerie
             </Text>{" "}
-            asit met ?
+            ?
           </Heading>
-          <Text
-            fontSize={["xl", "xl", "xl", "1.5xl"]}
-            mt={4}
-            color="neutralDark"
-          >
-            Lörem ipsum vovis nivönon ködöst. Odegt anoll !
+          <Text fontSize={["xl", "xl", "xl", "xl"]} mt={4} color="neutralDark">
+            Découvrez les coulisses de la construction de la ressourcerie RH et
+            management.
           </Text>
           <NextLink href="/about">
             <Button variant="neutral" mt={16}>

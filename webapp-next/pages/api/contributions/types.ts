@@ -14,6 +14,7 @@ export const ZContribution = z.object({
   email: z.string(),
   status: z.string().optional(),
   link: z.string().optional().nullable(),
+  createdAt: z.string().optional(),
   theme: ZTheme.optional(),
   files: z
     .array(

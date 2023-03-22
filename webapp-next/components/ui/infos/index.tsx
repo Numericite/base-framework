@@ -40,7 +40,7 @@ const Infos = () => {
             Découvrez les coulisses de la construction de la ressourcerie RH et
             management.
           </Text>
-          <NextLink href="/about">
+          <NextLink href="/about" passHref>
             <Button variant="neutral" mt={16}>
               En savoir plus <ArrowForwardIcon ml={4} />
             </Button>

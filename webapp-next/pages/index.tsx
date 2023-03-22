@@ -18,7 +18,12 @@ const Home = () => {
 
   const fetchRessources = () => {
     fetchApi
-      .get("/api/ressources/list", { pagination: { page: 1, pageSize: 3 } })
+      .get("/api/ressources/list", {
+        pagination: { page: 1, pageSize: 3 },
+        filters: {
+          status: "published",
+        },
+      })
       .then((response) => {
         setRessources(response.data);
       });

@@ -293,6 +293,7 @@ const About: React.FC = () => {
           <Flex
             w="full"
             pt={5}
+            mt={5}
             justifyContent="center"
             alignContent={"center"}
             flexDir="column"

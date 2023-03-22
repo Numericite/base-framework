@@ -56,10 +56,9 @@ const Footer = () => {
           <Image src="/logo-marianne.png" alt="Marianne" />
           <Box w={["100%", "100%", "55%"]} fontSize="sm">
             <Text>
-              Texte optionnel 3 lignes maximum. <br />
-              <br />
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Consectetur et vel quam auctor semper. Cras si amet mollis dolor.
+              La ressourcerie RH et management de Haute Normandie est une
+              plateforme numérique de partage de connaissances proposée par la
+              PFRH de Haute Normandie <br />
             </Text>
             <Flex mt={4} flexWrap="wrap" fontFamily={"Marianne Bold"}>
               {externalLinks.map((eLink) => (

@@ -171,7 +171,6 @@ const RessourceCreate = () => {
       if ("id" in tmpRessource) {
         await fetchApi.put("/api/ressources/update", {
           ...tmpRessource,
-          status: "published",
         });
         if (contribution_id && contribution) {
           contribution.status = "published";
@@ -182,7 +181,6 @@ const RessourceCreate = () => {
       } else {
         const response = await fetchApi.post("/api/ressources/create", {
           ...tmpRessource,
-          status: "published",
         });
         ressource_id = response.id;
         child_id = response.child_id;

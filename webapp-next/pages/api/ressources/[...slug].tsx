@@ -11,6 +11,7 @@ import {
   ZRessourceCreationPayload,
   ZRessourceFindParams,
   ZRessourceUpdatePayload,
+  ZRessourceUpdateStatusPayload,
 } from "./types";
 import { ZRessource, ZRessourceDeletionPayload } from "./types";
 import { z } from "zod";
@@ -146,12 +147,8 @@ const putMethods = async (
     }
     case "update-status": {
       const payload = JSON.parse(body);
-      const params: TRessourceUpdateStatusPayload = z
-        .object({
-          id: z.number(),
-          status: z.string(),
-        })
-        .parse(payload);
+      const params: TRessourceUpdateStatusPayload =
+        ZRessourceUpdateStatusPayload.parse(payload);
       const { status, data } = await axios.put(
         `/ressources/updateStatus`,
         params

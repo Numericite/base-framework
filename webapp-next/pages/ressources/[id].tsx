@@ -12,6 +12,7 @@ import type { Text as THTML } from "html-react-parser";
 import { useEffect, useState } from "react";
 import _ from "lodash";
 import { getYoutubeIdFromFullUrl } from "../../utils/globals/tools";
+import RessourceInfos from "../../components/ui/ressources/ressource-info";
 
 interface Props {
   ressource: TRessource;
@@ -133,39 +134,47 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         kind={ressource.kind}
       />
       <Container maxW="container.2lg" my="2.125rem">
-        <Flex justifyItems={"space-between"}>
-          {isLargerThan768 && (
-            <Box w="100%" pr={"1.5rem"}>
-              {ressourceBody}
-            </Box>
-          )}
-          <Box flexDir={"column"} minW="auto">
-            <RessourceMenu
-              ressource={ressource}
-              titles={_.uniq(
-                titles.map((el) => {
-                  return {
-                    title: el.title,
-                    subtitles: el.subtitles,
-                  };
-                })
-              )}
-            />
-            {!isLargerThan768 && (
-              <Box w="100%" px={"1.5rem"}>
+        {ressource.content ? (
+          <Flex justifyItems={"space-between"}>
+            {isLargerThan768 && (
+              <Box w="100%" pr={"1.5rem"}>
                 {ressourceBody}
-                {ressource.contribution && (
-                  <Box mt={8}>
-                    <Text>
-                      Merci à {ressource.contribution?.first_name}{" "}
-                      {ressource.contribution?.last_name} pour cette ressource
-                    </Text>
-                  </Box>
-                )}
               </Box>
             )}
+            <Box flexDir={"column"} minW="auto">
+              <RessourceMenu
+                ressource={ressource}
+                titles={_.uniq(
+                  titles.map((el) => {
+                    return {
+                      title: el.title,
+                      subtitles: el.subtitles,
+                    };
+                  })
+                )}
+              />
+              {!isLargerThan768 && (
+                <Box w="100%" px={"1.5rem"}>
+                  {ressourceBody}
+                  {ressource.contribution &&
+                    ressource.contribution?.first_name !== "" && (
+                      <Box mt={8}>
+                        <Text>
+                          Merci à {ressource.contribution?.first_name}{" "}
+                          {ressource.contribution?.last_name} pour cette
+                          ressource
+                        </Text>
+                      </Box>
+                    )}
+                </Box>
+              )}
+            </Box>
+          </Flex>
+        ) : (
+          <Box w="33%" mx={"auto"} textAlign="center">
+            <RessourceInfos ressource={ressource} />
           </Box>
-        </Flex>
+        )}
       </Container>
       <Feedback id={ressource.id} />
       <RessourceSimilar similarRessources={similarRessources} />

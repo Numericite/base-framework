@@ -23,19 +23,21 @@ import {
   AutoCompleteItem,
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
+import _ from "lodash";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useDebounce } from "usehooks-ts";
 import { TRessource } from "../../../../pages/api/ressources/types";
 import { fetchApi } from "../../../../utils/api/fetch-api";
 
 interface RessourceModalProps {
+  ressources: TRessource[];
   isOpen: boolean;
   onClose: () => void;
   setRessources: Dispatch<SetStateAction<TRessource[]>>;
 }
 
 const RessourceModal = (props: RessourceModalProps) => {
-  const { isOpen, onClose, setRessources } = props;
+  const { isOpen, onClose, setRessources, ressources } = props;
   const [results, setResults] = useState<TRessource[]>([]);
   const [selectedRessource, setSelectedRessource] = useState<TRessource>();
   const [isApiLoading, setIsApiLoading] = useState<boolean>(false);
@@ -75,7 +77,7 @@ const RessourceModal = (props: RessourceModalProps) => {
 
   const handleAddRessource = () => {
     if (selectedRessource) {
-      setRessources((ressources) => [...ressources, selectedRessource]);
+      setRessources(_.uniqBy([...ressources, selectedRessource], "id"));
       setSelectedRessource(undefined);
       onClose();
     } else {

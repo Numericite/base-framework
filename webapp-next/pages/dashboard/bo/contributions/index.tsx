@@ -59,6 +59,17 @@ const DashboardContributions = () => {
 
   const columnDefs: ColumnDef<TContribution>[] = [
     {
+      key: "createdAt",
+      label: "Date de création",
+      renderItem: (item: TContribution) => {
+        return (
+          <Text fontSize="sm">
+            {new Date(item.createdAt as string).toLocaleDateString()}
+          </Text>
+        );
+      },
+    },
+    {
       key: "first_name",
       label: "Nom",
     },

@@ -70,17 +70,17 @@ const DashboardRessources = () => {
         );
       },
     },
-    // {
-    //   key: "contribution",
-    //   label: "Contribution",
-    //   renderItem: (item: TRessource) => {
-    //     return (
-    //       <Text fontSize="sm" color="gray.500">
-    //         {item.contribution?.name}
-    //       </Text>
-    //     );
-    //   },
-    // },
+    {
+      key: "contribution",
+      label: "Contribution",
+      renderItem: (item: TRessource) => {
+        return item.contribution ? (
+          <Text fontSize="sm">Contribution externe</Text>
+        ) : (
+          <Text fontSize="sm">Ressource PFRH</Text>
+        );
+      },
+    },
   ];
 
   const changeActions: ChangeAction<TRessource>[] = [

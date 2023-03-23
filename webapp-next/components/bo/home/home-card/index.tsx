@@ -67,12 +67,6 @@ const HomeCard = (props: Props) => {
                   {count}
                 </StatNumber>
               </Flex>
-              <StatHelpText>
-                <StatArrow
-                  type={title === "Contributions" ? "decrease" : "increase"}
-                />
-                23.36%
-              </StatHelpText>
             </>
           )}
         </Stat>

@@ -38,6 +38,7 @@ const CheckboxDisplayer = <TItem extends { id: number; name: string }>(
           key={item.id}
           id={item.id.toString()}
           onClick={(e) => handleClick(e)}
+          alignItems="center"
           border="1px solid #2f6cff33"
           bg={
             formik.values[`${props_name}`].includes(item.id)

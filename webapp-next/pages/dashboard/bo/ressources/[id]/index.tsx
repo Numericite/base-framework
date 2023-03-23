@@ -227,7 +227,9 @@ const RessourceCreate = () => {
         <BackButton />
       </Box>
       <Container maxW="container.2lg">
-        {id === "new" ? (
+        {ressource?.contribution ? (
+          <Heading>Transformer une contribution en ressource</Heading>
+        ) : id === "new" ? (
           <Heading>Créer une ressource</Heading>
         ) : (
           <Heading>

@@ -41,7 +41,7 @@ const RessourceCard: React.FC<RessourceProps> = (props) => {
       ref={ref}
       position="relative"
       w="full"
-      h={isUseCase ? 52 : "full"}
+      h={isUseCase ? "auto" : "full"}
       cursor={"pointer"}
       border={isUseCase && isSelected ? "1px solid #2F80ED" : "neutral"}
       borderRadius={"xl"}

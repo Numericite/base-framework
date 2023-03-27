@@ -40,7 +40,9 @@ const UseCaseRessourceDisplay = (props: Props) => {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    setTimeout(() => {
+      window.addEventListener('scroll', handleScroll);
+    }, 1500);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [containerRef.current]);
 

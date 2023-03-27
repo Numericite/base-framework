@@ -35,7 +35,7 @@ const UseCaseRessourceDisplay = (props: Props) => {
       const scrollTop = window.pageYOffset;
       const userDistance = Math.floor(scrollTop) - Math.floor(elementDistance);
       if (userDistance >= 0) setIsSticky(true);
-      else if (isSticky && userDistance < -50) setIsSticky(false);
+      else if (isSticky && userDistance < -100) setIsSticky(false);
     }
   };
 

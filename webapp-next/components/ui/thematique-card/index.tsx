@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { TTheme } from "../../../pages/api/themes/types";
 import NextLink from "next/link";
+import { useState } from "react";
 
 interface ThemeCardProps {
   theme: TTheme;
@@ -16,8 +17,16 @@ interface ThemeCardProps {
 const ThemeCard: React.FC<ThemeCardProps> = (props) => {
   const { theme } = props;
 
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <Card variant="flat" w="full" cursor={"pointer"}>
+    <Card
+      variant="flat"
+      w="full"
+      cursor={"pointer"}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {"image" in theme && theme.image?.url && (
         <CardHeader
           p={0}
@@ -36,15 +45,20 @@ const ThemeCard: React.FC<ThemeCardProps> = (props) => {
         </CardHeader>
       )}
       <CardBody px={0}>
-        <Heading
-          as={NextLink}
-          fontSize={["lg", "md"]}
-          noOfLines={1}
-          href={`/ressources?theme=${theme.id}`}
-        >
-          {theme.name}
+        <Heading as={NextLink} href={`/ressources?theme=${theme.id}`}>
+          <Heading
+            fontSize={["lg", "md"]}
+            noOfLines={1}
+            textDecoration={isHovered ? "underline" : "none"}
+          >
+            {theme.name}
+          </Heading>
         </Heading>
-        <Text fontSize={["md", "sm"]} color="neutralDark">
+        <Text
+          fontSize={["md", "sm"]}
+          color="neutralDark"
+          textDecoration={isHovered ? "underline" : "none"}
+        >
           {theme.description}
         </Text>
       </CardBody>

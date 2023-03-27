@@ -44,7 +44,7 @@ const UseCaseCard: React.FC<UseCaseProps> = (props) => {
           router.push(`/use-cases/${usecase.id}`);
         }}
       >
-        Voir les cas d&apos;usage <ArrowForwardIcon ml={2} />
+        Voir le cas d&apos;usage <ArrowForwardIcon ml={2} />
       </Button>
     </Box>
   );

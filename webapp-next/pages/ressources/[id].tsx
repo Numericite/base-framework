@@ -106,7 +106,6 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
       fileUrl = file.url;
     });
     if (fileExtension === "pdf") {
-      console.log("Passe ?");
       return (
         <Box>
           <iframe
@@ -153,14 +152,6 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         ressource.files.length > 0 &&
         displayFilesPreview(ressource.files)}
       {parse(ressource.content, options)}
-      {ressource.contribution && (
-        <Box mt={8}>
-          <Text>
-            Merci à {ressource.contribution?.first_name}{" "}
-            {ressource.contribution?.last_name} pour cette ressource !
-          </Text>
-        </Box>
-      )}
     </Box>
   );
 
@@ -193,7 +184,8 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
             />
             {!isLargerThan768 && (
               <Box w="100%" px={"1.5rem"}>
-                {ressourceBody}
+                {!ressource.content && <RessourceInfos ressource={ressource} />}
+                {ressource.content && ressourceBody}
                 {ressource.contribution &&
                   ressource.contribution?.first_name !== "" && (
                     <Box mt={8}>

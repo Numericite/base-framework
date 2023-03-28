@@ -74,7 +74,7 @@ const About: React.FC = () => {
           <Text color="neutralDark">
             Les ressourceries, vous connaissez ? Ce sont des lieux de collecte,
             de réemploi et de valorisation d&apos;objets et de matériaux. Dans
-            la Ressourcerie RH et management de Normandie, vous ne trouverez ni
+            la Ressourcerie RH et management Normande, vous ne trouverez ni
             table, ni vaisselle ni briques anciennes mais des informations, des
             outils, des conseils pratiques, des connaissances sur les grands
             thèmes de la RH et du management dans les administrations publiques.
@@ -101,10 +101,6 @@ const About: React.FC = () => {
                 bgClip={"text"}
               >
                 Fonction Publique
-              </Text>
-              <Text as="span" color="primary">
-                {" "}
-                ...et normande{" "}
               </Text>
             </Heading>
             <Tabs variant={"blueVersion"} colorScheme="blue">
@@ -167,10 +163,9 @@ const About: React.FC = () => {
                 <Text as="span" color="primary" fontWeight="bold">
                   Efficace :
                 </Text>{" "}
-                parce que trop de sites internet sont froids et formatés, nous
-                voulons être un espace chaleureux et ouvert, intuitif et simple
-                d&apos;accès, positif et optimiste, qui donne envie de
-                découvrir.
+                notre ressourcerie se veut professionnelle, documentée et utile
+                aux agents publics ou aux visiteurs extérieurs qui se posent
+                pleins de questions
               </Text>
               <Text color="dark" py={1}>
                 <Text as="span" color="primary" fontWeight="bold">

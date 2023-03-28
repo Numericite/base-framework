@@ -76,12 +76,6 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
       formik.setFieldValue("sub_themes", []);
       setSubThemes([]);
     } else {
-      const newPersonaeOccupations = formik.values.personae_occupations.filter(
-        (personaeOccupation) => {
-          return formik.values.personaes.includes(personaeOccupation);
-        }
-      );
-      formik.setFieldValue("personae_occupations", newPersonaeOccupations);
       retrievePersonaeOccupation(formik.values.personaes);
     }
   }, [formik.values.personaes, formik.values.theme]);

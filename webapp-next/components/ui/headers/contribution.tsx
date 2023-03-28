@@ -8,11 +8,11 @@ const ContributionHeader = () => {
         <Flex alignItems={"center"}>
           <Image src="./contribution_header_icon.png" w="10.25rem" />
           <Text color="#6B829B">
-            Vous avez des ressources numériques RH et management intéressantes à
-            partager ? Nous serions ravis de les inclure sur notre plateforme !
-            Remplissez simplement ce formulaire de contribution et notre équipe
-            se chargera de les examiner pour qu&apos;elles soient rapidement
-            accessibles à tous.
+            Vous avez des documents, des vidéos, des fichiers, ou autres
+            supports RH et management intéressantes à partager ? Nous serions
+            ravis de les inclure sur notre plateforme ! Remplissez simplement ce
+            formulaire de contribution et le comité éditorial se chargera de les
+            examiner pour qu&apos;elles soient rapidement accessibles à tous.
           </Text>
         </Flex>
       </Container>

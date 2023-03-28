@@ -1,4 +1,15 @@
-import { Box, Container, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  Heading,
+  Image,
+  List,
+  ListItem,
+  OrderedList,
+  Text,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import RessourceHeader from "../../components/ui/ressources/header";
 import { TRessource } from "../api/ressources/types";
@@ -55,12 +66,14 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
     return () => setTitles([]);
   }, []);
 
+  console.log(ressource.content);
+
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.name === "h1") {
         return (
           <Heading
-            id={(domNode.children[0] as THTML).data.trim()}
+            id={(domNode.children[0] as THTML).data?.trim()}
             size="lg"
             my="1.125rem"
           >
@@ -71,7 +84,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
       if (domNode instanceof Element && domNode.name === "h2") {
         return (
           <Heading
-            id={(domNode.children[0] as THTML).data.trim()}
+            id={(domNode.children[0] as THTML).data?.trim()}
             size="md"
             my="0.765rem"
           >
@@ -93,6 +106,36 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
             src={domNode.attribs.src}
             alt={domNode.attribs.alt}
           />
+        );
+      }
+      if (domNode instanceof Element && domNode.name === "ul") {
+        return (
+          <UnorderedList>
+            {domNode.children.map((child, index) => {
+              if (child instanceof Element && child.name === "li") {
+                return (
+                  <ListItem color="neutralDark" key={index}>
+                    {(child.children[0] as THTML)?.data}
+                  </ListItem>
+                );
+              }
+            })}
+          </UnorderedList>
+        );
+      }
+      if (domNode instanceof Element && domNode.name === "ol") {
+        return (
+          <OrderedList>
+            {domNode.children.map((child, index) => {
+              if (child instanceof Element && child.name === "li") {
+                return (
+                  <ListItem color="neutralDark" key={index}>
+                    {(child.children[0] as THTML)?.data}
+                  </ListItem>
+                );
+              }
+            })}
+          </OrderedList>
         );
       }
     },

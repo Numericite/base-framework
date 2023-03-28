@@ -1,4 +1,12 @@
-import { Box, Container, Flex, Heading, HStack, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  Heading,
+  HStack,
+  Link,
+  Image,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import MobileDrawer from "../mobile-drawer";
 import { useMediaQueryAdapter } from "../../../utils/hooks/useMediaQuery";
@@ -41,6 +49,7 @@ const Navbar: React.FC = () => {
       <Container maxW="container.2lg">
         <Flex justifyContent={"space-between"} alignItems={"center"} w="full">
           <HStack>
+            <Image src="/Mariane.png" alt="Marianne" />
             <NextLink href="/">
               <Flex cursor="pointer" userSelect="none">
                 <Heading fontSize="2xl"> Ressourcerie</Heading>

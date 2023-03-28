@@ -19,6 +19,7 @@ const CheckboxDisplayer = <TItem extends { id: number; name: string }>(
   const { items, spacing, props_name, formik } = props;
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
     const id = parseInt(e.currentTarget.id);
     formik.setFieldValue(
       props_name,
@@ -48,6 +49,7 @@ const CheckboxDisplayer = <TItem extends { id: number; name: string }>(
         >
           <Checkbox
             mr={4}
+            onClick={(e) => handleClick(e)}
             isChecked={formik.values[`${props_name}`].includes(item.id)}
           />
           <Text id={item.id.toString()}>{item.name}</Text>

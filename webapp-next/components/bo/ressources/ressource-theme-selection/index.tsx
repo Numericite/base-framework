@@ -99,7 +99,7 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
     <VStack spacing={4} justify="flex-start" align="flex-start" w="100%">
       <Box w="full">
         <Heading size="sm" my={4}>
-          A quel(s) profil(s) s&apos;adresse cette resource ?
+          A quel(s) profil(s) s&apos;adresse cette ressource ?
         </Heading>
         <CheckboxDisplayer
           items={personaes}
@@ -111,7 +111,7 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
       {personaeOccupations && personaeOccupations.length > 0 && (
         <Box w="full">
           <Heading size="sm" my={4}>
-            A quel(s) activité(s) s&apos;adresse cette resource ?
+            A quel(s) activité(s) s&apos;adresse cette ressource ?
           </Heading>
           <CheckboxDisplayer
             spacing={3}
@@ -124,7 +124,7 @@ const RessourceThemeSelection = (props: RessourceThemeSelectionProps) => {
       {subThemes && subThemes.length > 0 && (
         <Box w="full">
           <Heading size="sm" my={4}>
-            Choisissez le sous-thème de la resource
+            Choisissez le sous-thème de la ressource
           </Heading>
           <CheckboxDisplayer
             items={subThemes}

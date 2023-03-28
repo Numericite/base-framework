@@ -53,7 +53,7 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
             isRequired={true}
             isInvalid={!!formik.errors.name && formik.touched.name}
           >
-            <FormLabel htmlFor="name">Nom</FormLabel>
+            <FormLabel htmlFor="name">Nom de la ressource</FormLabel>
             <Input
               w="full"
               id="name"

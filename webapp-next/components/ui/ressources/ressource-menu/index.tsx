@@ -50,35 +50,39 @@ const RessourceMenu = (props: RessourceMenuProps) => {
   ));
 
   return (
-    <Box
-      position={["relative", "sticky"]}
-      zIndex={1}
-      top={isUseCase ? [0, 100] : [0, 30]}
-    >
-      <Box
-        borderRadius={"2xl"}
-        p="0.9px"
-        bgGradient="linear(to-b,  #97F8B1 0%, #2F6CFF 100%)"
-        w="full"
-        mb="2.125rem"
-      >
+    <>
+      {ressource.content && (
         <Box
-          bg="#FAFCFF"
           borderRadius={"2xl"}
-          py="1.5rem"
-          px="1.875rem"
-          alignItems="start"
+          p="0.9px"
+          bgGradient="linear(to-b,  #97F8B1 0%, #2F6CFF 100%)"
           w="full"
-          minH="full"
+          mb="2.125rem"
         >
-          <Heading size="sm" mb={"0.875rem"}>
-            Sommaire
-          </Heading>
-          <OrderedList spacing={4}>{menuItems}</OrderedList>
+          <Box
+            bg="#FAFCFF"
+            borderRadius={"2xl"}
+            py="1.5rem"
+            px="1.875rem"
+            alignItems="start"
+            w="full"
+            minH="full"
+          >
+            <Heading size="sm" mb={"0.875rem"}>
+              Sommaire
+            </Heading>
+            <OrderedList spacing={4}>{menuItems}</OrderedList>
+          </Box>
         </Box>
+      )}
+      <Box
+        position={["relative", "sticky"]}
+        zIndex={1}
+        top={isUseCase ? [0, 100] : [0, 30]}
+      >
+        {isLargerThan768 && <RessourceInfos ressource={ressource} />}
       </Box>
-      {isLargerThan768 && <RessourceInfos ressource={ressource} />}
-    </Box>
+    </>
   );
 };
 

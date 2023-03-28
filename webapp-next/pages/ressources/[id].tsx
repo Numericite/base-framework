@@ -98,6 +98,39 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
     },
   };
 
+  const displayFilesPreview = (files: { id: number; url: string }[]) => {
+    let fileExtension = "";
+    let fileUrl = "";
+    files.forEach((file) => {
+      fileExtension = file.url.split(".").pop() || "";
+      fileUrl = file.url;
+    });
+    if (fileExtension === "pdf") {
+      console.log("Passe ?");
+      return (
+        <Box>
+          <iframe
+            src={fileUrl}
+            width="100%"
+            height="1000px"
+            frameBorder="0"
+          ></iframe>
+        </Box>
+      );
+    }
+    if (
+      fileExtension === "png" ||
+      fileExtension === "jpg" ||
+      fileExtension === "jpeg"
+    ) {
+      return (
+        <Box>
+          <Image src={fileUrl} alt="" />
+        </Box>
+      );
+    }
+  };
+
   const ressourceBody = (
     <Box>
       {ressource.kind === "video" && ressource.source === "youtube" && (
@@ -114,6 +147,11 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
           ></iframe>
         </Box>
       )}
+      {!ressource.content &&
+        ressource.kind === "file" &&
+        ressource.files &&
+        ressource.files.length > 0 &&
+        displayFilesPreview(ressource.files)}
       {parse(ressource.content, options)}
       {ressource.contribution && (
         <Box mt={8}>
@@ -134,47 +172,41 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         kind={ressource.kind}
       />
       <Container maxW="container.2lg" my="2.125rem">
-        {ressource.content ? (
-          <Flex justifyItems={"space-between"}>
-            {isLargerThan768 && (
-              <Box w="100%" pr={"1.5rem"}>
+        {/* {ressource.content ? ( */}
+        <Flex justifyItems={"space-between"}>
+          {isLargerThan768 && (
+            <Box w="100%" pr={"1.5rem"}>
+              {ressourceBody}
+            </Box>
+          )}
+          <Box flexDir={"column"} minW="auto">
+            <RessourceMenu
+              ressource={ressource}
+              titles={_.uniq(
+                titles.map((el) => {
+                  return {
+                    title: el.title,
+                    subtitles: el.subtitles,
+                  };
+                })
+              )}
+            />
+            {!isLargerThan768 && (
+              <Box w="100%" px={"1.5rem"}>
                 {ressourceBody}
+                {ressource.contribution &&
+                  ressource.contribution?.first_name !== "" && (
+                    <Box mt={8}>
+                      <Text>
+                        Merci à {ressource.contribution?.first_name}{" "}
+                        {ressource.contribution?.last_name} pour cette ressource
+                      </Text>
+                    </Box>
+                  )}
               </Box>
             )}
-            <Box flexDir={"column"} minW="auto">
-              <RessourceMenu
-                ressource={ressource}
-                titles={_.uniq(
-                  titles.map((el) => {
-                    return {
-                      title: el.title,
-                      subtitles: el.subtitles,
-                    };
-                  })
-                )}
-              />
-              {!isLargerThan768 && (
-                <Box w="100%" px={"1.5rem"}>
-                  {ressourceBody}
-                  {ressource.contribution &&
-                    ressource.contribution?.first_name !== "" && (
-                      <Box mt={8}>
-                        <Text>
-                          Merci à {ressource.contribution?.first_name}{" "}
-                          {ressource.contribution?.last_name} pour cette
-                          ressource
-                        </Text>
-                      </Box>
-                    )}
-                </Box>
-              )}
-            </Box>
-          </Flex>
-        ) : (
-          <Box w="33%" mx={"auto"} textAlign="center">
-            <RessourceInfos ressource={ressource} />
           </Box>
-        )}
+        </Flex>
       </Container>
       <Feedback id={ressource.id} />
       <RessourceSimilar similarRessources={similarRessources} />

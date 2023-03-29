@@ -141,13 +141,9 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
     },
   };
 
-  const displayFilesPreview = (files: { id: number; url: string }[]) => {
-    let fileExtension = "";
-    let fileUrl = "";
-    files.forEach((file) => {
-      fileExtension = file.url.split(".").pop() || "";
-      fileUrl = file.url;
-    });
+  const displayFilesPreview = (files: { id: number; url: string }) => {
+    const fileExtension = files.url.split(".").pop() || "";
+    const fileUrl = files.url;
     if (fileExtension === "pdf") {
       return (
         <Box>
@@ -192,7 +188,6 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
       {!ressource.content &&
         ressource.kind === "file" &&
         ressource.files &&
-        ressource.files.length > 0 &&
         displayFilesPreview(ressource.files)}
       {parse(ressource.content, options)}
     </Box>

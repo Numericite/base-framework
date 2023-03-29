@@ -137,7 +137,10 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
                 return (
                   <>
                     <ReactQuill
-                      style={{ height: "15rem", marginBottom: "1.25rem" }}
+                      style={{
+                        marginBottom: "1.25rem",
+                      }}
+                      preserveWhitespace={true}
                       value={formik.values.content}
                       theme="snow"
                       modules={{

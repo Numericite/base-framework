@@ -29,6 +29,7 @@ import { TContribution } from "../../../../api/contributions/types";
 import { TPersonae } from "../../../../api/personaes/types";
 import { TPersonaeOccupation } from "../../../../api/personaeoccupations/types";
 import { TSubTheme } from "../../../../api/subthemes/types";
+import { TStrapiFile } from "../../../../api/types";
 
 const RessourceCreate = () => {
   const router = useRouter();
@@ -70,6 +71,7 @@ const RessourceCreate = () => {
           (p) => p.id
         ),
         contribution: null,
+        files: files as File | undefined,
       };
     } else {
       initialValues = {

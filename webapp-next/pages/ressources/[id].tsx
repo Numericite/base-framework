@@ -74,7 +74,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         return (
           <Heading
             id={(domNode.children[0] as THTML).data?.trim()}
-            size="lg"
+            size="md"
             my="1.125rem"
           >
             {(domNode.children[0] as THTML).data}
@@ -85,7 +85,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         return (
           <Heading
             id={(domNode.children[0] as THTML).data?.trim()}
-            size="md"
+            size="sm"
             my="0.765rem"
           >
             {(domNode.children[0] as THTML).data}

@@ -1,6 +1,7 @@
 import {
   Box,
   Checkbox,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -9,6 +10,7 @@ import {
   Select,
   VStack,
 } from "@chakra-ui/react";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import UploadZone from "../../../ui/form/upload";
 interface KindRessourceDisplayerProps {
   kind: string;
@@ -18,28 +20,64 @@ interface KindRessourceDisplayerProps {
 const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
   const { kind, formik } = props;
 
+  const onRemove = () => {
+    formik.setFieldValue("files", null);
+  };
+
   const displayRessourceKindFormElement = () => {
     switch (kind) {
       case "file":
-        return (
-          <FormControl
-            isRequired={true}
-            isInvalid={!!formik.errors.files && formik.touched.files}
-          >
-            <FormLabel htmlFor="link">Lien du fichier</FormLabel>
-            <UploadZone
-              width={"full"}
-              onChange={formik.handleChange}
-              onRemove={() => {
-                formik.setFieldValue("files", null);
-              }}
-              value={formik.values.files}
-              name="files"
-              multiple={false}
-            />
-            <FormErrorMessage>{formik.errors.files as string}</FormErrorMessage>
-          </FormControl>
-        );
+        if (formik.values.files && formik.values.files.url) {
+          return (
+            <Flex w="full" justify="center" h="fit-content" position="relative">
+              <Box
+                position="absolute"
+                top={2}
+                left={2}
+                onClick={onRemove}
+                display="flex"
+                color="red.400"
+                cursor="pointer"
+                _hover={{
+                  color: "red",
+                  transition: "all 0.2s",
+                  transform: "scale(1.2)",
+                }}
+              >
+                <AiOutlineCloseCircle />
+              </Box>
+              <iframe
+                width="90%"
+                height={
+                  formik.values.files.url.split(".").pop() === "pdf" ? 900 : 500
+                }
+                src={formik.values.files.url}
+              ></iframe>
+            </Flex>
+          );
+        } else {
+          return (
+            <FormControl
+              isRequired={true}
+              isInvalid={!!formik.errors.files && formik.touched.files}
+            >
+              <FormLabel htmlFor="link">Lien du fichier</FormLabel>
+              <UploadZone
+                width={"full"}
+                onChange={formik.handleChange}
+                onRemove={() => {
+                  formik.setFieldValue("files", null);
+                }}
+                value={"files" in formik.values ? formik.values.files : null}
+                name="files"
+                multiple={false}
+              />
+              <FormErrorMessage>
+                {formik.errors.files as string}
+              </FormErrorMessage>
+            </FormControl>
+          );
+        }
       case "video":
         return (
           <VStack>
@@ -128,20 +166,6 @@ const KindRessourceDisplayer = (props: KindRessourceDisplayerProps) => {
             <FormErrorMessage>{formik.errors.link as string}</FormErrorMessage>
           </FormControl>
         );
-      // case "quiz":
-      //   return (
-      //     <FormControl>
-      //       <FormLabel htmlFor="quiz">Lien</FormLabel>
-      //       <Input
-      //         w="full"
-      //         placeholder="Veuillez saisir le lien vers la ressource"
-      //         id="quiz"
-      //         name="quiz"
-      //         type="text"
-      //         onChange={(e) => setRessourceKind({ quiz: e.target.value })}
-      //       />
-      //     </FormControl>
-      //   );
 
       default:
         break;

@@ -52,7 +52,7 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
         <>
           <FormControl
             isRequired={true}
-            isInvalid={!!formik.errors.name && formik.touched.name}
+            isInvalid={!!formik.errors.name && (formik.touched.name as boolean)}
           >
             <FormLabel htmlFor="name">Nom de la ressource</FormLabel>
             <Input
@@ -69,7 +69,8 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
           <FormControl
             isRequired={true}
             isInvalid={
-              !!formik.errors.description && formik.touched.description
+              !!formik.errors.description &&
+              (formik.touched.description as boolean)
             }
           >
             <FormLabel htmlFor="name">Description</FormLabel>
@@ -89,7 +90,8 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
             <FormControl
               isRequired={true}
               isInvalid={
-                !!formik.errors.theme?.name && formik.touched.theme?.name
+                !!formik.errors.theme?.name &&
+                (formik.touched.theme?.name as boolean)
               }
             >
               <FormLabel htmlFor="theme">Thématique associée</FormLabel>
@@ -130,7 +132,9 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
           </SimpleGrid>
           <FormControl
             isRequired={false}
-            isInvalid={!!formik.errors.image && formik.touched.image}
+            isInvalid={
+              !!formik.errors.image && (formik.touched.image as boolean)
+            }
           >
             <FormLabel htmlFor="image">Image</FormLabel>
             <UploadZone
@@ -147,7 +151,9 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
           </FormControl>
           <FormControl
             isRequired={true}
-            isInvalid={!!formik.errors.content && formik.touched.content}
+            isInvalid={
+              !!formik.errors.content && (formik.touched.content as boolean)
+            }
           >
             <FormLabel htmlFor="name">Contenu</FormLabel>
             <Field touched={formik.touched.content} name="content">
@@ -202,7 +208,7 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
         <>
           <FormControl
             isRequired={true}
-            isInvalid={!!formik.errors.kind && formik.touched.kind}
+            isInvalid={!!formik.errors.kind && (formik.touched.kind as boolean)}
           >
             <FormLabel htmlFor="kind">Type de ressource</FormLabel>
             <Select

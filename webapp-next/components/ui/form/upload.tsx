@@ -20,7 +20,7 @@ import { humanFileSize } from "../../../utils/globals/tools";
 type UploadZoneProps = {
   onChange(e: React.ChangeEvent<any>): void;
   onRemove(): void;
-  value: TStrapiFile | File | undefined;
+  value: TStrapiFile | File | undefined | null;
   name: string;
   width: string | number;
   multiple: boolean;

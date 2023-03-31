@@ -54,6 +54,7 @@ const RessourceCreate = () => {
     personae_occupations: [],
     sub_themes: [],
     status: "draft",
+    image: null,
   };
 
   if (ressource && ressource.id) {
@@ -162,12 +163,17 @@ const RessourceCreate = () => {
   ) => {
     setIsLoading(true);
 
-    let ressource_id, tmpFiles, child_id;
+    let ressource_id, tmpFiles, child_id, tmpImage;
 
     if (tmpRessource.kind === "file") {
       const { files, ...tmpRessourceWithoutFiles } = tmpRessource;
       tmpFiles = files;
       tmpRessource = tmpRessourceWithoutFiles;
+    }
+    if (tmpRessource.image) {
+      const { image, ...tmpRessourceWithoutImage } = tmpRessource;
+      tmpImage = image as unknown as File;
+      tmpRessource = tmpRessourceWithoutImage;
     }
     try {
       if ("id" in tmpRessource) {
@@ -196,6 +202,25 @@ const RessourceCreate = () => {
         formData.append("ref", "api::ressource-file.ressource-file");
         formData.append("refId", child_id.toString());
         formData.append("field", "files");
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_STRAPI_URL}/upload`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+      }
+      if (tmpImage && ressource_id) {
+        let formData = new FormData();
+        let file = new File([tmpImage], tmpImage.name, {
+          type: tmpImage.type,
+        });
+        formData.append("files", file);
+        formData.append("ref", "api::ressource.ressource");
+        formData.append("refId", ressource_id.toString());
+        formData.append("field", "image");
         await axios.post(
           `${process.env.NEXT_PUBLIC_STRAPI_URL}/upload`,
           formData,

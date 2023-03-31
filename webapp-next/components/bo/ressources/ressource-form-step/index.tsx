@@ -23,6 +23,7 @@ import KindRessourceDisplayer from "../kind-input-create";
 import "react-quill/dist/quill.snow.css";
 import RessourceSummary from "../ressource-summary";
 import RessourceThemeSelection from "../ressource-theme-selection";
+import UploadZone from "../../../ui/form/upload";
 
 interface RessourceFormStepProps {
   formik: FormikProps<TRessourceUpdatePayload | TRessourceCreationPayload>;
@@ -127,6 +128,23 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
               </Select>
             </FormControl>
           </SimpleGrid>
+          <FormControl
+            isRequired={false}
+            isInvalid={!!formik.errors.image && formik.touched.image}
+          >
+            <FormLabel htmlFor="image">Image</FormLabel>
+            <UploadZone
+              width={"full"}
+              onChange={formik.handleChange}
+              onRemove={() => {
+                formik.setFieldValue("image", null);
+              }}
+              value={formik.values.image}
+              name="image"
+              multiple={false}
+            />
+            <FormErrorMessage>{formik.errors.image as string}</FormErrorMessage>
+          </FormControl>
           <FormControl
             isRequired={true}
             isInvalid={!!formik.errors.content && formik.touched.content}

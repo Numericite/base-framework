@@ -81,7 +81,6 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
             size="md"
             my="1.125rem"
           >
-            {(domNode.children[0] as THTML).data}
             {domToReact(domNode.children)}
           </Heading>
         );
@@ -93,18 +92,12 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
             size="sm"
             my="0.765rem"
           >
-            {/* {(domNode.children[0] as THTML).data} */}
             {domToReact(domNode.children)}
           </Heading>
         );
       }
       if (domNode instanceof Element && domNode.name === 'p') {
-        return (
-          <Text color="neutralDark">
-            {/* {(domNode.children[0] as THTML)?.data} */}
-            {domToReact(domNode.children)}
-          </Text>
-        );
+        return <Text color="neutralDark">{domToReact(domNode.children)}</Text>;
       }
       if (domNode instanceof Element && domNode.name === 'img') {
         return (
@@ -122,7 +115,6 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
               if (child instanceof Element && child.name === 'li') {
                 return (
                   <ListItem color="neutralDark" key={index}>
-                    {/* {(child.children[0] as THTML)?.data} */}
                     {domToReact(child.children)}
                   </ListItem>
                 );
@@ -138,7 +130,6 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
               if (child instanceof Element && child.name === 'li') {
                 return (
                   <ListItem color="neutralDark" key={index}>
-                    {(child.children[0] as THTML)?.data}
                     {domToReact(child.children)}
                   </ListItem>
                 );

@@ -8,22 +8,22 @@ import {
   ListItem,
   OrderedList,
   Text,
-  UnorderedList,
-} from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import RessourceHeader from "../../components/ui/ressources/header";
-import { TRessource } from "../api/ressources/types";
-import { fetchApi } from "../../utils/api/fetch-api";
-import RessourceMenu from "../../components/ui/ressources/ressource-menu";
-import Feedback from "../../components/ui/feedback";
-import RessourceSimilar from "../../components/ui/ressources/ressource-similar";
-import { useMediaQueryAdapter } from "../../utils/hooks/useMediaQuery";
-import parse, { HTMLReactParserOptions, Element } from "html-react-parser";
-import type { Text as THTML } from "html-react-parser";
-import { useEffect, useState } from "react";
-import _ from "lodash";
-import { getYoutubeIdFromFullUrl } from "../../utils/globals/tools";
-import RessourceInfos from "../../components/ui/ressources/ressource-info";
+  UnorderedList
+} from '@chakra-ui/react';
+import { GetServerSideProps } from 'next';
+import RessourceHeader from '../../components/ui/ressources/header';
+import { TRessource } from '../api/ressources/types';
+import { fetchApi } from '../../utils/api/fetch-api';
+import RessourceMenu from '../../components/ui/ressources/ressource-menu';
+import Feedback from '../../components/ui/feedback';
+import RessourceSimilar from '../../components/ui/ressources/ressource-similar';
+import { useMediaQueryAdapter } from '../../utils/hooks/useMediaQuery';
+import parse, { HTMLReactParserOptions, Element } from 'html-react-parser';
+import type { Text as THTML } from 'html-react-parser';
+import { useEffect, useState } from 'react';
+import _ from 'lodash';
+import { getYoutubeIdFromFullUrl } from '../../utils/globals/tools';
+import RessourceInfos from '../../components/ui/ressources/ressource-info';
 
 interface Props {
   ressource: TRessource;
@@ -31,7 +31,7 @@ interface Props {
 }
 
 const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
-  const isLargerThan768 = useMediaQueryAdapter("(min-width: 768px)");
+  const isLargerThan768 = useMediaQueryAdapter('(min-width: 768px)');
 
   const [titles, setTitles] = useState<
     {
@@ -42,25 +42,26 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
 
   useEffect(() => {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(ressource.content, "text/html");
+    const doc = parser.parseFromString(ressource.content, 'text/html');
 
-    const h1Elements = Array.from(doc.querySelectorAll("h1"));
+    const h1Elements = Array.from(doc.querySelectorAll('h1'));
     for (let i = 0; i < h1Elements.length; i++) {
       const title = h1Elements[i].textContent;
       const subtitles: (string | null)[] = [];
       let nextElement = h1Elements[i].nextSibling;
-      while (nextElement && nextElement.nodeName !== "H1") {
-        if (nextElement.nodeName === "H2") {
+      while (nextElement && nextElement.nodeName !== 'H1') {
+        Change;
+        if (nextElement.nodeName === 'H2') {
           subtitles.push(nextElement.textContent);
         }
         nextElement = nextElement.nextSibling;
       }
-      setTitles((prev) => [
+      setTitles(prev => [
         ...prev,
         {
           title,
-          subtitles,
-        },
+          subtitles
+        }
       ]);
     }
     return () => setTitles([]);
@@ -69,8 +70,8 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
   console.log(ressource.content);
 
   const options: HTMLReactParserOptions = {
-    replace: (domNode) => {
-      if (domNode instanceof Element && domNode.name === "h1") {
+    replace: domNode => {
+      if (domNode instanceof Element && domNode.name === 'h1') {
         return (
           <Heading
             id={(domNode.children[0] as THTML).data?.trim()}
@@ -81,7 +82,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
           </Heading>
         );
       }
-      if (domNode instanceof Element && domNode.name === "h2") {
+      if (domNode instanceof Element && domNode.name === 'h2') {
         return (
           <Heading
             id={(domNode.children[0] as THTML).data?.trim()}
@@ -92,14 +93,14 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
           </Heading>
         );
       }
-      if (domNode instanceof Element && domNode.name === "p") {
+      if (domNode instanceof Element && domNode.name === 'p') {
         return (
           <Text color="neutralDark">
             {(domNode.children[0] as THTML)?.data}
           </Text>
         );
       }
-      if (domNode instanceof Element && domNode.name === "img") {
+      if (domNode instanceof Element && domNode.name === 'img') {
         return (
           <Image
             borderRadius="xl"
@@ -108,11 +109,11 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
           />
         );
       }
-      if (domNode instanceof Element && domNode.name === "ul") {
+      if (domNode instanceof Element && domNode.name === 'ul') {
         return (
-          <UnorderedList>
+          <UnorderedList pl={4}>
             {domNode.children.map((child, index) => {
-              if (child instanceof Element && child.name === "li") {
+              if (child instanceof Element && child.name === 'li') {
                 return (
                   <ListItem color="neutralDark" key={index}>
                     {(child.children[0] as THTML)?.data}
@@ -123,11 +124,11 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
           </UnorderedList>
         );
       }
-      if (domNode instanceof Element && domNode.name === "ol") {
+      if (domNode instanceof Element && domNode.name === 'ol') {
         return (
-          <OrderedList>
+          <OrderedList pl={4}>
             {domNode.children.map((child, index) => {
-              if (child instanceof Element && child.name === "li") {
+              if (child instanceof Element && child.name === 'li') {
                 return (
                   <ListItem color="neutralDark" key={index}>
                     {(child.children[0] as THTML)?.data}
@@ -138,13 +139,13 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
           </OrderedList>
         );
       }
-    },
+    }
   };
 
   const displayFilesPreview = (files: { id: number; url: string }) => {
-    const fileExtension = files.url.split(".").pop() || "";
+    const fileExtension = files.url.split('.').pop() || '';
     const fileUrl = files.url;
-    if (fileExtension === "pdf") {
+    if (fileExtension === 'pdf') {
       return (
         <Box>
           <iframe
@@ -157,9 +158,9 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
       );
     }
     if (
-      fileExtension === "png" ||
-      fileExtension === "jpg" ||
-      fileExtension === "jpeg"
+      fileExtension === 'png' ||
+      fileExtension === 'jpg' ||
+      fileExtension === 'jpeg'
     ) {
       return (
         <Box>
@@ -171,7 +172,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
 
   const ressourceBody = (
     <Box>
-      {ressource.kind === "video" && ressource.source === "youtube" && (
+      {ressource.kind === 'video' && ressource.source === 'youtube' && (
         <Box mb={8}>
           <iframe
             width="100%"
@@ -186,7 +187,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         </Box>
       )}
       {!ressource.content &&
-        ressource.kind === "file" &&
+        ressource.kind === 'file' &&
         ressource.files &&
         displayFilesPreview(ressource.files)}
       {parse(ressource.content, options)}
@@ -202,33 +203,33 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
       />
       <Container maxW="container.2lg" my="2.125rem">
         {/* {ressource.content ? ( */}
-        <Flex justifyItems={"space-between"}>
+        <Flex justifyItems={'space-between'}>
           {isLargerThan768 && (
-            <Box w="100%" pr={"1.5rem"}>
+            <Box w="100%" pr={'1.5rem'}>
               {ressourceBody}
             </Box>
           )}
-          <Box flexDir={"column"} minW="auto">
+          <Box flexDir={'column'} minW="auto">
             <RessourceMenu
               ressource={ressource}
               titles={_.uniq(
-                titles.map((el) => {
+                titles.map(el => {
                   return {
                     title: el.title,
-                    subtitles: el.subtitles,
+                    subtitles: el.subtitles
                   };
                 })
               )}
             />
             {!isLargerThan768 && (
-              <Box w="100%" px={"1.5rem"}>
+              <Box w="100%" px={'1.5rem'}>
                 {!ressource.content && <RessourceInfos ressource={ressource} />}
                 {ressource.content && ressourceBody}
                 {ressource.contribution &&
-                  ressource.contribution?.first_name !== "" && (
+                  ressource.contribution?.first_name !== '' && (
                     <Box mt={8}>
                       <Text>
-                        Merci à {ressource.contribution?.first_name}{" "}
+                        Merci à {ressource.contribution?.first_name}{' '}
                         {ressource.contribution?.last_name} pour cette ressource
                       </Text>
                     </Box>
@@ -244,29 +245,29 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const { id } = context.query;
   const res = await fetchApi
-    .get("/api/ressources/find", { id: parseInt(id as string) })
-    .then((response) => {
+    .get('/api/ressources/find', { id: parseInt(id as string) })
+    .then(response => {
       return response;
     });
 
   const theme = res.theme;
   const similarRes = await fetchApi
-    .get("/api/ressources/list", {
+    .get('/api/ressources/list', {
       pagination: { page: 1, pageSize: 12 },
-      filters: { theme: theme.id },
+      filters: { theme: theme.id }
     })
-    .then((response) => {
+    .then(response => {
       return response.data;
     });
 
   return {
     props: {
       ressource: res,
-      similarRessources: similarRes,
-    },
+      similarRessources: similarRes
+    }
   };
 };
 

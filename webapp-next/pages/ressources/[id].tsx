@@ -50,7 +50,6 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
       const subtitles: (string | null)[] = [];
       let nextElement = h1Elements[i].nextSibling;
       while (nextElement && nextElement.nodeName !== 'H1') {
-        Change;
         if (nextElement.nodeName === 'H2') {
           subtitles.push(nextElement.textContent);
         }

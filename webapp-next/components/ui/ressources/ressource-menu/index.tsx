@@ -51,7 +51,7 @@ const RessourceMenu = (props: RessourceMenuProps) => {
 
   return (
     <>
-      {ressource.content && titles?.length && (
+      {ressource.content && !!titles?.length && (
         <Box
           borderRadius={'2xl'}
           p="0.9px"

@@ -4,7 +4,8 @@
   "info": {
     "singularName": "ressource-file",
     "pluralName": "ressource-files",
-    "displayName": "RessourceFile"
+    "displayName": "RessourceFile",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false
@@ -12,14 +13,15 @@
   "pluginOptions": {},
   "attributes": {
     "files": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
     },
     "ressource": {
       "type": "relation",

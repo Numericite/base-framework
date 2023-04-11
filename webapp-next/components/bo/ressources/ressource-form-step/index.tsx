@@ -23,6 +23,7 @@ import KindRessourceDisplayer from "../kind-input-create";
 import "react-quill/dist/quill.snow.css";
 import RessourceSummary from "../ressource-summary";
 import RessourceThemeSelection from "../ressource-theme-selection";
+import UploadZone from "../../../ui/form/upload";
 
 interface RessourceFormStepProps {
   formik: FormikProps<TRessourceUpdatePayload | TRessourceCreationPayload>;
@@ -51,7 +52,7 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
         <>
           <FormControl
             isRequired={true}
-            isInvalid={!!formik.errors.name && formik.touched.name}
+            isInvalid={!!formik.errors.name && (formik.touched.name as boolean)}
           >
             <FormLabel htmlFor="name">Nom de la ressource</FormLabel>
             <Input
@@ -68,7 +69,8 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
           <FormControl
             isRequired={true}
             isInvalid={
-              !!formik.errors.description && formik.touched.description
+              !!formik.errors.description &&
+              (formik.touched.description as boolean)
             }
           >
             <FormLabel htmlFor="name">Description</FormLabel>
@@ -88,7 +90,8 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
             <FormControl
               isRequired={true}
               isInvalid={
-                !!formik.errors.theme?.name && formik.touched.theme?.name
+                !!formik.errors.theme?.name &&
+                (formik.touched.theme?.name as boolean)
               }
             >
               <FormLabel htmlFor="theme">Thématique associée</FormLabel>
@@ -128,8 +131,29 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
             </FormControl>
           </SimpleGrid>
           <FormControl
+            isRequired={false}
+            isInvalid={
+              !!formik.errors.image && (formik.touched.image as boolean)
+            }
+          >
+            <FormLabel htmlFor="image">Image</FormLabel>
+            <UploadZone
+              width={"full"}
+              onChange={formik.handleChange}
+              onRemove={() => {
+                formik.setFieldValue("image", null);
+              }}
+              value={formik.values.image}
+              name="image"
+              multiple={false}
+            />
+            <FormErrorMessage>{formik.errors.image as string}</FormErrorMessage>
+          </FormControl>
+          <FormControl
             isRequired={true}
-            isInvalid={!!formik.errors.content && formik.touched.content}
+            isInvalid={
+              !!formik.errors.content && (formik.touched.content as boolean)
+            }
           >
             <FormLabel htmlFor="name">Contenu</FormLabel>
             <Field touched={formik.touched.content} name="content">
@@ -137,7 +161,10 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
                 return (
                   <>
                     <ReactQuill
-                      style={{ height: "15rem", marginBottom: "1.25rem" }}
+                      style={{
+                        marginBottom: "1.25rem",
+                      }}
+                      preserveWhitespace={true}
                       value={formik.values.content}
                       theme="snow"
                       modules={{
@@ -181,7 +208,7 @@ const RessourceFormStep: React.FC<RessourceFormStepProps> = (props) => {
         <>
           <FormControl
             isRequired={true}
-            isInvalid={!!formik.errors.kind && formik.touched.kind}
+            isInvalid={!!formik.errors.kind && (formik.touched.kind as boolean)}
           >
             <FormLabel htmlFor="kind">Type de ressource</FormLabel>
             <Select

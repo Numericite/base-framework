@@ -1,4 +1,15 @@
-import { Box, Container, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  Heading,
+  Image,
+  List,
+  ListItem,
+  OrderedList,
+  Text,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import RessourceHeader from "../../components/ui/ressources/header";
 import { TRessource } from "../api/ressources/types";
@@ -55,13 +66,15 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
     return () => setTitles([]);
   }, []);
 
+  console.log(ressource.content);
+
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.name === "h1") {
         return (
           <Heading
-            id={(domNode.children[0] as THTML).data.trim()}
-            size="lg"
+            id={(domNode.children[0] as THTML).data?.trim()}
+            size="md"
             my="1.125rem"
           >
             {(domNode.children[0] as THTML).data}
@@ -71,8 +84,8 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
       if (domNode instanceof Element && domNode.name === "h2") {
         return (
           <Heading
-            id={(domNode.children[0] as THTML).data.trim()}
-            size="md"
+            id={(domNode.children[0] as THTML).data?.trim()}
+            size="sm"
             my="0.765rem"
           >
             {(domNode.children[0] as THTML).data}
@@ -95,7 +108,65 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
           />
         );
       }
+      if (domNode instanceof Element && domNode.name === "ul") {
+        return (
+          <UnorderedList>
+            {domNode.children.map((child, index) => {
+              if (child instanceof Element && child.name === "li") {
+                return (
+                  <ListItem color="neutralDark" key={index}>
+                    {(child.children[0] as THTML)?.data}
+                  </ListItem>
+                );
+              }
+            })}
+          </UnorderedList>
+        );
+      }
+      if (domNode instanceof Element && domNode.name === "ol") {
+        return (
+          <OrderedList>
+            {domNode.children.map((child, index) => {
+              if (child instanceof Element && child.name === "li") {
+                return (
+                  <ListItem color="neutralDark" key={index}>
+                    {(child.children[0] as THTML)?.data}
+                  </ListItem>
+                );
+              }
+            })}
+          </OrderedList>
+        );
+      }
     },
+  };
+
+  const displayFilesPreview = (files: { id: number; url: string }) => {
+    const fileExtension = files.url.split(".").pop() || "";
+    const fileUrl = files.url;
+    if (fileExtension === "pdf") {
+      return (
+        <Box>
+          <iframe
+            src={fileUrl}
+            width="100%"
+            height="1000px"
+            frameBorder="0"
+          ></iframe>
+        </Box>
+      );
+    }
+    if (
+      fileExtension === "png" ||
+      fileExtension === "jpg" ||
+      fileExtension === "jpeg"
+    ) {
+      return (
+        <Box>
+          <Image src={fileUrl} alt="" />
+        </Box>
+      );
+    }
   };
 
   const ressourceBody = (
@@ -114,15 +185,11 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
           ></iframe>
         </Box>
       )}
+      {!ressource.content &&
+        ressource.kind === "file" &&
+        ressource.files &&
+        displayFilesPreview(ressource.files)}
       {parse(ressource.content, options)}
-      {ressource.contribution && (
-        <Box mt={8}>
-          <Text>
-            Merci à {ressource.contribution?.first_name}{" "}
-            {ressource.contribution?.last_name} pour cette ressource !
-          </Text>
-        </Box>
-      )}
     </Box>
   );
 
@@ -134,47 +201,42 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
         kind={ressource.kind}
       />
       <Container maxW="container.2lg" my="2.125rem">
-        {ressource.content ? (
-          <Flex justifyItems={"space-between"}>
-            {isLargerThan768 && (
-              <Box w="100%" pr={"1.5rem"}>
-                {ressourceBody}
+        {/* {ressource.content ? ( */}
+        <Flex justifyItems={"space-between"}>
+          {isLargerThan768 && (
+            <Box w="100%" pr={"1.5rem"}>
+              {ressourceBody}
+            </Box>
+          )}
+          <Box flexDir={"column"} minW="auto">
+            <RessourceMenu
+              ressource={ressource}
+              titles={_.uniq(
+                titles.map((el) => {
+                  return {
+                    title: el.title,
+                    subtitles: el.subtitles,
+                  };
+                })
+              )}
+            />
+            {!isLargerThan768 && (
+              <Box w="100%" px={"1.5rem"}>
+                {!ressource.content && <RessourceInfos ressource={ressource} />}
+                {ressource.content && ressourceBody}
+                {ressource.contribution &&
+                  ressource.contribution?.first_name !== "" && (
+                    <Box mt={8}>
+                      <Text>
+                        Merci à {ressource.contribution?.first_name}{" "}
+                        {ressource.contribution?.last_name} pour cette ressource
+                      </Text>
+                    </Box>
+                  )}
               </Box>
             )}
-            <Box flexDir={"column"} minW="auto">
-              <RessourceMenu
-                ressource={ressource}
-                titles={_.uniq(
-                  titles.map((el) => {
-                    return {
-                      title: el.title,
-                      subtitles: el.subtitles,
-                    };
-                  })
-                )}
-              />
-              {!isLargerThan768 && (
-                <Box w="100%" px={"1.5rem"}>
-                  {ressourceBody}
-                  {ressource.contribution &&
-                    ressource.contribution?.first_name !== "" && (
-                      <Box mt={8}>
-                        <Text>
-                          Merci à {ressource.contribution?.first_name}{" "}
-                          {ressource.contribution?.last_name} pour cette
-                          ressource
-                        </Text>
-                      </Box>
-                    )}
-                </Box>
-              )}
-            </Box>
-          </Flex>
-        ) : (
-          <Box w="33%" mx={"auto"} textAlign="center">
-            <RessourceInfos ressource={ressource} />
           </Box>
-        )}
+        </Flex>
       </Container>
       <Feedback id={ressource.id} />
       <RessourceSimilar similarRessources={similarRessources} />

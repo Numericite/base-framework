@@ -22,7 +22,7 @@ const ZRessourceLink = z.object({
 });
 
 const ZRessourceFile = z.object({
-  files: z.array(ZStrapiFile).optional().nullable(),
+  files: ZStrapiFile.optional().nullable(),
   kind: z.literal("file"),
 });
 

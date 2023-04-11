@@ -57,7 +57,13 @@ function MyApp({ Component, pageProps }: AppProps) {
             {`
               html {
                 scroll-behavior: smooth;
-              }`}
+              }
+              .ql-editor {
+                overflow-y: scroll;
+                resize: vertical;
+                min-height: 15rem;
+              }
+              `}
           </style>
         </Head>
         <Fonts />

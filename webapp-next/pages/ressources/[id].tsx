@@ -18,7 +18,11 @@ import RessourceMenu from '../../components/ui/ressources/ressource-menu';
 import Feedback from '../../components/ui/feedback';
 import RessourceSimilar from '../../components/ui/ressources/ressource-similar';
 import { useMediaQueryAdapter } from '../../utils/hooks/useMediaQuery';
-import parse, { HTMLReactParserOptions, Element } from 'html-react-parser';
+import parse, {
+  HTMLReactParserOptions,
+  Element,
+  domToReact
+} from 'html-react-parser';
 import type { Text as THTML } from 'html-react-parser';
 import { useEffect, useState } from 'react';
 import _ from 'lodash';
@@ -78,6 +82,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
             my="1.125rem"
           >
             {(domNode.children[0] as THTML).data}
+            {domToReact(domNode.children)}
           </Heading>
         );
       }
@@ -88,14 +93,16 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
             size="sm"
             my="0.765rem"
           >
-            {(domNode.children[0] as THTML).data}
+            {/* {(domNode.children[0] as THTML).data} */}
+            {domToReact(domNode.children)}
           </Heading>
         );
       }
       if (domNode instanceof Element && domNode.name === 'p') {
         return (
           <Text color="neutralDark">
-            {(domNode.children[0] as THTML)?.data}
+            {/* {(domNode.children[0] as THTML)?.data} */}
+            {domToReact(domNode.children)}
           </Text>
         );
       }
@@ -115,7 +122,8 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
               if (child instanceof Element && child.name === 'li') {
                 return (
                   <ListItem color="neutralDark" key={index}>
-                    {(child.children[0] as THTML)?.data}
+                    {/* {(child.children[0] as THTML)?.data} */}
+                    {domToReact(child.children)}
                   </ListItem>
                 );
               }
@@ -131,6 +139,7 @@ const RessourcePage: React.FC<Props> = ({ ressource, similarRessources }) => {
                 return (
                   <ListItem color="neutralDark" key={index}>
                     {(child.children[0] as THTML)?.data}
+                    {domToReact(child.children)}
                   </ListItem>
                 );
               }

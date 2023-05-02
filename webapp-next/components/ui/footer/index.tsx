@@ -1,67 +1,67 @@
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Box, Container, Flex, Image, Text, Link } from "@chakra-ui/react";
-import NextLink from "next/link";
+import { ExternalLinkIcon } from '@chakra-ui/icons';
+import { Box, Container, Flex, Image, Text, Link } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 const Footer = () => {
   const externalLinks = [
     {
-      name: "legifrance.gouv.fr",
-      url: "https://www.legifrance.gouv.fr/",
+      name: 'legifrance.gouv.fr',
+      url: 'https://www.legifrance.gouv.fr/'
     },
     {
-      name: "gouvernement.fr",
-      url: "https://www.gouvernement.fr/",
+      name: 'gouvernement.fr',
+      url: 'https://www.gouvernement.fr/'
     },
     {
-      name: "service-public.fr",
-      url: "https://www.service-public.fr/",
+      name: 'service-public.fr',
+      url: 'https://www.service-public.fr/'
     },
     {
-      name: "data.gouv.fr",
-      url: "https://data.gouv.fr/",
-    },
+      name: 'data.gouv.fr',
+      url: 'https://data.gouv.fr/'
+    }
   ];
 
   const internalLinks = [
     {
-      name: "Plan du site",
-      url: "/",
+      name: 'Plan du site',
+      url: '/'
     },
     {
-      name: "Accessibilité",
-      url: "/",
+      name: 'Accessibilité',
+      url: '/'
     },
     {
-      name: "Mentions légales",
-      url: "/legals/mentions-legales",
+      name: 'Mentions légales',
+      url: '/legals/mentions-legales'
     },
     {
-      name: "Données personnelles",
-      url: "/",
+      name: 'Données personnelles',
+      url: '/'
     },
     {
-      name: "Gestion des cookies",
-      url: "/",
-    },
+      name: 'Gestion des cookies',
+      url: '/'
+    }
   ];
 
   return (
-    <Box borderTopWidth={1} borderTopColor="#E9F1FF" fontFamily={"Marianne"}>
+    <Box borderTopWidth={1} borderTopColor="#E9F1FF" fontFamily={'Marianne'}>
       <Container maxW="container.2lg" py={[6]}>
         <Flex
           alignItems="center"
           justifyContent="space-between"
           flexWrap="wrap"
         >
-          <Image src="/logo-marianne.png" alt="Marianne" />
-          <Box w={["100%", "100%", "55%"]} fontSize="sm">
+          <Image src="/logo-mariane.jpg" w={40} alt="Marianne" />
+          <Box w={['100%', '100%', '55%']} fontSize="sm">
             <Text>
-              La ressourcerie RH et management de Haute Normandie est une
-              plateforme numérique de partage de connaissances proposée par la
-              PFRH de Haute Normandie <br />
+              La ressourcerie RH et management en Normandie est une plateforme
+              numérique de partage de connaissances pour la fonction publique
+              normande, proposée par la PFRH de Normandie. <br />
             </Text>
-            <Flex mt={4} flexWrap="wrap" fontFamily={"Marianne Bold"}>
-              {externalLinks.map((eLink) => (
+            <Flex mt={4} flexWrap="wrap" fontFamily={'Marianne Bold'}>
+              {externalLinks.map(eLink => (
                 <Box key={eLink.name} as="span" mr={6}>
                   <Link href={eLink.url} target="_blank">
                     <Flex alignItems="center">
@@ -75,7 +75,7 @@ const Footer = () => {
         </Flex>
         <Box fontSize="xs" color="#9DADBF" mt={10}>
           <Flex flexWrap="wrap">
-            {internalLinks.map((iLink) => (
+            {internalLinks.map(iLink => (
               <Box key={iLink.name} mr={9}>
                 <Link as={NextLink} href={iLink.url}>
                   {iLink.name}

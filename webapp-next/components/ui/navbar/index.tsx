@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
       <Container maxW="container.2lg">
         <Flex justifyContent={'space-between'} alignItems={'center'} w="full">
           <HStack>
-            <Image src="/Mariane.png" alt="Marianne" w={24} />
+            <Image src="/Mariane.png" alt="Marianne" w={24} mr={4} />
             <NextLink href="/">
               <Flex flexDir="column">
                 <Flex cursor="pointer" userSelect="none">

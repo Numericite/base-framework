@@ -1,10 +1,10 @@
-import { Box, Heading, Link, Text } from "@chakra-ui/react";
-import { MenuItem } from "../../../layouts/PrivateLayout";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { destroyJwt } from "../../../utils/globals/cookies";
-import { BiLogOut } from "react-icons/bi";
+import { Box, Heading, Link, Text } from '@chakra-ui/react';
+import { MenuItem } from '../../../layouts/PrivateLayout';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { destroyJwt } from '../../../utils/globals/cookies';
+import { BiLogOut } from 'react-icons/bi';
 
 interface MenuProps {
   menuItems: MenuItem[];
@@ -21,7 +21,7 @@ const Menu = (props: MenuProps) => {
 
   const logout = () => {
     destroyJwt();
-    router.push("/dashboard/login");
+    router.push('/dashboard/login');
   };
 
   const handleClick = (id: number) => {
@@ -31,7 +31,7 @@ const Menu = (props: MenuProps) => {
 
   const displayIcon = (item: MenuItem) => {
     return (
-      <Box color={isItemActive(item) ? "white" : "primary"}>{item.icon}</Box>
+      <Box color={isItemActive(item) ? 'white' : 'primary'}>{item.icon}</Box>
     );
   };
 
@@ -51,20 +51,20 @@ const Menu = (props: MenuProps) => {
     >
       <Box display="flex" mb={2}>
         <Box w="full" textAlign="center">
-          <Text fontSize={["xl", "2xl"]} fontWeight={"bold"} mt={4} mb={10}>
-            Ressourcerie{" "}
+          <Text fontSize={['xl', '2xl']} fontWeight={'bold'} mt={4} mb={10}>
+            Ressourcerie{' '}
             <Text
               as="span"
-              bgGradient="linear(to-t, #2F80ED, #97F8B1)"
+              bgGradient="linear(to-t, #97F8B1, #2F80ED)"
               bgClip="text"
             >
               PFRH
-            </Text>{" "}
+            </Text>{' '}
           </Text>
-          {menuItems.map((item) => (
+          {menuItems.map(item => (
             <Box key={item.id} mb={2}>
               <NextLink
-                href={item.link ? item.link : ""}
+                href={item.link ? item.link : ''}
                 passHref={!!item.link}
               >
                 <Link
@@ -77,14 +77,14 @@ const Menu = (props: MenuProps) => {
                   px={5}
                   fontWeight="bold"
                   opacity={isItemActive(item) ? 1 : 0.8}
-                  target={item.blank ? "_blank" : "_self"}
+                  target={item.blank ? '_blank' : '_self'}
                   userSelect="none"
                   rounded="md"
                   _hover={{
-                    opacity: 1,
+                    opacity: 1
                   }}
                   backgroundColor={
-                    isItemActive(item) ? "#F6F6F9" : "transparent"
+                    isItemActive(item) ? '#F6F6F9' : 'transparent'
                   }
                   onClick={() => {
                     handleClick(item.id);
@@ -93,9 +93,9 @@ const Menu = (props: MenuProps) => {
                   <Box
                     rounded="lg"
                     p={2}
-                    bg={isItemActive(item) ? "primary" : "white"}
+                    bg={isItemActive(item) ? 'primary' : 'white'}
                     fontSize="xl"
-                    color={isItemActive(item) ? "white" : "primary"}
+                    color={isItemActive(item) ? 'white' : 'primary'}
                   >
                     {displayIcon(item)}
                   </Box>

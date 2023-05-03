@@ -47,7 +47,7 @@ const RessourceCard: React.FC<RessourceProps> = props => {
       borderRadius={'xl'}
       _hover={{
         borderRadius: 'xl',
-        bgGradient: isUseCase ? '#2F80ED' : 'linear(to-t, #2F80ED, #97F8B1)',
+        bgGradient: isUseCase ? '#2F80ED' : 'linear(to-t, #97F8B1, #2F80ED)',
         transition: 'linear-gradient 0.2s ease-in-out'
       }}
       p={isUseCase && isSelected ? '0' : '1px'}

@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
                   <Heading fontSize="xl"> La fonction publique de</Heading>
                   <Heading
                     fontSize="xl"
-                    bgGradient="linear(to-t, #2F80ED, #97F8B1)"
+                    bgGradient="linear(to-t, #97F8B1, #2F80ED)"
                     bgClip="text"
                     ml={1.5}
                   >
@@ -71,7 +71,7 @@ const Navbar: React.FC = () => {
                       display="inline"
                       as="b"
                       fontStyle="normal"
-                      bgGradient="linear(to-t, #2F80ED, #97F8B1)"
+                      bgGradient="linear(to-t, #97F8B1, #2F80ED)"
                       bgClip="text"
                       ml={1.5}
                     >

@@ -1,4 +1,4 @@
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 import {
   Box,
   Container,
@@ -7,24 +7,24 @@ import {
   Text,
   Image,
   Button,
-  Fade,
-} from "@chakra-ui/react";
-import NextLink from "next/link";
-import HomeSearchBar from "../homepage/home-search-bar";
-import { useState } from "react";
-import ChatBot from "../chatbot";
+  Fade
+} from '@chakra-ui/react';
+import NextLink from 'next/link';
+import HomeSearchBar from '../homepage/home-search-bar';
+import { useState } from 'react';
+import ChatBot from '../chatbot';
 
 const HomeHeader = () => {
   const [showDialogue, setShowDialogue] = useState(false);
   const [stepQuestion, setStepQuestion] = useState(0);
 
   const robotSteps = [
-    { step: 1, image: "cuteRobot_smile.png" },
-    { step: 2, image: "cuteRobot_eye.png" },
-    { step: 3, image: "cuteRobot_cute.png" },
-    { step: 4, image: "cuteRobot_love.png" },
-    { step: 5, image: "cuteRobot_amazing.png" },
-    { step: 6, image: "cuteRobot_super.png" },
+    { step: 1, image: 'cuteRobot_smile.png' },
+    { step: 2, image: 'cuteRobot_eye.png' },
+    { step: 3, image: 'cuteRobot_cute.png' },
+    { step: 4, image: 'cuteRobot_love.png' },
+    { step: 5, image: 'cuteRobot_amazing.png' },
+    { step: 6, image: 'cuteRobot_super.png' }
   ];
 
   return (
@@ -36,24 +36,24 @@ const HomeHeader = () => {
           flexWrap="wrap"
           pos="relative"
         >
-          <Box w={["100%", "100%", "100%", "45%"]}>
-            <Heading as="h1" fontSize={["4xl", "4xl", "4xl", "5xl"]}>
-              Ressourcerie{" "}
+          <Box w={['100%', '100%', '100%', '45%']}>
+            <Heading as="h1" fontSize={['4xl', '4xl', '4xl', '5xl']}>
+              Ressourcerie{' '}
               <Text
                 as="span"
-                bgGradient="linear(to-t, #2F80ED, #97F8B1)"
+                bgGradient="linear(to-t, #97F8B1, #2F80ED)"
                 bgClip="text"
               >
                 RH
-              </Text>{" "}
-              et{" "}
+              </Text>{' '}
+              et{' '}
               <Text as="span" color="primary">
                 management
-              </Text>{" "}
+              </Text>{' '}
               en Normandie
             </Heading>
             <Text
-              fontSize={["xl", "xl", "xl", "xl"]}
+              fontSize={['xl', 'xl', 'xl', 'xl']}
               mt={6}
               color="neutralDark"
             >
@@ -62,7 +62,7 @@ const HomeHeader = () => {
               d’expérimentation.
             </Text>
             <Flex justifyContent="left" alignItems="center" mt={10}>
-              <NextLink href={"/ressources"}>
+              <NextLink href={'/ressources'}>
                 <Button>
                   Ressources <ArrowForwardIcon ml={2} />
                 </Button>
@@ -88,7 +88,7 @@ const HomeHeader = () => {
             />
           </Box>
           <Box
-            display={["none", "none", "none", "block"]}
+            display={['none', 'none', 'none', 'block']}
             w="55%"
             position="relative"
             className="chatbot"
@@ -100,7 +100,7 @@ const HomeHeader = () => {
                 left="46%"
                 w="50%"
                 h="100%"
-                transition={"0.5s"}
+                transition={'0.5s'}
               >
                 <Image
                   onMouseEnter={() => setShowDialogue(true)}
@@ -111,30 +111,30 @@ const HomeHeader = () => {
                   alt="robot hi"
                   zIndex={99}
                   style={{
-                    transform: "translateX(-50%)translateY(-50%)",
-                    opacity: showDialogue && stepQuestion === 0 ? 1 : 0,
+                    transform: 'translateX(-50%)translateY(-50%)',
+                    opacity: showDialogue && stepQuestion === 0 ? 1 : 0
                   }}
-                  transition={"0.5s"}
+                  transition={'0.5s'}
                   pos="absolute"
                 />
                 <Image
                   src="/chatbot/cuteRobot_smile.png"
                   alt="robot smile"
-                  style={{ transform: "translateX(-50%)translateY(-50%)" }}
-                  transition={"0.5s"}
+                  style={{ transform: 'translateX(-50%)translateY(-50%)' }}
+                  transition={'0.5s'}
                   pos="absolute"
                 />
 
                 {robotSteps.map((robot, index) => (
                   <Box key={index}>
                     <Image
-                      src={"/chatbot/" + robot.image}
+                      src={'/chatbot/' + robot.image}
                       alt={robot.image}
                       style={{
                         opacity: stepQuestion === robot.step ? 1 : 0,
-                        transform: "translateX(-50%)translateY(-50%)",
+                        transform: 'translateX(-50%)translateY(-50%)'
                       }}
-                      transition={"1s"}
+                      transition={'1s'}
                       pos="absolute"
                     />
                   </Box>

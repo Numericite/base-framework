@@ -1,4 +1,4 @@
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { HamburgerIcon } from '@chakra-ui/icons';
 import {
   Button,
   Drawer,
@@ -10,9 +10,9 @@ import {
   Flex,
   Text,
   useDisclosure,
-  VStack,
-} from "@chakra-ui/react";
-import React from "react";
+  VStack
+} from '@chakra-ui/react';
+import React from 'react';
 
 interface DrawerProps {
   displayLinks: JSX.Element[];
@@ -40,7 +40,7 @@ const MobileDrawer = (props: DrawerProps) => {
           <DrawerHeader>
             <Text>
               Ressourcerie
-              <Text bgGradient="linear(to-t, #2F80ED, #97F8B1)" bgClip="text">
+              <Text bgGradient="linear(to-t, #97F8B1, #2F80ED)" bgClip="text">
                 PFRH
               </Text>
             </Text>

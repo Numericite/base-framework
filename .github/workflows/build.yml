@@ -25,5 +25,5 @@ jobs:
     - name: Build
       run: |
         cd ./webapp-next
-        npm install
-        npm run build
+        yarn install
+        yarn build

@@ -37,22 +37,14 @@ const RessourceCard: React.FC<RessourceProps> = props => {
   } = props;
 
   const getBaseStarNumber = (score: number) => {
-    switch (score) {
-      case 17:
-        return 4;
-      case 16:
-      case 12:
-      case 7:
-        return 3;
-      case 15:
-      case 11:
-      case 6:
-      case 2:
-        return 2;
-      case 10:
-      case 5:
-      case 1:
-        return 1;
+    if (score > 15) {
+      return 4;
+    } else if (score > 10) {
+      return 3;
+    } else if (score > 5) {
+      return 2;
+    } else if (score > 0) {
+      return 1;
     }
     return 0;
   };

@@ -1,4 +1,4 @@
-import SearchBar from "../../components/ui/ressources/searchbar";
+import SearchBar from '../../components/ui/ressources/searchbar';
 import {
   Box,
   Container,
@@ -6,21 +6,21 @@ import {
   SimpleGrid,
   Skeleton,
   Text,
-  keyframes,
-} from "@chakra-ui/react";
-import { useState } from "react";
-import RessourceCard from "../../components/ui/ressources/ressource-card";
-import { fetchApi } from "../../utils/api/fetch-api";
+  keyframes
+} from '@chakra-ui/react';
+import { useState } from 'react';
+import RessourceCard from '../../components/ui/ressources/ressource-card';
+import { fetchApi } from '../../utils/api/fetch-api';
 import {
   TRessource,
   TRessourceAkinatorParams,
-  TRessourceKindEnum,
-} from "../api/ressources/types";
-import { GeneralListQueryParams } from "../api/types";
-import { GetServerSideProps } from "next";
-import ChatBot from "../../components/ui/chatbot";
-import CustomBreadcrumb from "../../components/ui/breadcrumb";
-import { useEffect } from "react";
+  TRessourceKindEnum
+} from '../api/ressources/types';
+import { GeneralListQueryParams } from '../api/types';
+import { GetServerSideProps } from 'next';
+import ChatBot from '../../components/ui/chatbot';
+import CustomBreadcrumb from '../../components/ui/breadcrumb';
+import { useEffect } from 'react';
 
 interface RessourcesProps {
   searchParams: {
@@ -36,13 +36,13 @@ interface RessourcesProps {
   };
 }
 
-const Ressources: React.FC<RessourcesProps> = (props) => {
+const Ressources: React.FC<RessourcesProps> = props => {
   const { searchParams, akinatorParams } = props;
   const [akinatorPath, setAkinatorPath] = useState({
-    personae: "",
-    occupation: "",
-    theme: "",
-    subTheme: "",
+    personae: '',
+    occupation: '',
+    theme: '',
+    subTheme: ''
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [ressources, setRessources] = useState<TRessource[]>([]);
@@ -55,24 +55,24 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
 
   const fetchAkinatorParamsValues = () => {
     Promise.all([
-      fetchApi.get("/api/personaes/find", { id: akinatorParams.personae }),
-      fetchApi.get("/api/personaeoccupations/find", {
-        id: akinatorParams.occupation,
+      fetchApi.get('/api/personaes/find', { id: akinatorParams.personae }),
+      fetchApi.get('/api/personaeoccupations/find', {
+        id: akinatorParams.occupation
       }),
-      fetchApi.get("/api/themes/find", { id: akinatorParams.theme }),
-      fetchApi.get("/api/subthemes/find", { id: akinatorParams.subTheme }),
+      fetchApi.get('/api/themes/find', { id: akinatorParams.theme }),
+      fetchApi.get('/api/subthemes/find', { id: akinatorParams.subTheme })
     ]).then(
       ([
         responsePersonae,
         responsePersonaeOccupation,
         responseTheme,
-        responseSubTheme,
+        responseSubTheme
       ]) => {
         setAkinatorPath({
           personae: responsePersonae.name,
           occupation: responsePersonaeOccupation.name,
           theme: responseTheme.name,
-          subTheme: responseSubTheme.name,
+          subTheme: responseSubTheme.name
         });
       }
     );
@@ -81,14 +81,14 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
   const fetchRessourcesAkinator = () => {
     setIsLoading(true);
     fetchApi
-      .get("/api/ressources/akinator", {
-        pagination: { page: 1, pageSize: 10 },
+      .get('/api/ressources/akinator', {
+        pagination: { page: 1, pageSize: 100 },
         filters: {
-          status: "published",
+          status: 'published'
         },
-        ...akinatorParams,
+        ...akinatorParams
       })
-      .then((response) => {
+      .then(response => {
         setRessources(response.data);
       })
       .finally(() => {
@@ -107,22 +107,22 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
     let params: GeneralListQueryParams = {
       pagination: { page: 1, pageSize: 12 },
       filters: {
-        status: "published",
-      },
+        status: 'published'
+      }
     };
 
     if (filters) params.filters = { ...params.filters, ...filters };
     if (_q) params._q = _q;
 
     fetchApi
-      .get("/api/ressources/list", params)
-      .then((response) => {
+      .get('/api/ressources/list', params)
+      .then(response => {
         setRessources(response.data);
       })
       .finally(() => setIsLoading(false));
   };
 
-  const displayRessources = ressources.map((ressource) => {
+  const displayRessources = ressources.map(ressource => {
     return (
       <RessourceCard
         key={ressource.id}
@@ -132,7 +132,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
     );
   });
 
-  const displaySkeleton = Array.from(Array(6).keys()).map((_) => (
+  const displaySkeleton = Array.from(Array(6).keys()).map(_ => (
     <Skeleton key={_} height={64} borderRadius="lg" />
   ));
 
@@ -159,8 +159,8 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
           }}
         />
       )}
-      <Box bg={"neutral"}>
-        <Container maxW="container.2lg" py={"2.75rem"} mb={"2.75rem"}>
+      <Box bg={'neutral'}>
+        <Container maxW="container.2lg" py={'2.75rem'} mb={'2.75rem'}>
           <Heading pb={6}>Ressources</Heading>
           <ChatBot
             toast={true}
@@ -201,7 +201,7 @@ const Ressources: React.FC<RessourcesProps> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps: GetServerSideProps = async ctx => {
   const { _q, theme, kind, personae, occupation, subTheme } = ctx.query;
 
   return {
@@ -209,15 +209,15 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       searchParams: {
         _q: (_q as string) || null,
         theme: parseInt(theme as string) || null,
-        kind: (kind as TRessourceKindEnum) || null,
+        kind: (kind as TRessourceKindEnum) || null
       },
       akinatorParams: {
         personae: parseInt(personae as string) || null,
         occupation: parseInt(occupation as string) || null,
         theme: parseInt(theme as string) || null,
-        subTheme: parseInt(subTheme as string) || null,
-      },
-    },
+        subTheme: parseInt(subTheme as string) || null
+      }
+    }
   };
 };
 

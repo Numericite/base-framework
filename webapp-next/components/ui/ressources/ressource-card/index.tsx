@@ -36,6 +36,26 @@ const RessourceCard: React.FC<RessourceProps> = props => {
     isSticky
   } = props;
 
+  const getBaseStarNumber = (score: number) => {
+    switch (score) {
+      case 17:
+        return 4;
+      case 16:
+      case 12:
+      case 7:
+        return 3;
+      case 15:
+      case 11:
+      case 6:
+      case 2:
+        return 2;
+      case 10:
+      case 5:
+      case 1:
+        return 1;
+    }
+  };
+
   const children = (
     <Box
       ref={ref}
@@ -84,9 +104,11 @@ const RessourceCard: React.FC<RessourceProps> = props => {
         <CardHeader py={3.5} m={0} w="full">
           {ressource.score !== undefined && (
             <Box display="flex" justifyContent="right" mt={-2} mb={4}>
-              {[...Array(ressource.score + 1)].map((e, i) => {
-                return <StarIcon key={i} opacity={0.5} color="secondary" />;
-              })}
+              {[...Array(getBaseStarNumber(ressource.score) + 1)].map(
+                (e, i) => {
+                  return <StarIcon key={i} opacity={0.5} color="secondary" />;
+                }
+              )}
             </Box>
           )}
 

@@ -54,6 +54,7 @@ const RessourceCard: React.FC<RessourceProps> = props => {
       case 1:
         return 1;
     }
+    return 0;
   };
 
   const children = (

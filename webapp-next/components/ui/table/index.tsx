@@ -9,6 +9,7 @@ import {
   Button,
   Text,
   Spinner,
+  Select,
 } from "@chakra-ui/react";
 import { AddIcon, ArrowForwardIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { useState, useEffect, FormEvent } from "react";
@@ -33,7 +34,7 @@ const UITable = <TItem,>(props: TableProps<TItem>) => {
   const [count, setCount] = useState<number>(0);
   const [nbPages, setNbPages] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
-  const debounceSearch = useDebounce(search, 500);
+  const debounceSearch = useDebounce(search, 700);
   const [selectedFilters, setSelectedFilters] = useState<Filter[]>([]);
 
   const getItems = () => {
@@ -87,6 +88,7 @@ const UITable = <TItem,>(props: TableProps<TItem>) => {
       <Box display="flex" mb={6}>
         {props.onNewItem && !props.hideNewItem && (
           <Button
+            alignSelf={"center"}
             variant="primary"
             size="xs"
             borderRadius="3xl"
@@ -107,6 +109,7 @@ const UITable = <TItem,>(props: TableProps<TItem>) => {
             }}
           />
         )}
+
         {!props.lightMode && (
           <Box ml="auto" mr="2">
             <DropdownButton

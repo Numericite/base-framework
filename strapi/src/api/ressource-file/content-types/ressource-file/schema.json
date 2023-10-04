@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ressource_files",
+  "info": {
+    "singularName": "ressource-file",
+    "pluralName": "ressource-files",
+    "displayName": "RessourceFile",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "files": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "ressource": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::ressource.ressource"
+    }
+  }
+}

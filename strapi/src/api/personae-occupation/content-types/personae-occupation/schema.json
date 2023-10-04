@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "personae_occupations",
+  "info": {
+    "singularName": "personae-occupation",
+    "pluralName": "personae-occupations",
+    "displayName": "PersonaeOccupation",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "personae": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::personae.personae"
+    }
+  }
+}

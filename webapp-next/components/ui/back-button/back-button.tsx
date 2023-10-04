@@ -8,8 +8,9 @@ const BackButton = ({ route }: BackButtonProps) => {
 
   return (
     <Button
-      variant="outline"
+      variant="neutral"
       size="sm"
+      borderRadius="lg"
       onClick={() => {
         if (route) router.push(route);
         else router.back();

@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "themes",
+  "info": {
+    "singularName": "theme",
+    "pluralName": "themes",
+    "displayName": "Theme",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "color": {
+      "type": "string"
+    },
+    "personaes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::personae.personae",
+      "inversedBy": "themes"
+    },
+    "sub_themes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::sub-theme.sub-theme",
+      "inversedBy": "themes"
+    }
+  }
+}

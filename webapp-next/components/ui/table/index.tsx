@@ -9,21 +9,19 @@ import {
   Button,
   Text,
   Spinner,
-  Link,
+  Select,
 } from "@chakra-ui/react";
 import { AddIcon, ArrowForwardIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { useState, useEffect, FormEvent } from "react";
 
 import { TableProps } from "./interfaces";
 import { ReactNode } from "react";
-import { useRouter } from "next/router";
 import { useDebounce } from "usehooks-ts";
 import type { Filter } from "../filters/interface";
 import Searchbar from "../searchbar";
 import Filters from "../filters";
 import DropdownButton from "../dropdown";
 import { isPromise } from "../../../utils/globals/tools";
-import NextLink from "next/link";
 import ActionLink from "./action-link";
 
 const UITable = <TItem,>(props: TableProps<TItem>) => {
@@ -36,7 +34,7 @@ const UITable = <TItem,>(props: TableProps<TItem>) => {
   const [count, setCount] = useState<number>(0);
   const [nbPages, setNbPages] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
-  const debounceSearch = useDebounce(search, 500);
+  const debounceSearch = useDebounce(search, 700);
   const [selectedFilters, setSelectedFilters] = useState<Filter[]>([]);
 
   const getItems = () => {
@@ -89,7 +87,15 @@ const UITable = <TItem,>(props: TableProps<TItem>) => {
     <Box w="full">
       <Box display="flex" mb={6}>
         {props.onNewItem && !props.hideNewItem && (
-          <Button type="button" size="md" onClick={props.onNewItem} mr={2}>
+          <Button
+            alignSelf={"center"}
+            variant="primary"
+            size="xs"
+            borderRadius="3xl"
+            onClick={props.onNewItem}
+            p={4}
+            mr={2}
+          >
             <AddIcon mr={2} fontSize="xs" />{" "}
             {props.newItemLabel ? props.newItemLabel : "Ajouter"}
           </Button>
@@ -103,6 +109,7 @@ const UITable = <TItem,>(props: TableProps<TItem>) => {
             }}
           />
         )}
+
         {!props.lightMode && (
           <Box ml="auto" mr="2">
             <DropdownButton
@@ -279,7 +286,7 @@ const UITable = <TItem,>(props: TableProps<TItem>) => {
                 }}
               >
                 <Text
-                  bg={"secondary"}
+                  bg={"neutralDark"}
                   py={3}
                   textAlign="center"
                   color={"white"}

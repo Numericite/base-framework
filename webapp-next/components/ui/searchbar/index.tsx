@@ -5,8 +5,9 @@ import { SearchbarProps } from "./interface";
 
 const UISearchbar = (props: SearchbarProps) => {
   return (
-    <InputGroup width={props.size}>
+    <InputGroup width={props.size} ml={3}>
       <Input
+        w="full"
         bgColor="neutral.900"
         borderRadius="2xl"
         placeholder={props.placeholder}

@@ -66,3 +66,53 @@ export const stringToColour = (str: string): string => {
   }
   return colour;
 };
+
+export const removeUndefinedNestedFields = (obj: any) => {
+  let newObj: any = {};
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === Object(obj[key]))
+      newObj[key] = removeUndefinedNestedFields(obj[key]);
+    else if (obj[key] !== undefined) newObj[key] = obj[key];
+  });
+  return newObj;
+};
+
+export const removeNullNestedFields = (obj: any) => {
+  let newObj: any = {};
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === Object(obj[key]))
+      newObj[key] = removeNullNestedFields(obj[key]);
+    else if (obj[key] !== null) newObj[key] = obj[key];
+  });
+  return newObj;
+};
+
+export const removeNullAndUndefinedNestedFields = (obj: any) => {
+  let newObj: any = {};
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === Object(obj[key]))
+      newObj[key] = removeNullAndUndefinedNestedFields(obj[key]);
+    else if (obj[key] !== null && obj[key] !== undefined)
+      newObj[key] = obj[key];
+  });
+  return newObj;
+};
+
+export const reorder = <TItem>(
+  list: TItem[],
+  startIndex: number,
+  endIndex: number
+): TItem[] => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
+
+export const getYoutubeIdFromFullUrl = (url: string): string => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+
+  return match && match[2].length === 11 ? match[2] : "";
+};

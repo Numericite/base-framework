@@ -9,6 +9,10 @@ import { TUser } from "./api/users/types";
 import { useLocalStorage } from "react-use";
 import AppContext from "../context/state";
 import { ModalProvider } from "../utils/hooks/useModals";
+import "@fontsource/poppins";
+import Fonts from "../components/ui/fonts";
+import PrivateLayout from "../layouts/PrivateLayout";
+import Head from "next/head";
 
 const NEXT_PUBLIC_JWT_STORAGE_KEY: string = process.env
   .NEXT_PUBLIC_JWT_STORAGE_KEY as string;
@@ -38,12 +42,31 @@ function MyApp({ Component, pageProps }: AppProps) {
   };
 
   const getLayout = (children: ReactNode) => {
-    return <PublicLayout>{children}</PublicLayout>;
+    if (router.pathname.startsWith("/dashboard/bo")) {
+      return <PrivateLayout>{children}</PrivateLayout>;
+    } else {
+      return <PublicLayout>{children}</PublicLayout>;
+    }
   };
 
   return (
     <AppContext.Provider value={contextValue}>
       <ChakraProvider theme={theme}>
+        <Head>
+          <style>
+            {`
+              html {
+                scroll-behavior: smooth;
+              }
+              .ql-editor {
+                overflow-y: scroll;
+                resize: vertical;
+                min-height: 15rem;
+              }
+              `}
+          </style>
+        </Head>
+        <Fonts />
         <ModalProvider>{getLayout(<Component {...pageProps} />)}</ModalProvider>
       </ChakraProvider>
     </AppContext.Provider>

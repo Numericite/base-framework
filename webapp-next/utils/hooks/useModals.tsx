@@ -130,7 +130,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
                   <Button
                     onClick={handleOK}
                     ref={ok}
-                    variant={type !== ModalType.Alert ? "solid" : "ghost"}
+                    variant={type !== ModalType.Alert ? "primary" : "primary"}
                   >
                     {type !== ModalType.Alert ? "Valider" : "Fermer"}
                   </Button>

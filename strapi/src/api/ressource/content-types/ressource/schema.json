@@ -1,0 +1,80 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ressources",
+  "info": {
+    "singularName": "ressource",
+    "pluralName": "ressources",
+    "displayName": "Ressource",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "kind": {
+      "type": "enumeration",
+      "enum": [
+        "link",
+        "video",
+        "file",
+        "quiz",
+        "iframe",
+        "text"
+      ],
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "theme": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::theme.theme"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "sub_themes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::sub-theme.sub-theme"
+    },
+    "personaes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::personae.personae"
+    },
+    "personae_occupations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::personae-occupation.personae-occupation"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "draft",
+        "published"
+      ],
+      "default": "draft"
+    },
+    "contribution": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::contribution.contribution"
+    }
+  }
+}

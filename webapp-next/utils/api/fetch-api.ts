@@ -10,6 +10,7 @@ import {
   PutRouteParams,
   DeleteRouteParams,
 } from "../types/api-types";
+import { removeUndefinedNestedFields } from "../globals/tools";
 
 const serializeParams = (obj: any, prefix?: string): string => {
   var str = [],
@@ -34,8 +35,10 @@ const getRequest: Overloading<GetRouteParams, MyGetRoutes> = async <
   route: K,
   params?: any
 ) => {
-  const urlParams = params ? "?" + serializeParams(params) : "";
-  let r = await fetch(route + urlParams);
+  const urlParams = params
+    ? "?" + serializeParams(removeUndefinedNestedFields(params))
+    : "";
+  let r = await fetch(process.env.NEXT_PUBLIC_URL + route + urlParams);
   if (r.ok) {
     const json = await r.json();
     return json;
@@ -51,7 +54,7 @@ const postRequest: Overloading<PostRouteParams, MyPostRoutes> = async <
   route: K,
   body?: any
 ) => {
-  let r = await fetch(route, {
+  let r = await fetch(process.env.NEXT_PUBLIC_URL + route, {
     method: "POST",
     body: JSON.stringify(body),
   });
@@ -70,7 +73,7 @@ const putRequest: Overloading<PutRouteParams, MyPutRoutes> = async <
   route: K,
   body?: any
 ) => {
-  let r = await fetch(route, {
+  let r = await fetch(process.env.NEXT_PUBLIC_URL + route, {
     method: "PUT",
     body: JSON.stringify(body),
   });
@@ -89,7 +92,7 @@ const deleteRequest: Overloading<DeleteRouteParams, MyDeleteRoutes> = async <
   route: K,
   body?: any
 ) => {
-  let r = await fetch(route, {
+  let r = await fetch(process.env.NEXT_PUBLIC_URL + route, {
     method: "DELETE",
     body: JSON.stringify(body),
   });

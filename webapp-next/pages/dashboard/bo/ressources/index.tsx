@@ -17,6 +17,8 @@ import {
 } from "../../../api/ressources/types";
 import IconPlaceHolder from "../../../../components/ui/icon-placeholder";
 import { TTheme } from "../../../api/themes/types";
+import { formatDateToFrenchString } from "../../../../utils/tools";
+
 
 const DashboardRessources = () => {
   const router = useRouter();
@@ -30,7 +32,7 @@ const DashboardRessources = () => {
       renderItem: (item: TRessource) => {
         return (
           <Text fontSize="sm">
-            {new Date(item.createdAt as string).toLocaleDateString()}
+            {formatDateToFrenchString(item.createdAt as string)}
           </Text>
         );
       },

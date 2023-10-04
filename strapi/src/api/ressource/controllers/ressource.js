@@ -1,19 +1,19 @@
-'use strict';
+"use strict";
 
 /**
  * ressource controller
  */
 
-const { createCoreController } = require('@strapi/strapi').factories;
+const { createCoreController } = require("@strapi/strapi").factories;
 
-const childRessourceRequest = ressource =>
+const childRessourceRequest = (ressource) =>
   strapi
     .service(
       `api::ressource-${ressource.attributes.kind}.ressource-${ressource.attributes.kind}`
     )
     .find({
       filters: {
-        ressource: { id: ressource.id }
+        ressource: { id: ressource.id },
       },
       populate: {
         ressource: {
@@ -23,22 +23,22 @@ const childRessourceRequest = ressource =>
             sub_themes: true,
             personaes: true,
             personae_occupations: true,
-            contribution: true
-          }
+            contribution: true,
+          },
         },
-        files: true
-      }
+        files: true,
+      },
     });
 
-const childRessourceCreateRequest = async ressource => {
+const childRessourceCreateRequest = async (ressource) => {
   let { id, created_at, updated_at, ...tmpRessource } = ressource;
   return strapi
     .service(`api::ressource-${ressource.kind}.ressource-${ressource.kind}`)
     .create({
       data: {
         ...tmpRessource,
-        ressource: id
-      }
+        ressource: id,
+      },
     });
 };
 
@@ -47,9 +47,9 @@ const childRessourceUpdateRequest = async (ressource, formerKind) => {
     .service(`api::ressource-${formerKind}.ressource-${formerKind}`)
     .find({
       filters: {
-        ressource: { id: ressource.id }
+        ressource: { id: ressource.id },
       },
-      populate: '*'
+      populate: "*",
     });
 
   if (ressource.kind !== formerKind) {
@@ -69,13 +69,13 @@ const childRessourceUpdateRequest = async (ressource, formerKind) => {
       .update(child.results[0].id, {
         data: {
           ...tmpRessource,
-          ressource: { id }
-        }
+          ressource: { id },
+        },
       });
   }
 };
 
-const childRessourceConsolidate = childRessource => {
+const childRessourceConsolidate = (childRessource) => {
   if (childRessource) {
     let { ressource, ...child } = childRessource;
     return { ...child, ...ressource, child_id: child.id };
@@ -83,31 +83,31 @@ const childRessourceConsolidate = childRessource => {
 };
 
 const baseRessourcesToResponse = async (data, meta) => {
-  const childRessourcesPromises = data.map(ressource =>
+  const childRessourcesPromises = data.map((ressource) =>
     childRessourceRequest(ressource)
   );
 
   const finalRessources = await Promise.all(childRessourcesPromises).then(
-    childRessources => {
-      return childRessources.map(childRessource => {
+    (childRessources) => {
+      return childRessources.map((childRessource) => {
         const r = data.find(
-          d => d.id === childRessource.results[0].ressource.id
+          (d) => d.id === childRessource.results[0].ressource.id
         );
         return {
           ...childRessourceConsolidate(childRessource.results[0]),
-          score: r.score
+          score: r.score,
         };
       });
     }
   );
 
   return {
-    data: finalRessources.filter(_ => !!_),
-    meta
+    data: finalRessources.filter((_) => !!_),
+    meta,
   };
 };
 
-module.exports = createCoreController('api::ressource.ressource', () => ({
+module.exports = createCoreController("api::ressource.ressource", () => ({
   async findOne(ctx) {
     const response = await super.findOne(ctx);
 
@@ -116,7 +116,7 @@ module.exports = createCoreController('api::ressource.ressource', () => ({
     return { data: childRessourceConsolidate(childRessource.results[0]) };
   },
   async find(ctx) {
-    return strapi.controller('api::ressource.ressource').customFind(ctx);
+    return strapi.controller("api::ressource.ressource").customFind(ctx);
   },
   async customFind(ctx) {
     const { data, meta } = await super.find(ctx);
@@ -135,8 +135,8 @@ module.exports = createCoreController('api::ressource.ressource', () => ({
         data: {
           ...childRessourcePromise,
           ...data,
-          child_id: childRessourcePromise.id
-        }
+          child_id: childRessourcePromise.id,
+        },
       };
     }
   },
@@ -157,18 +157,18 @@ module.exports = createCoreController('api::ressource.ressource', () => ({
         data: {
           ...childRessourcePromise,
           ...data,
-          child_id: childRessourcePromise.id
-        }
+          child_id: childRessourcePromise.id,
+        },
       };
     }
   },
   async updateStatus(ctx) {
     const { id, status } = ctx.request.body;
     const response = await strapi
-      .service('api::ressource.ressource')
+      .service("api::ressource.ressource")
       .update(id, { data: { status: status } });
     let fullRessource = await strapi
-      .controller('api::ressource.ressource')
+      .controller("api::ressource.ressource")
       .findOne({ params: { id: response.id } });
     return { data: fullRessource.data };
   },
@@ -182,29 +182,48 @@ module.exports = createCoreController('api::ressource.ressource', () => ({
       } OFFSET ${(pagination.page - 1) * pagination.pageSize};`
     );
 
-    const consultation_ids = rows.map(_ => _.id);
+    const consultation_ids = rows.map((_) => _.id);
 
-    const response = await strapi.service('api::ressource.ressource').find({
+    const response = await strapi.service("api::ressource.ressource").find({
       filters: {
-        id: { $in: consultation_ids }
-      }
+        id: { $in: consultation_ids },
+      },
     });
 
     return baseRessourcesToResponse(
       response.results
-        .map(_ => {
+        .map((_) => {
           const { id, ...attributes } = _;
 
           return {
             id,
             attributes,
-            score: parseInt(rows.find(r => r.id === _.id)?.score)
+            score: parseInt(rows.find((r) => r.id === _.id)?.score),
           };
         })
         .sort((a, b) => b.score - a.score),
       {
-        pagination: response.pagination
+        pagination: response.pagination,
       }
     );
-  }
+  },
+  async delete(ctx) {
+    const { id } = ctx.params;
+    const useCaseStep = await strapi.db
+      .query("api::use-case-step.use-case-step")
+      .findOne({
+        where: {
+          ressource: id,
+        },
+      });
+
+    if (useCaseStep) {
+      const useCaseStepResponse = await strapi
+        .service("api::use-case-step.use-case-step")
+        .delete(useCaseStep.id);
+      if (useCaseStepResponse.id) {
+        await strapi.service("api::ressource.ressource").delete(id);
+      }
+    }
+  },
 }));
